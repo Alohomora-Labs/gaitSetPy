@@ -43,7 +43,7 @@ gsp.visualize(results)
 
 ## Documentation
 
-For detailed documentation and API reference, please visit the [official documentation](https://Alohomora-Labs.github.io/gaitSetPy/gaitsetpy-docs).
+For detailed documentation and API reference, please visit the [official documentation](https://alohomora-labs.github.io/gaitSetPy/docs_gaitsetpy.html).
 
 ## Contributing
 
