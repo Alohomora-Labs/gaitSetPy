@@ -1,0 +1,28 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: gaitSetPy
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jayeeta
+    family-names: Chakraborty
+    email: jayeeta.chakrabortyfcs@kiit.ac.in
+    orcid: 'https://orcid.org/0000-0003-3918-1649'
+    affiliation: Kalinga Institute of Industrial Technology
+  - given-names: Harshit
+    family-names: Agarwal
+    email: 23052801@kiit.ac.in
+    affiliation: Kalinga Institute of Industrial Technology
+    orcid: 'https://orcid.org/0009-0000-2173-1740'
+repository-code: 'https://github.com/Alohomora-Labs/gaitSetPy'
+keywords:
+  - gait
+  - daphnet
+  - imu tool kit
+  - signals analysis
+  - gait analysis tool kit
+license: GPL-3.0+
