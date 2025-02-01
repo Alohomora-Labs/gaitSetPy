@@ -7,6 +7,9 @@ __pycache__/
 *.so
 
 gait_env/*
+gaitpy/*
+gaitpy.egg-info/*
+
 
 # Distribution / packaging
 .Python

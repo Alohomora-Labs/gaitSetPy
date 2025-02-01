@@ -1,0 +1,10 @@
+pandas
+scipy
+numpy
+PyWavelets
+scikit-learn
+statsmodels
+bokeh
+dill
+deepdish
+matplotlib
