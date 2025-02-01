@@ -10,6 +10,8 @@ setup(
         'numpy',
         'pandas',
         'scipy',
+        'requests',
+        'statsmodels',
     ],
 
 )

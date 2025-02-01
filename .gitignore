@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+gait_env/*
+
+
+
 # desktop ini files
 desktop.ini
 journals\desktop.ini

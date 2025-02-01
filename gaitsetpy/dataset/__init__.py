@@ -10,4 +10,4 @@ Supported datasets:
 from .daphnet import load_daphnet_data
 from .mobifall import load_mobifall_data
 from .arduous import load_arduous_data
-from .utils import download_dataset, extract_dataset
+from .utils import download_dataset, extract_dataset, sliding_window
