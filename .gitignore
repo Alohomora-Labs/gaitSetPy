@@ -1,0 +1,10 @@
+# HTML related files
+*.html
+*.htm
+
+# Environment related files
+.env
+*.env
+.env.*
+
+gait_env/
