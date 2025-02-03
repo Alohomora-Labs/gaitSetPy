@@ -7,7 +7,7 @@ Maintainer: @aharshit123456
 import os
 import pandas as pd
 import numpy as np
-from utils import download_dataset, extract_dataset, sliding_window
+from gaitSetPy.dataset.utils import download_dataset, extract_dataset, sliding_window
 from glob import glob
 
 
