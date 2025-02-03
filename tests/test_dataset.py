@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 import pandas as pd
-from utils import load_daphnet_data, extract_gait_features
+from dataset.utils import load_daphnet_data, extract_gait_features
 from visualization import plot_thigh_data, plot_shank_data, plot_trunk_data, plot_all_data
 
 class TestDataset(unittest.TestCase):
