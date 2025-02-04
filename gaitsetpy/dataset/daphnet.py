@@ -55,12 +55,19 @@ def create_sliding_windows(daphnet, daphnetNames, window_size=192, step_size=32)
     for idx, df in enumerate(daphnet):
         ## skipping non includable data
         df = df[df.annotations > 0]
-        df = df[df.annotations == 1 | df.annotations == 2]
+        df_1 = df[df.annotations == 1]
         windows = []
-        for col in df.columns:
+        for col in df_1.columns:
             if col != "annotations":  # Exclude the annotations column from sliding windows
-                window_data = sliding_window(df[col], window_size, step_size)
+                window_data = sliding_window(df_1[col], window_size, step_size)
                 windows.append({"name": col, "data": window_data})
+
+        df_2 = df[df.annotations == 2]
+        for col in df_2.columns:
+            if col != "annotations":  # Exclude the annotations column from sliding windows
+                window_data = sliding_window(df_2[col], window_size, step_size)
+                windows.append({"name": col, "data": window_data})
+                
         
         # Include the annotations column separately
         annotations_window = sliding_window(df["annotations"], window_size, step_size)
