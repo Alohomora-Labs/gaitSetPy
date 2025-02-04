@@ -7,4 +7,4 @@ Features:
 - Custom preprocessing adapters
 """
 
-from .pipeline import preprocess, segment_data
+# from .pipeline import preprocess, segment_data

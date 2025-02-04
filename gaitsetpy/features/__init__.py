@@ -49,5 +49,6 @@ from .gait_features import (
     get_entropy_for_windows,
     get_interquartile_range_for_windows,
     get_correlation_for_windows,
-    get_auto_regression_coefficients_for_windows
+    get_auto_regression_coefficients_for_windows,
+    extract_gait_features
 )

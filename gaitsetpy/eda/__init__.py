@@ -6,5 +6,4 @@ Features:
 - Statistical summaries and distributions.
 """
 
-from .visualization import plot_labellogram, plot_scatter, plot_power_spectrum
-from .statistics import summarize_data
+from .visualization import plot_thigh_data, plot_shank_data, plot_trunk_data, plot_all_data, plot_all_thigh_data, plot_all_shank_data, plot_all_trunk_data, plot_all_datasets
