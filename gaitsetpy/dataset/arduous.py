@@ -1,2 +1,2 @@
-def load_arudous_data():
+def load_arduous_data():
     pass
