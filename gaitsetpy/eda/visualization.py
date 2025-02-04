@@ -1,5 +1,22 @@
+'''
+This module contains functions for visualizing the thigh, shank, and trunk acceleration data from the Daphnet dataset.
+Maintainer : @aharshit123456
+
+TODO : 
+- Add plot_sliding_window functions
+- Make the thigh, shank, trunk dataframe parent child extraction functions
+- Add feature-wise visualization functions
+- Make the plottings iteration wise (n sets of 10 sliding windows per frame)
+
+'''
+
 import matplotlib.pyplot as plt
 import numpy as np
+
+#####################################################################################################
+############################################ FOR DAPHNET ############################################
+#####################################################################################################
+
 
 def plot_thigh_data(daphnetThigh, daphnetNames, i):
     """
