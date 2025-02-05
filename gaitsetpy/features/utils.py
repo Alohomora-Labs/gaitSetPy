@@ -109,7 +109,11 @@ def calculate_kurtosis(signal):
     Returns:
         kurtosis_value (float): Kurtosis.
     """
-    return kurtosis(signal, fisher=False)
+    try:
+        return kurtosis(signal, fisher=False)
+    except Exception as e:
+        print(f"An error occurred in feature 'kurtosis': {e}")
+        return 0
 
 def calculate_step_time(signal, fs):
     """
@@ -123,8 +127,6 @@ def calculate_step_time(signal, fs):
     peaks, _ = find_peaks(signal)
     step_times = np.diff(peaks) / fs
     return step_times
-
-
 
 def calculate_mean(signal):
     """Calculate the mean of the signal."""
@@ -144,7 +146,11 @@ def calculate_median(signal):
 
 def calculate_skewness(signal):
     """Calculate the skewness of the signal."""
-    return skew(signal)
+    try:
+        return skew(signal)
+    except Exception as e:
+        print(f"An error occurred in skewness: {e}")
+        return 0
 
 def calculate_root_mean_square(signal):
     """Calculate the root mean square of the signal."""
@@ -160,10 +166,14 @@ def calculate_correlation(signal1, signal2):
 
 def calculate_dominant_frequency(signal, fs):
     """Calculate the dominant frequency of the signal."""
-    fft_values = np.abs(fft(signal))
-    freqs = np.fft.fftfreq(len(signal), 1 / fs)
-    dominant_freq = freqs[np.argmax(fft_values)]
-    return dominant_freq
+    try:
+        fft_values = np.abs(fft(signal))
+        freqs = np.fft.fftfreq(len(signal), 1 / fs)
+        dominant_freq = freqs[np.argmax(fft_values)]
+        return dominant_freq
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return 0
 
 def calculate_peak_height(signal):
     """Calculate the peak height of the signal."""
@@ -172,8 +182,12 @@ def calculate_peak_height(signal):
 
 def calculate_interquartile_range(signal):
     """Calculate the interquartile range of the signal."""
-    q75, q25 = np.percentile(signal, [75, 25])
-    return q75 - q25
+    try:
+        q75, q25 = np.percentile(signal, [75, 25])
+        return q75 - q25
+    except Exception as e:
+        print(f"An error occurred in feature 'interquartile_range': {e}")
+        return 0
 
 def calculate_mode(signal):
     """Calculate the mode of the signal."""
@@ -197,8 +211,12 @@ def calculate_median_absolute_deviation(signal):
 
 def calculate_peak_frequency(signal, fs):
     """Calculate the peak frequency of the signal."""
-    f, Pxx = welch(signal, fs=fs)
-    return f[np.argmax(Pxx)]
+    try:
+        f, Pxx = welch(signal, fs=fs)
+        return f[np.argmax(Pxx)]
+    except Exception as e:
+        print(f"An error occurred in feature 'peak_frequency': {e}")
+        return 0
 
 def calculate_peak_width(signal, fs):
     """Calculate the peak width of the signal."""
@@ -212,18 +230,30 @@ def calculate_peak_width(signal, fs):
 
 def calculate_power_spectral_entropy(signal, fs):
     """Calculate the power spectral entropy of the signal."""
-    f, Pxx = welch(signal, fs=fs)
-    Pxx_norm = Pxx / np.sum(Pxx)
-    return -np.sum(Pxx_norm * np.log2(Pxx_norm + np.finfo(float).eps))
+    try:
+        f, Pxx = welch(signal, fs=fs)
+        Pxx_norm = Pxx / np.sum(Pxx)
+        return -np.sum(Pxx_norm * np.log2(Pxx_norm + np.finfo(float).eps))
+    except Exception as e:
+        print(f"An error occurred in feature 'power spectral entropy': {e}")
+        return 0
 
 def calculate_principal_harmonic_frequency(signal, fs):
     """Calculate the principal harmonic frequency of the signal."""
-    fft_values = np.abs(fft(signal))
-    freqs = np.fft.fftfreq(len(signal), 1 / fs)
-    return freqs[np.argmax(fft_values)]
+    try:
+        fft_values = np.abs(fft(signal))
+        freqs = np.fft.fftfreq(len(signal), 1 / fs)
+        return freqs[np.argmax(fft_values)]
+    except Exception as e:
+        print(f"An error occurred in feature 'principal_harmonic_frequency': {e}")
+        return 0
 
 def calculate_auto_regression_coefficients(signal, order=3):
     """Calculate the auto-regression coefficients of the signal."""
-    model = AutoReg(signal, lags=order)
-    results = model.fit()
-    return results.params
+    try:
+        model = AutoReg(signal, lags=order)
+        results = model.fit()
+        return results.params
+    except Exception as e:
+        print(f"An error occurred in feature 'auto_regression_coefficients': {e}")
+        return 0
