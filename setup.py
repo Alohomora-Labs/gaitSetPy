@@ -12,6 +12,7 @@ setup(
         'scipy',
         'requests',
         'statsmodels',
+        'matplotlib',
     ],
 
 )

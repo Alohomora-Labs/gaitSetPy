@@ -9,3 +9,4 @@ Maintainer: @aharshit123456
 """
 
 from .visualization import plot_thigh_data, plot_shank_data, plot_trunk_data, plot_all_data, plot_all_thigh_data, plot_all_shank_data, plot_all_trunk_data, plot_all_datasets
+from .statistics import plot_sensor_with_features
