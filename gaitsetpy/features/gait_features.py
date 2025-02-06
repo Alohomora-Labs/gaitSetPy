@@ -1,6 +1,5 @@
 '''
 
-TODO : Fix Annotation extraction
 '''
 
 from .utils import (
@@ -236,68 +235,80 @@ def get_auto_regression_coefficients_for_windows(windows, order=3):
 
 def extract_gait_features(daphnet_windows, fs, time_domain=True, frequency_domain=True, statistical=True):
     """
-    Extract gait features for all windows in the daphnet_windows array.
-    
+    Extract gait features for all sensor windows in the daphnet_windows array.
+
     Args:
-        daphnet_windows (list): List of dictionaries containing 'name' and 'data' keys.
-                                'data' contains windows (list of DataFrames or arrays).
-                                The last element of 'data' is assumed to be annotations.
+        daphnet_windows (list): List of 12 dictionaries (11 sensors + 1 annotation).
+                                Each dictionary contains 'name' and 'data'.
         fs (int): Sampling frequency.
         time_domain (bool): Whether to include time-domain features.
         frequency_domain (bool): Whether to include frequency-domain features.
         statistical (bool): Whether to include statistical features.
-    
+
     Returns:
         features (list): List of dictionaries containing 'name', 'features', and 'annotations'.
     """
     features = []
 
-    for window_dict in daphnet_windows:
-        windows = window_dict["data"][:-1]  # Exclude annotations
-        annotations = window_dict["data"][-1]  # Last element is annotations
+    # Extract annotations from the last dictionary
+    annotation_dict = daphnet_windows[-1]
+    annotations = annotation_dict["data"]  # List of annotation DataFrames
 
-        feature_dict = {
-            "name": window_dict["name"],
-            "features": {},
-            "annotations": annotations
+    for i, sensor_dict in enumerate(daphnet_windows[:-1]):  # Iterate over 11 sensor dictionaries
+        sensor_name = sensor_dict["name"]
+        sensor_windows = sensor_dict["data"]  # List of sliding window DataFrames
+
+        sensor_features = {
+            "name": sensor_name,
+            "features": [],
+            "annotations": []  # Store aligned annotations
         }
 
-        if time_domain:
-            feature_dict["features"].update({
-                "mean": get_mean_for_windows(windows),
-                "std_dev": get_standard_deviation_for_windows(windows),
-                "variance": get_variance_for_windows(windows),
-                "skewness": get_skewness_for_windows(windows),
-                "kurtosis": get_kurtosis_for_windows(windows),
-                "rms": get_root_mean_square_for_windows(windows),
-                "range": get_range_for_windows(windows),
-                "median": get_median_for_windows(windows),
-                "mode": get_mode_for_windows(windows),
-                "mav": get_mean_absolute_value_for_windows(windows),
-                "mad": get_median_absolute_deviation_for_windows(windows),
-                "peak_height": get_peak_height_for_windows(windows),
-                "stride_time": get_stride_times_for_windows(windows, fs),
-                "step_time": get_step_times_for_windows(windows, fs),
-                "cadence": get_cadence_for_windows(windows, fs)
-            })
+        # Iterate over each sliding window
+        for j, window in enumerate(sensor_windows):
+            window_features = {}
 
-        if frequency_domain:
-            feature_dict["features"].update({
-                "freezing_index": get_freezing_index_for_windows(windows, fs),
-                "dominant_frequency": get_dominant_frequency_for_windows(windows, fs),
-                "peak_frequency": get_peak_frequency_for_windows(windows, fs),
-                "power_spectral_entropy": get_power_spectral_entropy_for_windows(windows, fs),
-                "principal_harmonic_frequency": get_principal_harmonic_frequency_for_windows(windows, fs)
-            })
+            if time_domain:
+                window_features.update({
+                    "mean": get_mean_for_windows(window),
+                    "std_dev": get_standard_deviation_for_windows(window),
+                    "variance": get_variance_for_windows(window),
+                    "skewness": get_skewness_for_windows(window),
+                    "kurtosis": get_kurtosis_for_windows(window),
+                    "rms": get_root_mean_square_for_windows(window),
+                    "range": get_range_for_windows(window),
+                    "median": get_median_for_windows(window),
+                    "mode": get_mode_for_windows(window),
+                    "mav": get_mean_absolute_value_for_windows(window),
+                    "mad": get_median_absolute_deviation_for_windows(window),
+                    "peak_height": get_peak_height_for_windows(window),
+                    "stride_time": get_stride_times_for_windows(window, fs),
+                    "step_time": get_step_times_for_windows(window, fs),
+                    "cadence": get_cadence_for_windows(window, fs)
+                })
 
-        if statistical:
-            feature_dict["features"].update({
-                "entropy": get_entropy_for_windows(windows),
-                "iqr": get_interquartile_range_for_windows(windows),
-                "correlation": get_correlation_for_windows(windows),
-                "auto_regression_coefficients": get_auto_regression_coefficients_for_windows(windows)
-            })
+            if frequency_domain:
+                window_features.update({
+                    "freezing_index": get_freezing_index_for_windows(window, fs),
+                    "dominant_frequency": get_dominant_frequency_for_windows(window, fs),
+                    "peak_frequency": get_peak_frequency_for_windows(window, fs),
+                    "power_spectral_entropy": get_power_spectral_entropy_for_windows(window, fs),
+                    "principal_harmonic_frequency": get_principal_harmonic_frequency_for_windows(window, fs)
+                })
 
-        features.append(feature_dict)
+            if statistical:
+                window_features.update({
+                    "entropy": get_entropy_for_windows(window),
+                    "iqr": get_interquartile_range_for_windows(window),
+                    "correlation": get_correlation_for_windows(window),
+                    "auto_regression_coefficients": get_auto_regression_coefficients_for_windows(window)
+                })
+
+            # Store computed features
+            sensor_features["features"].append(window_features)
+            # Store corresponding annotation
+            sensor_features["annotations"].append(annotations[j])  # Aligning annotation with window
+
+        features.append(sensor_features)
 
     return features
