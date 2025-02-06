@@ -1,5 +1,8 @@
 '''
     This file contains the utility functions to download and extract the datasets.
+    Supported datasets:
+    - Daphnet
+    
 Maintainer: @aharshit123456
 '''
 

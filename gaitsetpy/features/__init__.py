@@ -1,3 +1,8 @@
+'''
+This module provides functions to calculate gait features from time series data.
+Maintainer: @aharshit123456
+'''
+
 from .utils import (
     calculate_mean,
     calculate_standard_deviation,
