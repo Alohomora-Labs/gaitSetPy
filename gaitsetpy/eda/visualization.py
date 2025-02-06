@@ -3,7 +3,6 @@ This module contains functions for visualizing the thigh, shank, and trunk accel
 Maintainer : @aharshit123456
 
 TODO : 
-- Add plot_sliding_window functions
 - Make the thigh, shank, trunk dataframe parent child extraction functions
 
 '''

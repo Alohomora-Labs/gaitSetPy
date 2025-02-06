@@ -13,6 +13,8 @@ setup(
         'requests',
         'statsmodels',
         'matplotlib',
+        'scikit-learn',
+        'joblib',
     ],
 
 )

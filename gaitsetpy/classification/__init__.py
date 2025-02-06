@@ -1,22 +1,39 @@
 """
-classification: Classification models and utilities.
+classification: A module for training and evaluating classification models.
 
-Features:
-- Model training, evaluation, and testing.
-- Consistent label management.
+Available Models:
+ALL TODO: 
+- Random Forest
+- MLP (PyTorch)
+- LSTM (PyTorch)SS
+- BiLSTM (PyTorch)
+- GNN (PyTorch Geometric)
 
-TODO:
-- implement random forest
-- implement pytorch based MLP
-- implement pytorch based LSTMs
-- implement pytorch based Bidirectional LSTMs
-- implement Graph Neural Networks
-
-
+Utilities:
+- Dataset loading and preprocessing
+- Model training and evaluation
 """
 
-# from .models import train_model, evaluate_model, predict
-# from .utils import load_model, save_model
+from .models.random_forest import RandomForestModel
+# from .models.mlp import MLPModel
+# from .models.lstm import LSTMModel
+# from .models.bilstm import BiLSTMModel
+# from .models.gnn import GNNModel
 
+# from .utils.dataset import preprocess_features
+# from .utils.train import train_model
+# from .utils.eval import evaluate_model
 
-# from gaitsetpy import *
+from .utils.preprocess import preprocess_features
+
+# __all__ = [
+#     "RandomForestModel",
+#     "MLPModel",
+#     "LSTMModel",
+#     "BiLSTMModel",
+#     "GNNModel",
+#     "load_dataset",
+#     "preprocess_data",
+#     "train_model",
+#     "evaluate_model",
+# ]
