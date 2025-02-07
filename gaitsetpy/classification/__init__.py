@@ -25,6 +25,7 @@ from .models.random_forest import RandomForestModel
 # from .utils.eval import evaluate_model
 
 from .utils.preprocess import preprocess_features
+from .utils.eval import evaluate_model
 
 # __all__ = [
 #     "RandomForestModel",

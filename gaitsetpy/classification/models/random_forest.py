@@ -41,6 +41,9 @@ class RandomForestModel:
         """
         Loads pre-trained model weights from a file.
         """
+        if filepath == "random_forest_model.pkl":
+            filepath = "../weights/random_forest_model.pkl"
+
         self.model = joblib.load(filepath)
         print("Pretrained model loaded successfully.")
 

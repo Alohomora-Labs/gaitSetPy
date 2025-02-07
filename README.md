@@ -18,6 +18,11 @@ git clone https://github.com/Alohomora-Labs/gaitSetPy.git
 python setup.py install
 ```
 
+Optionally, also install requirements
+``` bash
+pip install -r requirements.txt
+```
+
 ## Usage
 
 Here is a simple example to get you started with GaitSetPy:
@@ -26,19 +31,30 @@ Here is a simple example to get you started with GaitSetPy:
 import gaitsetpy as gsp
 
 # Load gait data
-data = gsp.load_data('path/to/gait/data')
+daphnet, names = gsp.load_daphnet_data("")
 
 # Preprocess data
-preprocessed_data = gsp.preprocess(data)
+sliding_windows = gsp.create_sliding_windows(daphnet, names)
 
 # Extract features
-features = gsp.extract_features(preprocessed_data)
+features = gsp.extract_gait_features(sliding_windows[0]['windows'], 64, True, True, True)
 
-# Recognize gait
-results = gsp.recognize_gait(features)
+# Visualize gait features
+gsp.plot_sensor_with_features(sliding_windows[0]['windows'], features, sensor_name="shank", num_windows=15)
+```
+![alt text](image.png)
 
-# Visualize results
-gsp.visualize(results)
+``` python
+
+# Train a Random Forest
+rf_model = gsp.RandomForestModel(n_estimators=50, random_state=42, max_depth=10)
+rf_model.train(features)
+
+# Load a pretrained model
+rf_model.load_pretrained_weights("random_forest_model_40_10.pkl")
+
+# Evaluate Model
+gsp.evaluate_model(rf_model.model, features) # Assuming 'rf_model' is your trained RandomForestModel instance
 ```
 
 ## Documentation
