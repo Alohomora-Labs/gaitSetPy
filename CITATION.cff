@@ -8,16 +8,16 @@ message: >-
   metadata from this file.
 type: software
 authors:
-  - given-names: Jayeeta
-    family-names: Chakraborty
-    email: jayeeta.chakrabortyfcs@kiit.ac.in
-    orcid: 'https://orcid.org/0000-0003-3918-1649'
-    affiliation: Kalinga Institute of Industrial Technology
   - given-names: Harshit
     family-names: Agarwal
     email: 23052801@kiit.ac.in
     affiliation: Kalinga Institute of Industrial Technology
     orcid: 'https://orcid.org/0009-0000-2173-1740'
+  - given-names: Jayeeta
+    family-names: Chakraborty
+    email: jayeeta.chakrabortyfcs@kiit.ac.in
+    orcid: 'https://orcid.org/0000-0003-3918-1649'
+    affiliation: Kalinga Institute of Industrial Technology
 repository-code: 'https://github.com/Alohomora-Labs/gaitSetPy'
 keywords:
   - gait
