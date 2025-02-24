@@ -41,7 +41,8 @@ def calculate_power(signal, fs, band):
     Returns:
         band_power (float): Power in the specified frequency band.
     """
-    f, Pxx = welch(signal, fs=fs, nperseg=min(len(signal), 1024))
+    # f, Pxx = welch(signal, fs=fs, nperseg=min(len(signal), 1024))
+    f, Pxx = welch(signal, fs=fs, nperseg = min(len(signal), 192))  # Ensure nperseg ≤ length)
     band_power = np.trapz(Pxx[(f >= band[0]) & (f <= band[1])], f[(f >= band[0]) & (f <= band[1])])
     return band_power
 

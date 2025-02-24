@@ -47,11 +47,12 @@ import gaitsetpy as gsp
 # Load gait data
 daphnet, names = gsp.load_daphnet_data("")
 
+
 # Preprocess data
 sliding_windows = gsp.create_sliding_windows(daphnet, names)
-
+freq = 64
 # Extract features
-features = gsp.extract_gait_features(sliding_windows[0]['windows'], 64, True, True, True)
+features = gsp.extract_gait_features(sliding_windows[0]['windows'], freq, True, True, True)
 
 # Visualize gait features
 gsp.plot_sensor_with_features(sliding_windows[0]['windows'], features, sensor_name="shank", num_windows=15)
