@@ -4,24 +4,35 @@ GaitSetPy is a Python package for gait analysis and recognition. This package pr
 
 ## Features
 
-- Gait data preprocessing
-- Feature extraction
-- Gait recognition algorithms
-- Visualization tools
+- Modular and extensible class-based architecture
+- Comprehensive gait data preprocessing pipeline
+- Advanced feature extraction capabilities
+- Multiple classification models
+- Interactive visualization tools
+- Support for various IMU and pressure sensor-based datasets
+
+## Package Structure
+
+```
+gaitsetpy/
+├── classification/    # Classification models and utilities
+├── dataset/          # Dataset loaders and processors
+├── eda/              # Exploratory data analysis tools
+├── features/         # Feature extraction modules
+└── preprocessing/    # Data preprocessing pipeline
+```
 
 ## Supported Datasets
 
 ### IMU Sensor Based
 - Daphnet: [https://archive.ics.uci.edu/dataset/245/daphnet+freezing+of+gait](https://archive.ics.uci.edu/dataset/245/daphnet+freezing+of+gait) ![Supported](https://img.shields.io/badge/status-supported-brightgreen)
 - MobiFall: [https://bmi.hmu.gr/the-mobifall-and-mobiact-datasets-2/](https://bmi.hmu.gr/the-mobifall-and-mobiact-datasets-2/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
-
 - UPFall: [https://sites.google.com/up.edu.mx/har-up/](https://sites.google.com/up.edu.mx/har-up/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
 - URFall: [https://fenix.ur.edu.pl/~mkepski/ds/uf.html](https://fenix.ur.edu.pl/~mkepski/ds/uf.html) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
 - Activity Net - Arduous : [https://www.mad.tf.fau.de/research/activitynet/wearable-multi-sensor-gait-based-daily-activity-data/](https://www.mad.tf.fau.de/research/activitynet/wearable-multi-sensor-gait-based-daily-activity-data/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
 
 ### Pressure Sensor Based
 - Physionet Gait in Parkinson's Disease: [https://physionet.org/content/gaitpdb/1.0.0/](https://physionet.org/content/gaitpdb/1.0.0/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
-
 
 ## Installation
 
@@ -32,45 +43,65 @@ git clone https://github.com/Alohomora-Labs/gaitSetPy.git
 python setup.py install
 ```
 
-Optionally, also install requirements
-``` bash
+Install required dependencies:
+```bash
 pip install -r requirements.txt
 ```
 
 ## Usage
 
-Here is a simple example to get you started with GaitSetPy:
+Here's an example demonstrating the main features of GaitSetPy:
 
 ```python
-import gaitsetpy as gsp
+from gaitsetpy.dataset import DaphnetDataset
+from gaitsetpy.preprocessing import PreprocessingPipeline
+from gaitsetpy.features import FeatureExtractor
+from gaitsetpy.classification.models import RandomForestModel
+from gaitsetpy.eda.visualization import plot_sensor_data, plot_features, plot_confusion_matrix
 
-# Load gait data
-daphnet, names = gsp.load_daphnet_data("")
+# Load and preprocess data
+dataset = DaphnetDataset(data_path="path/to/data")
+data = dataset.load_data()
 
+# Create preprocessing pipeline
+pipeline = PreprocessingPipeline(
+    window_size=128,
+    overlap=0.5,
+    sampling_freq=64
+)
+processed_data = pipeline.process(data)
 
-# Preprocess data
-sliding_windows = gsp.create_sliding_windows(daphnet, names)
-freq = 64
 # Extract features
-features = gsp.extract_gait_features(sliding_windows[0]['windows'], freq, True, True, True)
+feature_extractor = FeatureExtractor(
+    time_domain=True,
+    frequency_domain=True,
+    statistical=True
+)
+features = feature_extractor.extract_features(processed_data)
 
-# Visualize gait features
-gsp.plot_sensor_with_features(sliding_windows[0]['windows'], features, sensor_name="shank", num_windows=15)
+# Visualize data and features
+plot_sensor_data(processed_data, sensor_name="shank", num_windows=15)
+plot_features(features, feature_names=feature_extractor.feature_names)
+
+# Train and evaluate model
+model = RandomForestModel(n_estimators=50, max_depth=10, random_state=42)
+model.train(features, labels)
+
+# Load pretrained weights (optional)
+model.load_weights("path/to/weights/random_forest_model_40_10.pkl")
+
+# Evaluate model
+metrics = model.evaluate(test_features, test_labels)
+plot_confusion_matrix(metrics['confusion_matrix'], class_names=['Normal', 'FOG'])
 ```
-![alt text](image.png)
 
-``` python
+## Available Models
 
-# Train a Random Forest
-rf_model = gsp.RandomForestModel(n_estimators=50, random_state=42, max_depth=10)
-rf_model.train(features)
-
-# Load a pretrained model
-rf_model.load_pretrained_weights("random_forest_model_40_10.pkl")
-
-# Evaluate Model
-gsp.evaluate_model(rf_model.model, features) # Assuming 'rf_model' is your trained RandomForestModel instance
-```
+- Random Forest Classifier
+- LSTM (coming soon)
+- BiLSTM (coming soon)
+- Graph Neural Network (coming soon)
+- Multi-Layer Perceptron (coming soon)
 
 ## Documentation
 

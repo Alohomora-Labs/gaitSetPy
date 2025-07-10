@@ -1,14 +1,17 @@
 """
-dataset: Handles loading and processing of supported datasets.
+Dataset Module for GaitSetPy
 
-Supported datasets:
-- Daphnet
-- MobiFall
-- Arduous
-
+This module provides dataset loaders for various gait datasets.
 """
 
-from .daphnet import load_daphnet_data, create_sliding_windows
-from .mobifall import load_mobifall_data
-from .arduous import load_arduous_data
-from .utils import download_dataset, extract_dataset, sliding_window
+from .base import BaseDataset
+from .daphnet import DaphnetDataset
+from .mobifall import MobiFallDataset
+from .arduous import ArduousDataset
+
+__all__ = [
+    'BaseDataset',
+    'DaphnetDataset',
+    'MobiFallDataset',
+    'ArduousDataset'
+]

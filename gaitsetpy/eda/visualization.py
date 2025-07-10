@@ -1,207 +1,141 @@
-'''
-This module contains functions for visualizing the thigh, shank, and trunk acceleration data from the Daphnet dataset.
-Maintainer : @aharshit123456
+"""
+Visualization Module for GaitSetPy
 
-TODO : 
-- Make the thigh, shank, trunk dataframe parent child extraction functions
-
-'''
+This module provides functions for visualizing gait data and features.
+"""
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
+import pandas as pd
+from typing import List, Dict, Any, Optional
 
-#####################################################################################################
-############################################ FOR DAPHNET ############################################
-#####################################################################################################
-
-
-def plot_thigh_data(daphnetThigh, daphnetNames, i):
+def plot_sensor_data(data: pd.DataFrame, title: Optional[str] = None) -> None:
     """
-    Plot thigh acceleration data for a specific dataset.
+    Plot sensor data time series.
+    
     Args:
-        daphnetThigh (list): List of DataFrames containing thigh acceleration data.
-        daphnetNames (list): List of dataset names.
-        i (int): Index of the dataset to plot.
+        data (pd.DataFrame): Sensor data to plot
+        title (Optional[str]): Plot title
     """
-    print(daphnetNames[i])
-    fig, axes = plt.subplots(4, 1, sharex=True, sharey=True, figsize=(20, 16))
-    fig.suptitle("Thigh Data from " + daphnetNames[i])
+    plt.figure(figsize=(15, 10))
+    
+    # Plot each sensor
+    for column in data.columns:
+        if column != "annotations":
+            plt.plot(data.index, data[column], label=column)
+    
+    plt.title(title or "Sensor Data")
     plt.xlabel("Time")
-
-    df = daphnetThigh[i]
-    df = df[df.annotations > 0]  # Filter out rows with no annotations
-    neg = df[df.annotations == 1]  # No freeze
-    pos = df[df.annotations == 2]  # Freeze
-
-    # Plot horizontal forward thigh acceleration
-    ax1 = axes[0]
-    ax1.plot(df.thigh_h_fd)
-    ax1.set_ylabel("Horizontal Forward Thigh Acceleration")
-    ax1.scatter(neg.index, neg.thigh_h_fd, c='orange', label="no freeze")
-    ax1.scatter(pos.index, pos.thigh_h_fd, c='purple', label="freeze")
-    ax1.legend()
-
-    # Plot vertical thigh acceleration
-    ax2 = axes[1]
-    ax2.plot(df.thigh_v)
-    ax2.set_ylabel("Vertical Thigh Acceleration")
-    ax2.scatter(neg.index, neg.thigh_v, c='orange', label="no freeze")
-    ax2.scatter(pos.index, pos.thigh_v, c='purple', label="freeze")
-    ax2.legend()
-
-    # Plot horizontal lateral thigh acceleration
-    ax3 = axes[2]
-    ax3.plot(df.thigh_h_l)
-    ax3.set_ylabel("Horizontal Lateral Thigh Acceleration")
-    ax3.scatter(neg.index, neg.thigh_h_l, c='orange', label="no freeze")
-    ax3.scatter(pos.index, pos.thigh_h_l, c='purple', label="freeze")
-    ax3.legend()
-
-    # Plot overall thigh acceleration
-    ax4 = axes[3]
-    ax4.plot(df.thigh)
-    ax4.set_ylabel("Overall Thigh Acceleration")
-    ax4.scatter(neg.index, neg.thigh, c='orange', label="no freeze")
-    ax4.scatter(pos.index, pos.thigh, c='purple', label="freeze")
-    ax4.legend()
-
+    plt.ylabel("Magnitude")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.tight_layout()
     plt.show()
 
-
-def plot_shank_data(daphnetShank, daphnetNames, i):
+def plot_features(features: List[Dict[str, Any]], title: Optional[str] = None) -> None:
     """
-    Plot shank acceleration data for a specific dataset.
+    Plot extracted features.
+    
     Args:
-        daphnetShank (list): List of DataFrames containing shank acceleration data.
-        daphnetNames (list): List of dataset names.
-        i (int): Index of the dataset to plot.
+        features (List[Dict[str, Any]]): List of feature dictionaries
+        title (Optional[str]): Plot title
     """
-    print(daphnetNames[i])
-    fig, axes = plt.subplots(4, 1, sharex=True, sharey=True, figsize=(20, 16))
-    fig.suptitle("Shank Data from " + daphnetNames[i])
-    plt.xlabel("Time")
-
-    df = daphnetShank[i]
-    df["shank"] = np.sqrt(df["shank_h_l"]**2 + df["shank_v"]**2 + df["shank_h_fd"]**2)
-    df = df[df.annotations > 0]
-    neg = df[df.annotations == 1]
-    pos = df[df.annotations == 2]
-
-    ax1 = axes[0]
-    ax1.plot(df.shank_h_fd)
-    ax1.set_ylabel("Horizontal Forward Shank Acceleration")
-    ax1.scatter(neg.index, neg.shank_h_fd, c='orange', label="no freeze")
-    ax1.scatter(pos.index, pos.shank_h_fd, c='purple', label="freeze")
-    ax1.legend()
-
-    ax2 = axes[1]
-    ax2.plot(df.shank_v)
-    ax2.set_ylabel("Vertical Shank Acceleration")
-    ax2.scatter(neg.index, neg.shank_v, c='orange', label="no freeze")
-    ax2.scatter(pos.index, pos.shank_v, c='purple', label="freeze")
-    ax2.legend()
-
-    ax3 = axes[2]
-    ax3.plot(df.shank_h_l)
-    ax3.set_ylabel("Horizontal Lateral Shank Acceleration")
-    ax3.scatter(neg.index, neg.shank_h_l, c='orange', label="no freeze")
-    ax3.scatter(pos.index, pos.shank_h_l, c='purple', label="freeze")
-    ax3.legend()
-
-    ax4 = axes[3]
-    ax4.plot(df.shank)
-    ax4.set_ylabel("Overall Shank Acceleration")
-    ax4.scatter(neg.index, neg.shank, c='orange', label="no freeze")
-    ax4.scatter(pos.index, pos.shank, c='purple', label="freeze")
-    ax4.legend()
-
+    # Convert features to DataFrame
+    feature_df = pd.DataFrame()
+    for feature_dict in features:
+        for feature_name, feature_values in feature_dict.items():
+            if feature_name != "subject_id":
+                if isinstance(feature_values, (list, np.ndarray)):
+                    for i, value in enumerate(feature_values):
+                        feature_df.loc[len(feature_df), f"{feature_name}_{i}"] = value
+                else:
+                    feature_df.loc[len(feature_df), feature_name] = feature_values
+    
+    # Plot correlation heatmap
+    plt.figure(figsize=(15, 10))
+    sns.heatmap(feature_df.corr(), annot=True, cmap='coolwarm', center=0)
+    plt.title(title or "Feature Correlations")
+    plt.tight_layout()
+    plt.show()
+    
+    # Plot feature distributions
+    n_features = len(feature_df.columns)
+    n_cols = 3
+    n_rows = (n_features + n_cols - 1) // n_cols
+    
+    plt.figure(figsize=(15, 5 * n_rows))
+    for i, column in enumerate(feature_df.columns, 1):
+        plt.subplot(n_rows, n_cols, i)
+        sns.histplot(data=feature_df[column], kde=True)
+        plt.title(f"{column} Distribution")
+        plt.xlabel(column)
+        plt.ylabel("Count")
+    
     plt.tight_layout()
     plt.show()
 
-
-def plot_trunk_data(daphnetTrunk, daphnetNames, i):
+def plot_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, labels: Optional[List[str]] = None) -> None:
     """
-    Plot trunk acceleration data for a specific dataset.
+    Plot confusion matrix.
+    
     Args:
-        daphnetTrunk (list): List of DataFrames containing trunk acceleration data.
-        daphnetNames (list): List of dataset names.
-        i (int): Index of the dataset to plot.
+        y_true (np.ndarray): True labels
+        y_pred (np.ndarray): Predicted labels
+        labels (Optional[List[str]]): Label names
     """
-    print(daphnetNames[i])
-    fig, axes = plt.subplots(4, 1, sharex=True, sharey=True, figsize=(20, 16))
-    fig.suptitle("Trunk Data from " + daphnetNames[i])
-    plt.xlabel("Time")
-
-    df = daphnetTrunk[i]
-    df["trunk"] = np.sqrt(df["trunk_h_l"]**2 + df["trunk_v"]**2 + df["trunk_h_fd"]**2)
-    df = df[df.annotations > 0]
-    neg = df[df.annotations == 1]
-    pos = df[df.annotations == 2]
-
-    ax1 = axes[0]
-    ax1.plot(df.trunk_h_fd)
-    ax1.set_ylabel("Horizontal Forward Trunk Acceleration")
-    ax1.scatter(neg.index, neg.trunk_h_fd, c='orange', label="no freeze")
-    ax1.scatter(pos.index, pos.trunk_h_fd, c='purple', label="freeze")
-    ax1.legend()
-
-    ax2 = axes[1]
-    ax2.plot(df.trunk_v)
-    ax2.set_ylabel("Vertical Trunk Acceleration")
-    ax2.scatter(neg.index, neg.trunk_v, c='orange', label="no freeze")
-    ax2.scatter(pos.index, pos.trunk_v, c='purple', label="freeze")
-    ax2.legend()
-
-    ax3 = axes[2]
-    ax3.plot(df.trunk_h_l)
-    ax3.set_ylabel("Horizontal Lateral Trunk Acceleration")
-    ax3.scatter(neg.index, neg.trunk_h_l, c='orange', label="no freeze")
-    ax3.scatter(pos.index, pos.trunk_h_l, c='purple', label="freeze")
-    ax3.legend()
-
-    ax4 = axes[3]
-    ax4.plot(df.trunk)
-    ax4.set_ylabel("Overall Trunk Acceleration")
-    ax4.scatter(neg.index, neg.trunk, c='orange', label="no freeze")
-    ax4.scatter(pos.index, pos.trunk, c='purple', label="freeze")
-    ax4.legend()
-
+    from sklearn.metrics import confusion_matrix
+    
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+    
+    if labels:
+        plt.xticks(np.arange(len(labels)) + 0.5, labels, rotation=45)
+        plt.yticks(np.arange(len(labels)) + 0.5, labels, rotation=0)
+    
+    plt.title("Confusion Matrix")
+    plt.xlabel("Predicted")
+    plt.ylabel("True")
     plt.tight_layout()
     plt.show()
 
-
-def plot_all_thigh_data(daphnetThigh, daphnetNames):
-    """Plot thigh acceleration data for all datasets."""
-    for i in range(len(daphnetThigh)):
-        plot_thigh_data(daphnetThigh, daphnetNames, i)
-
-def plot_all_shank_data(daphnetShank, daphnetNames):
-    """Plot shank acceleration data for all datasets."""
-    for i in range(len(daphnetShank)):
-        plot_shank_data(daphnetShank, daphnetNames, i)
-
-def plot_all_trunk_data(daphnetTrunk, daphnetNames):
-    """Plot trunk acceleration data for all datasets."""
-    for i in range(len(daphnetTrunk)):
-        plot_trunk_data(daphnetTrunk, daphnetNames, i)
-
-
-def plot_all_data(daphnetThigh, daphnetShank, daphnetTrunk, daphnetNames, i):
+def plot_feature_importance(model, feature_names: List[str]) -> None:
     """
-    Plot thigh, shank, and trunk acceleration data for a specific dataset.
+    Plot feature importance from a trained model.
+    
     Args:
-        daphnetThigh (list): List of DataFrames containing thigh acceleration data.
-        daphnetShank (list): List of DataFrames containing shank acceleration data.
-        daphnetTrunk (list): List of DataFrames containing trunk acceleration data.
-        daphnetNames (list): List of dataset names.
-        i (int): Index of the dataset to plot.
+        model: Trained model with feature_importances_ attribute
+        feature_names (List[str]): Names of features
     """
-    plot_thigh_data(daphnetThigh, daphnetNames, i)
-    plot_shank_data(daphnetShank, daphnetNames, i)
-    plot_trunk_data(daphnetTrunk, daphnetNames, i)
+    if not hasattr(model, 'feature_importances_'):
+        raise ValueError("Model does not have feature importance scores")
+    
+    importances = model.feature_importances_
+    indices = np.argsort(importances)[::-1]
+    
+    plt.figure(figsize=(12, 6))
+    plt.title("Feature Importances")
+    plt.bar(range(len(importances)), importances[indices])
+    plt.xticks(range(len(importances)), [feature_names[i] for i in indices], rotation=45, ha='right')
+    plt.tight_layout()
+    plt.show()
 
-def plot_all_datasets(daphnetThigh, daphnetShank, daphnetTrunk, daphnetNames):
-    """Plot thigh, shank, and trunk acceleration data for all datasets."""
-    for i in range(len(daphnetThigh)):
-        plot_all_data(daphnetThigh, daphnetShank, daphnetTrunk, daphnetNames, i)
+def plot_learning_curve(train_scores: List[float], val_scores: List[float], epochs: List[int]) -> None:
+    """
+    Plot learning curves.
+    
+    Args:
+        train_scores (List[float]): Training scores
+        val_scores (List[float]): Validation scores
+        epochs (List[int]): Epoch numbers
+    """
+    plt.figure(figsize=(10, 6))
+    plt.plot(epochs, train_scores, label='Training Score')
+    plt.plot(epochs, val_scores, label='Validation Score')
+    plt.title("Learning Curves")
+    plt.xlabel("Epoch")
+    plt.ylabel("Score")
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()

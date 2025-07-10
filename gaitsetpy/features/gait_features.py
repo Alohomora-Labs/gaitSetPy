@@ -1,8 +1,13 @@
-'''
-Extraction of Gait Features 
-Maintainer: @aharshit123456
-'''
+"""
+Feature Extraction for GaitSetPy
 
+This module provides a class-based feature extraction system for gait data.
+"""
+
+import numpy as np
+import pandas as pd
+from typing import Dict, Any, List, Optional, Union
+from dataclasses import dataclass
 from .utils import (
     calculate_mean,
     calculate_standard_deviation,
@@ -29,281 +34,200 @@ from .utils import (
     calculate_correlation,
     calculate_auto_regression_coefficients,
     calculate_zero_crossing_rate,
-    calculate_energy,
+    calculate_energy
 )
 
-def get_stride_times_for_windows(windows, fs):
-    """
-    Calculate stride times for all windows in the input.
-    Args:
-        windows (list): List of windows (each window is a DataFrame or array).
-        fs (int): Sampling frequency.
-    Returns:
-        stride_times_array (list): List of stride times for each window.
-    """
-    stride_times_array = []
-    for window in windows:
-        stride_time = calculate_stride_times(window, fs)
-        stride_times_array.append(stride_time)
-    return stride_times_array
+@dataclass
+class FeatureConfig:
+    """Configuration for a feature extraction method."""
+    name: str
+    enabled: bool = True
+    params: Dict[str, Any] = None
 
-def get_zero_crossing_rates_for_windows(windows):
-    """
-    Calculate zero-crossing rates for all windows in the input.
-    Args:
-        windows (list): List of windows (each window is a DataFrame or array).
-    Returns:
-        zcr_array (list): List of zero-crossing rates for each window.
-    """
-    zcr_array = []
-    for window in windows:
-        zcr = calculate_zero_crossing_rate(window)
-        zcr_array.append(zcr)
-    return zcr_array
-
-def get_freezing_indices_for_windows(windows, fs):
-    """
-    Calculate freezing indices for all windows in the input.
-    Args:
-        windows (list): List of windows (each window is a DataFrame or array).
-        fs (int): Sampling frequency.
-    Returns:
-        freezing_indices (list): List of freezing indices for each window.
-    """
-    freezing_indices = []
-    for window in windows:
-        freezing_index = calculate_freezing_index(window, fs)
-        freezing_indices.append(freezing_index)
-    return freezing_indices
-
-def get_standard_deviations_for_windows(windows):
-    """
-    Calculate standard deviations for all windows in the input.
-    Args:
-        windows (list): List of windows (each window is a DataFrame or array).
-    Returns:
-        std_devs (list): List of standard deviations for each window.
-    """
-    std_devs = []
-    for window in windows:
-        std_dev = calculate_standard_deviation(window)
-        std_devs.append(std_dev)
-    return std_devs
-
-def get_entropies_for_windows(windows):
-    """
-    Calculate entropies for all windows in the input.
-    Args:
-        windows (list): List of windows (each window is a DataFrame or array).
-    Returns:
-        entropy_array (list): List of entropies for each window.
-    """
-    entropy_array = []
-    for window in windows:
-        entropy_value = calculate_entropy(window)
-        entropy_array.append(entropy_value)
-    return entropy_array
-
-def get_energies_for_windows(windows):
-    """
-    Calculate energies for all windows in the input.
-    Args:
-        windows (list): List of windows (each window is a DataFrame or array).
-    Returns:
-        energy_array (list): List of energies for each window.
-    """
-    energy_array = []
-    for window in windows:
-        energy = calculate_energy(window)
-        energy_array.append(energy)
-    return energy_array
-
-def get_variances_for_windows(windows):
-    """
-    Calculate variances for all windows in the input.
-    Args:
-        windows (list): List of windows (each window is a DataFrame or array).
-    Returns:
-        variance_array (list): List of variances for each window.
-    """
-    variance_array = []
-    for window in windows:
-        variance = calculate_variance(window)
-        variance_array.append(variance)
-    return variance_array
-
-def get_kurtosis_for_windows(windows):
-    """
-    Calculate kurtosis values for all windows in the input.
-    Args:
-        windows (list): List of windows (each window is a DataFrame or array).
-    Returns:
-        kurtosis_array (list): List of kurtosis values for each window.
-    """
-    kurtosis_array = []
-    for window in windows:
-        kurtosis_value = calculate_kurtosis(window)
-        kurtosis_array.append(kurtosis_value)
-    return kurtosis_array
-
-def get_step_times_for_windows(windows, fs):
-    """
-    Calculate step times for all windows in the input.
-    Args:
-        windows (list): List of windows (each window is a DataFrame or array).
-        fs (int): Sampling frequency.
-    Returns:
-        step_times (list): List of step times for each window.
-    """
-    step_times = []
-    for window in windows:
-        step_time = calculate_step_time(window, fs)
-        step_times.append(step_time)
-    return step_times
-
-def get_mean_for_windows(windows):
-    return [calculate_mean(window) for window in windows]
-
-def get_standard_deviation_for_windows(windows):
-    return [calculate_standard_deviation(window) for window in windows]
-
-def get_variance_for_windows(windows):
-    return [calculate_variance(window) for window in windows]
-
-def get_skewness_for_windows(windows):
-    return [calculate_skewness(window) for window in windows]
-
-def get_kurtosis_for_windows(windows):
-    return [calculate_kurtosis(window) for window in windows]
-
-def get_root_mean_square_for_windows(windows):
-    return [calculate_root_mean_square(window) for window in windows]
-
-def get_range_for_windows(windows):
-    return [calculate_range(window) for window in windows]
-
-def get_median_for_windows(windows):
-    return [calculate_median(window) for window in windows]
-
-def get_mode_for_windows(windows):
-    return [calculate_mode(window) for window in windows]
-
-def get_mean_absolute_value_for_windows(windows):
-    return [calculate_mean_absolute_value(window) for window in windows]
-
-def get_median_absolute_deviation_for_windows(windows):
-    return [calculate_median_absolute_deviation(window) for window in windows]
-
-def get_peak_height_for_windows(windows):
-    return [calculate_peak_height(window) for window in windows]
-
-def get_stride_times_for_windows(windows, fs):
-    return [calculate_stride_times(window, fs) for window in windows]
-
-def get_step_times_for_windows(windows, fs):
-    return [calculate_step_time(window, fs) for window in windows]
-
-def get_cadence_for_windows(windows, fs):
-    return [calculate_cadence(window, fs) for window in windows]
-
-def get_freezing_index_for_windows(windows, fs):
-    return [calculate_freezing_index(window, fs) for window in windows]
-
-def get_dominant_frequency_for_windows(windows, fs):
-    return [calculate_dominant_frequency(window, fs) for window in windows]
-
-def get_peak_frequency_for_windows(windows, fs):
-    return [calculate_peak_frequency(window, fs) for window in windows]
-
-def get_power_spectral_entropy_for_windows(windows, fs):
-    return [calculate_power_spectral_entropy(window, fs) for window in windows]
-
-def get_principal_harmonic_frequency_for_windows(windows, fs):
-    return [calculate_principal_harmonic_frequency(window, fs) for window in windows]
-
-def get_entropy_for_windows(windows):
-    return [calculate_entropy(window) for window in windows]
-
-def get_interquartile_range_for_windows(windows):
-    return [calculate_interquartile_range(window) for window in windows]
-
-def get_correlation_for_windows(windows):
-    return [calculate_correlation(window[:-1], window[1:]) for window in windows]
-
-def get_auto_regression_coefficients_for_windows(windows, order=3):
-    return [calculate_auto_regression_coefficients(window, order) for window in windows]
-
-
-def extract_gait_features(daphnet_windows, fs, time_domain=True, frequency_domain=True, statistical=True):
-    """
-    Extract gait features for all sensor windows in the daphnet_windows array.
-
-    Args:
-        daphnet_windows (list): List of 12 dictionaries (11 sensors + 1 annotation).
-                                Each dictionary contains 'name' and 'data'.
-        fs (int): Sampling frequency.
-        time_domain (bool): Whether to include time-domain features.
-        frequency_domain (bool): Whether to include frequency-domain features.
-        statistical (bool): Whether to include statistical features.
-
-    Returns:
-        features (list): List of dictionaries containing 'name', 'features', and 'annotations'.
-    """
-    features = []
-
-    # Extract annotations from the last dictionary
-    annotation_dict = daphnet_windows[-1]
-    annotations = annotation_dict["data"]  # List of annotation DataFrames
-
-    for i, sensor_dict in enumerate(daphnet_windows[:-1]):  # Iterate over 11 sensor dictionaries
-        sensor_name = sensor_dict["name"]
-        sensor_windows = sensor_dict["data"]  # List of Pandas Series (sliding windows)
-
-        # Convert all windows to NumPy arrays at once
-        windows_array = [window.to_numpy() for window in sensor_windows]
-
-        sensor_features = {
-            "name": sensor_name,
-            "features": {},
-            "annotations": annotations  # Assigning full annotation list
-        }
-
-        if time_domain:
-            sensor_features["features"].update({
-                "mean": get_mean_for_windows(windows_array),
-                "std_dev": get_standard_deviation_for_windows(windows_array),
-                "variance": get_variance_for_windows(windows_array),
-                "skewness": get_skewness_for_windows(windows_array),
-                "kurtosis": get_kurtosis_for_windows(windows_array),
-                "rms": get_root_mean_square_for_windows(windows_array),
-                "range": get_range_for_windows(windows_array),
-                "median": get_median_for_windows(windows_array),
-                "mode": get_mode_for_windows(windows_array),
-                "mav": get_mean_absolute_value_for_windows(windows_array),
-                "mad": get_median_absolute_deviation_for_windows(windows_array),
-                "peak_height": get_peak_height_for_windows(windows_array),
-                "stride_time": get_stride_times_for_windows(windows_array, fs),
-                "step_time": get_step_times_for_windows(windows_array, fs),
-                "cadence": get_cadence_for_windows(windows_array, fs)
-            })
-
-        if frequency_domain:
-            sensor_features["features"].update({
-                "freezing_index": get_freezing_index_for_windows(windows_array, fs),
-                "dominant_frequency": get_dominant_frequency_for_windows(windows_array, fs),
-                "peak_frequency": get_peak_frequency_for_windows(windows_array, fs),
-                "power_spectral_entropy": get_power_spectral_entropy_for_windows(windows_array, fs),
-                "principal_harmonic_frequency": get_principal_harmonic_frequency_for_windows(windows_array, fs)
-            })
-
-        if statistical:
-            sensor_features["features"].update({
-                "entropy": get_entropy_for_windows(windows_array),
-                "iqr": get_interquartile_range_for_windows(windows_array),
-                "correlation": get_correlation_for_windows(windows_array),
-                "auto_regression_coefficients": get_auto_regression_coefficients_for_windows(windows_array)
-            })
-
-        features.append(sensor_features)
-
-    return features
+class FeatureExtractor:
+    """Feature extractor for gait data."""
+    
+    def __init__(self):
+        """Initialize the feature extractor with default features."""
+        self.time_domain_features = [
+            FeatureConfig("mean"),
+            FeatureConfig("std_dev"),
+            FeatureConfig("variance"),
+            FeatureConfig("skewness"),
+            FeatureConfig("kurtosis"),
+            FeatureConfig("rms"),
+            FeatureConfig("range"),
+            FeatureConfig("median"),
+            FeatureConfig("mode"),
+            FeatureConfig("mav"),
+            FeatureConfig("mad"),
+            FeatureConfig("peak_height"),
+            FeatureConfig("stride_time"),
+            FeatureConfig("step_time"),
+            FeatureConfig("cadence")
+        ]
+        
+        self.frequency_domain_features = [
+            FeatureConfig("freezing_index"),
+            FeatureConfig("dominant_frequency"),
+            FeatureConfig("peak_frequency"),
+            FeatureConfig("power_spectral_entropy"),
+            FeatureConfig("principal_harmonic_frequency")
+        ]
+        
+        self.statistical_features = [
+            FeatureConfig("entropy"),
+            FeatureConfig("iqr"),
+            FeatureConfig("correlation"),
+            FeatureConfig("auto_regression_coefficients"),
+            FeatureConfig("zero_crossing_rate"),
+            FeatureConfig("energy")
+        ]
+    
+    def extract(self, data: pd.DataFrame, fs: int = 100, **kwargs) -> Dict[str, Any]:
+        """
+        Extract all enabled features from the data.
+        
+        Args:
+            data (pd.DataFrame): Input data
+            fs (int): Sampling frequency
+            **kwargs: Additional parameters for feature extraction
+            
+        Returns:
+            Dict[str, Any]: Dictionary of extracted features
+        """
+        features = {}
+        
+        # Extract time domain features
+        if kwargs.get('time_domain', True):
+            for feature in self.time_domain_features:
+                if feature.enabled:
+                    features[feature.name] = self._extract_feature(data, feature, fs=fs, **kwargs)
+        
+        # Extract frequency domain features
+        if kwargs.get('frequency_domain', True):
+            for feature in self.frequency_domain_features:
+                if feature.enabled:
+                    features[feature.name] = self._extract_feature(data, feature, fs=fs, **kwargs)
+        
+        # Extract statistical features
+        if kwargs.get('statistical', True):
+            for feature in self.statistical_features:
+                if feature.enabled:
+                    features[feature.name] = self._extract_feature(data, feature, fs=fs, **kwargs)
+        
+        return features
+    
+    def _extract_feature(self, data: pd.DataFrame, feature: FeatureConfig, **kwargs) -> Any:
+        """Extract a single feature."""
+        method = getattr(self, f"_extract_{feature.name}", None)
+        if method is None:
+            raise ValueError(f"Unknown feature: {feature.name}")
+            
+        params = {**(feature.params or {}), **kwargs}
+        return method(data, **params)
+    
+    def _extract_mean(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_mean(data)
+    
+    def _extract_std_dev(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_standard_deviation(data)
+    
+    def _extract_variance(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_variance(data)
+    
+    def _extract_skewness(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_skewness(data)
+    
+    def _extract_kurtosis(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_kurtosis(data)
+    
+    def _extract_rms(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_root_mean_square(data)
+    
+    def _extract_range(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_range(data)
+    
+    def _extract_median(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_median(data)
+    
+    def _extract_mode(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_mode(data)
+    
+    def _extract_mav(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_mean_absolute_value(data)
+    
+    def _extract_mad(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_median_absolute_deviation(data)
+    
+    def _extract_peak_height(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_peak_height(data)
+    
+    def _extract_stride_time(self, data: pd.DataFrame, fs: int = 100, **kwargs) -> np.ndarray:
+        return calculate_stride_times(data, fs)
+    
+    def _extract_step_time(self, data: pd.DataFrame, fs: int = 100, **kwargs) -> np.ndarray:
+        return calculate_step_time(data, fs)
+    
+    def _extract_cadence(self, data: pd.DataFrame, fs: int = 100, **kwargs) -> np.ndarray:
+        return calculate_cadence(data, fs)
+    
+    def _extract_freezing_index(self, data: pd.DataFrame, fs: int = 100, **kwargs) -> np.ndarray:
+        return calculate_freezing_index(data, fs)
+    
+    def _extract_dominant_frequency(self, data: pd.DataFrame, fs: int = 100, **kwargs) -> np.ndarray:
+        return calculate_dominant_frequency(data, fs)
+    
+    def _extract_peak_frequency(self, data: pd.DataFrame, fs: int = 100, **kwargs) -> np.ndarray:
+        return calculate_peak_frequency(data, fs)
+    
+    def _extract_power_spectral_entropy(self, data: pd.DataFrame, fs: int = 100, **kwargs) -> np.ndarray:
+        return calculate_power_spectral_entropy(data, fs)
+    
+    def _extract_principal_harmonic_frequency(self, data: pd.DataFrame, fs: int = 100, **kwargs) -> np.ndarray:
+        return calculate_principal_harmonic_frequency(data, fs)
+    
+    def _extract_entropy(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_entropy(data)
+    
+    def _extract_iqr(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_interquartile_range(data)
+    
+    def _extract_correlation(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_correlation(data)
+    
+    def _extract_auto_regression_coefficients(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_auto_regression_coefficients(data)
+    
+    def _extract_zero_crossing_rate(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_zero_crossing_rate(data)
+    
+    def _extract_energy(self, data: pd.DataFrame, **kwargs) -> np.ndarray:
+        return calculate_energy(data)
+    
+    def enable_feature(self, feature_name: str) -> None:
+        """Enable a feature."""
+        for feature_list in [self.time_domain_features, self.frequency_domain_features, self.statistical_features]:
+            for feature in feature_list:
+                if feature.name == feature_name:
+                    feature.enabled = True
+                    return
+        raise ValueError(f"Unknown feature: {feature_name}")
+    
+    def disable_feature(self, feature_name: str) -> None:
+        """Disable a feature."""
+        for feature_list in [self.time_domain_features, self.frequency_domain_features, self.statistical_features]:
+            for feature in feature_list:
+                if feature.name == feature_name:
+                    feature.enabled = False
+                    return
+        raise ValueError(f"Unknown feature: {feature_name}")
+    
+    def configure_feature(self, feature_name: str, params: Dict[str, Any]) -> None:
+        """Configure parameters for a feature."""
+        for feature_list in [self.time_domain_features, self.frequency_domain_features, self.statistical_features]:
+            for feature in feature_list:
+                if feature.name == feature_name:
+                    feature.params = {**(feature.params or {}), **params}
+                    return
+        raise ValueError(f"Unknown feature: {feature_name}")
