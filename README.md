@@ -74,7 +74,7 @@ gsp.evaluate_model(rf_model.model, features) # Assuming 'rf_model' is your train
 
 ## Documentation
 
-For detailed documentation and API reference, please visit the [official documentation](https://alohomora-labs.github.io/gaitSetPy/docs_gaitsetpy.html).
+For detailed documentation and API reference, please visit the [official documentation](https://alohomora-labs.github.io/gaitSetPy/gaitsetpy.html).
 
 ## Contributing
 
