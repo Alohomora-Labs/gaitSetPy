@@ -43,6 +43,7 @@ from .dataset import (
     DaphnetLoader,
     MobiFallLoader,
     ArduousLoader,
+    PhysioNetLoader,
     get_dataset_manager,
     get_available_datasets,
     load_dataset

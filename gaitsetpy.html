@@ -773,216 +773,217 @@ a modern class-based architecture and legacy function-based API for backward com
 </span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>    <span class="n">DaphnetLoader</span><span class="p">,</span>
 </span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>    <span class="n">MobiFallLoader</span><span class="p">,</span>
 </span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>    <span class="n">ArduousLoader</span><span class="p">,</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>    <span class="n">get_dataset_manager</span><span class="p">,</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="n">get_available_datasets</span><span class="p">,</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>    <span class="n">load_dataset</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="p">)</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.features</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>    <span class="n">GaitFeatureExtractor</span><span class="p">,</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>    <span class="n">get_feature_manager</span><span class="p">,</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>    <span class="n">get_available_extractors</span><span class="p">,</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>    <span class="n">extract_features</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="p">)</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="n">ClippingPreprocessor</span><span class="p">,</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>    <span class="n">NoiseRemovalPreprocessor</span><span class="p">,</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="n">OutlierRemovalPreprocessor</span><span class="p">,</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="n">BaselineRemovalPreprocessor</span><span class="p">,</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="n">DriftRemovalPreprocessor</span><span class="p">,</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="n">HighFrequencyNoiseRemovalPreprocessor</span><span class="p">,</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>    <span class="n">LowFrequencyNoiseRemovalPreprocessor</span><span class="p">,</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    <span class="n">ArtifactRemovalPreprocessor</span><span class="p">,</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="n">TrendRemovalPreprocessor</span><span class="p">,</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>    <span class="n">DCOffsetRemovalPreprocessor</span><span class="p">,</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    <span class="n">get_preprocessing_manager</span><span class="p">,</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="n">get_available_preprocessors</span><span class="p">,</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="n">preprocess_data</span><span class="p">,</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>    <span class="n">create_preprocessing_pipeline</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="p">)</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.eda</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="n">DaphnetVisualizationAnalyzer</span><span class="p">,</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="n">SensorStatisticsAnalyzer</span><span class="p">,</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>    <span class="n">get_eda_manager</span><span class="p">,</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="n">get_available_analyzers</span><span class="p">,</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="n">analyze_data</span><span class="p">,</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>    <span class="n">visualize_data</span><span class="p">,</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>    <span class="n">plot_daphnet_data</span><span class="p">,</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="n">analyze_sensor_statistics</span><span class="p">,</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="n">plot_sensor_features</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="p">)</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.classification</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>    <span class="n">RandomForestModel</span><span class="p">,</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>    <span class="n">get_classification_manager</span><span class="p">,</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>    <span class="n">get_available_models</span><span class="p">,</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>    <span class="n">train_model</span><span class="p">,</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>    <span class="n">predict</span><span class="p">,</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>    <span class="n">evaluate_model_performance</span><span class="p">,</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>    <span class="n">create_random_forest</span><span class="p">,</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>    <span class="n">train_random_forest</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="p">)</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="c1"># Legacy API for backward compatibility</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.features</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.eda</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.classification</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.2.0&quot;</span>  <span class="c1"># Updated version to reflect new architecture</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Harshit Agarwal | Alohomora Labs&quot;</span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="c1"># Convenient access to all managers</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_all_managers</span><span class="p">():</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">    Get all singleton managers.</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">    </span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">    Returns:</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">        Dictionary containing all manager instances</span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>        <span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="n">DatasetManager</span><span class="p">(),</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="n">FeatureManager</span><span class="p">(),</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="s1">&#39;preprocessing&#39;</span><span class="p">:</span> <span class="n">PreprocessingManager</span><span class="p">(),</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="s1">&#39;eda&#39;</span><span class="p">:</span> <span class="n">EDAManager</span><span class="p">(),</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="s1">&#39;classification&#39;</span><span class="p">:</span> <span class="n">ClassificationManager</span><span class="p">()</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>    <span class="p">}</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a><span class="c1"># System information</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_system_info</span><span class="p">():</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="sd">    Get information about the available components in the system.</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">    </span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">    Returns:</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="sd">        Dictionary containing system information</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>        <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">,</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">__author__</span><span class="p">,</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>        <span class="s1">&#39;available_datasets&#39;</span><span class="p">:</span> <span class="n">get_available_datasets</span><span class="p">(),</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="s1">&#39;available_extractors&#39;</span><span class="p">:</span> <span class="n">get_available_extractors</span><span class="p">(),</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>        <span class="s1">&#39;available_preprocessors&#39;</span><span class="p">:</span> <span class="n">get_available_preprocessors</span><span class="p">(),</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>        <span class="s1">&#39;available_analyzers&#39;</span><span class="p">:</span> <span class="n">get_available_analyzers</span><span class="p">(),</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="s1">&#39;available_models&#39;</span><span class="p">:</span> <span class="n">get_available_models</span><span class="p">(),</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="s1">&#39;architecture&#39;</span><span class="p">:</span> <span class="s1">&#39;Modular with singleton design pattern&#39;</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>    <span class="p">}</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="c1"># Shortcut functions for common workflows</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="k">def</span><span class="w"> </span><span class="nf">load_and_analyze_daphnet</span><span class="p">(</span><span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sensor_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">):</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">    Complete workflow for loading and analyzing Daphnet data.</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">    </span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">    Args:</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">        data_dir: Directory containing the Daphnet dataset</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        sensor_type: Type of sensor to analyze (&#39;all&#39;, &#39;thigh&#39;, &#39;shank&#39;, &#39;trunk&#39;)</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">        window_size: Size of sliding windows for feature extraction</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">        </span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">    Returns:</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">        Dictionary containing data, features, and analysis results</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>    <span class="c1"># Load dataset</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>    <span class="n">loader</span> <span class="o">=</span> <span class="n">DaphnetLoader</span><span class="p">()</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>    <span class="n">data</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>    
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>    <span class="c1"># Create sliding windows</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>    <span class="n">windows</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">create_sliding_windows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="n">window_size</span><span class="p">)</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>    
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>    <span class="c1"># Extract features</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">GaitFeatureExtractor</span><span class="p">()</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>    <span class="n">features</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;windows&#39;</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>    
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>    <span class="c1"># Analyze data</span>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>    <span class="n">analyzer</span> <span class="o">=</span> <span class="n">DaphnetVisualizationAnalyzer</span><span class="p">()</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>    <span class="n">analysis</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>    
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>        <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="n">names</span><span class="p">,</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>        <span class="s1">&#39;windows&#39;</span><span class="p">:</span> <span class="n">windows</span><span class="p">,</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>        <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>        <span class="s1">&#39;analysis&#39;</span><span class="p">:</span> <span class="n">analysis</span><span class="p">,</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>        <span class="s1">&#39;loader&#39;</span><span class="p">:</span> <span class="n">loader</span><span class="p">,</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="s1">&#39;extractor&#39;</span><span class="p">:</span> <span class="n">extractor</span><span class="p">,</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>        <span class="s1">&#39;analyzer&#39;</span><span class="p">:</span> <span class="n">analyzer</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>    <span class="p">}</span>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="k">def</span><span class="w"> </span><span class="nf">train_gait_classifier</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">model_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;random_forest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">    Train a gait classification model.</span>
-</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">    </span>
-</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">    Args:</span>
-</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">        features: List of feature dictionaries</span>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">        model_type: Type of model to train (&#39;random_forest&#39;, etc.)</span>
-</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">        **kwargs: Additional arguments for model training</span>
-</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="sd">        </span>
-</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">    Returns:</span>
-</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">        Trained model instance</span>
-</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>    <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;random_forest&#39;</span><span class="p">:</span>
-</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestModel</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>        <span class="k">return</span> <span class="n">model</span>
-</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>    <span class="k">else</span><span class="p">:</span>
-</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model type &#39;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s2">&#39; not supported&quot;</span><span class="p">)</span>
-</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>
-</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>    <span class="c1"># Core architecture</span>
-</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>    <span class="s1">&#39;BaseDatasetLoader&#39;</span><span class="p">,</span>
-</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>    <span class="s1">&#39;BaseFeatureExtractor&#39;</span><span class="p">,</span> 
-</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>    <span class="s1">&#39;BasePreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>    <span class="s1">&#39;BaseEDAAnalyzer&#39;</span><span class="p">,</span>
-</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>    <span class="s1">&#39;BaseClassificationModel&#39;</span><span class="p">,</span>
-</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>    <span class="s1">&#39;DatasetManager&#39;</span><span class="p">,</span>
-</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>    <span class="s1">&#39;FeatureManager&#39;</span><span class="p">,</span>
-</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>    <span class="s1">&#39;PreprocessingManager&#39;</span><span class="p">,</span>
-</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>    <span class="s1">&#39;EDAManager&#39;</span><span class="p">,</span>
-</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>    <span class="s1">&#39;ClassificationManager&#39;</span><span class="p">,</span>
-</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>    
-</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a>    <span class="c1"># New class-based API</span>
-</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a>    <span class="s1">&#39;DaphnetLoader&#39;</span><span class="p">,</span>
-</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>    <span class="s1">&#39;MobiFallLoader&#39;</span><span class="p">,</span>
-</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>    <span class="s1">&#39;ArduousLoader&#39;</span><span class="p">,</span>
-</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>    <span class="s1">&#39;GaitFeatureExtractor&#39;</span><span class="p">,</span>
-</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>    <span class="s1">&#39;ClippingPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>    <span class="s1">&#39;NoiseRemovalPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a>    <span class="s1">&#39;OutlierRemovalPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>    <span class="s1">&#39;BaselineRemovalPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>    <span class="s1">&#39;DriftRemovalPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a>    <span class="s1">&#39;HighFrequencyNoiseRemovalPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a>    <span class="s1">&#39;LowFrequencyNoiseRemovalPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a>    <span class="s1">&#39;ArtifactRemovalPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a>    <span class="s1">&#39;TrendRemovalPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a>    <span class="s1">&#39;DCOffsetRemovalPreprocessor&#39;</span><span class="p">,</span>
-</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a>    <span class="s1">&#39;DaphnetVisualizationAnalyzer&#39;</span><span class="p">,</span>
-</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a>    <span class="s1">&#39;SensorStatisticsAnalyzer&#39;</span><span class="p">,</span>
-</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>    <span class="s1">&#39;RandomForestModel&#39;</span><span class="p">,</span>
-</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a>    
-</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a>    <span class="c1"># Manager access functions</span>
-</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>    <span class="s1">&#39;get_dataset_manager&#39;</span><span class="p">,</span>
-</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>    <span class="s1">&#39;get_feature_manager&#39;</span><span class="p">,</span>
-</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>    <span class="s1">&#39;get_preprocessing_manager&#39;</span><span class="p">,</span>
-</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>    <span class="s1">&#39;get_eda_manager&#39;</span><span class="p">,</span>
-</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a>    <span class="s1">&#39;get_classification_manager&#39;</span><span class="p">,</span>
-</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a>    <span class="s1">&#39;get_all_managers&#39;</span><span class="p">,</span>
-</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>    
-</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>    <span class="c1"># Utility functions</span>
-</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>    <span class="s1">&#39;get_available_datasets&#39;</span><span class="p">,</span>
-</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>    <span class="s1">&#39;get_available_extractors&#39;</span><span class="p">,</span>
-</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>    <span class="s1">&#39;get_available_preprocessors&#39;</span><span class="p">,</span>
-</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a>    <span class="s1">&#39;get_available_analyzers&#39;</span><span class="p">,</span>
-</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a>    <span class="s1">&#39;get_available_models&#39;</span><span class="p">,</span>
-</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>    <span class="s1">&#39;get_system_info&#39;</span><span class="p">,</span>
-</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>    
-</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>    <span class="c1"># Workflow functions</span>
-</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a>    <span class="s1">&#39;load_and_analyze_daphnet&#39;</span><span class="p">,</span>
-</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>    <span class="s1">&#39;train_gait_classifier&#39;</span><span class="p">,</span>
-</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a>    
-</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>    <span class="c1"># Legacy API (imported via *)</span>
-</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a>    <span class="c1"># All legacy functions are included through wildcard imports</span>
-</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a><span class="p">]</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>    <span class="n">PhysioNetLoader</span><span class="p">,</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="n">get_dataset_manager</span><span class="p">,</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>    <span class="n">get_available_datasets</span><span class="p">,</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>    <span class="n">load_dataset</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="p">)</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.features</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>    <span class="n">GaitFeatureExtractor</span><span class="p">,</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>    <span class="n">get_feature_manager</span><span class="p">,</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>    <span class="n">get_available_extractors</span><span class="p">,</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>    <span class="n">extract_features</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="p">)</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>    <span class="n">ClippingPreprocessor</span><span class="p">,</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="n">NoiseRemovalPreprocessor</span><span class="p">,</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="n">OutlierRemovalPreprocessor</span><span class="p">,</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="n">BaselineRemovalPreprocessor</span><span class="p">,</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="n">DriftRemovalPreprocessor</span><span class="p">,</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>    <span class="n">HighFrequencyNoiseRemovalPreprocessor</span><span class="p">,</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    <span class="n">LowFrequencyNoiseRemovalPreprocessor</span><span class="p">,</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="n">ArtifactRemovalPreprocessor</span><span class="p">,</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>    <span class="n">TrendRemovalPreprocessor</span><span class="p">,</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    <span class="n">DCOffsetRemovalPreprocessor</span><span class="p">,</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="n">get_preprocessing_manager</span><span class="p">,</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="n">get_available_preprocessors</span><span class="p">,</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>    <span class="n">preprocess_data</span><span class="p">,</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>    <span class="n">create_preprocessing_pipeline</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="p">)</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.eda</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="n">DaphnetVisualizationAnalyzer</span><span class="p">,</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>    <span class="n">SensorStatisticsAnalyzer</span><span class="p">,</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="n">get_eda_manager</span><span class="p">,</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="n">get_available_analyzers</span><span class="p">,</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>    <span class="n">analyze_data</span><span class="p">,</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>    <span class="n">visualize_data</span><span class="p">,</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="n">plot_daphnet_data</span><span class="p">,</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="n">analyze_sensor_statistics</span><span class="p">,</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    <span class="n">plot_sensor_features</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="p">)</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.classification</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>    <span class="n">RandomForestModel</span><span class="p">,</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>    <span class="n">get_classification_manager</span><span class="p">,</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>    <span class="n">get_available_models</span><span class="p">,</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>    <span class="n">train_model</span><span class="p">,</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>    <span class="n">predict</span><span class="p">,</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>    <span class="n">evaluate_model_performance</span><span class="p">,</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>    <span class="n">create_random_forest</span><span class="p">,</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>    <span class="n">train_random_forest</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="p">)</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="c1"># Legacy API for backward compatibility</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.features</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.eda</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.classification</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.2.0&quot;</span>  <span class="c1"># Updated version to reflect new architecture</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Harshit Agarwal | Alohomora Labs&quot;</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="c1"># Convenient access to all managers</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_all_managers</span><span class="p">():</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">    Get all singleton managers.</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">    </span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">    Returns:</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">        Dictionary containing all manager instances</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>        <span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="n">DatasetManager</span><span class="p">(),</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>        <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="n">FeatureManager</span><span class="p">(),</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>        <span class="s1">&#39;preprocessing&#39;</span><span class="p">:</span> <span class="n">PreprocessingManager</span><span class="p">(),</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="s1">&#39;eda&#39;</span><span class="p">:</span> <span class="n">EDAManager</span><span class="p">(),</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>        <span class="s1">&#39;classification&#39;</span><span class="p">:</span> <span class="n">ClassificationManager</span><span class="p">()</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="p">}</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a><span class="c1"># System information</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_system_info</span><span class="p">():</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">    Get information about the available components in the system.</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">    </span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a><span class="sd">    Returns:</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">        Dictionary containing system information</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">,</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>        <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">__author__</span><span class="p">,</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="s1">&#39;available_datasets&#39;</span><span class="p">:</span> <span class="n">get_available_datasets</span><span class="p">(),</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>        <span class="s1">&#39;available_extractors&#39;</span><span class="p">:</span> <span class="n">get_available_extractors</span><span class="p">(),</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>        <span class="s1">&#39;available_preprocessors&#39;</span><span class="p">:</span> <span class="n">get_available_preprocessors</span><span class="p">(),</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="s1">&#39;available_analyzers&#39;</span><span class="p">:</span> <span class="n">get_available_analyzers</span><span class="p">(),</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>        <span class="s1">&#39;available_models&#39;</span><span class="p">:</span> <span class="n">get_available_models</span><span class="p">(),</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>        <span class="s1">&#39;architecture&#39;</span><span class="p">:</span> <span class="s1">&#39;Modular with singleton design pattern&#39;</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>    <span class="p">}</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="c1"># Shortcut functions for common workflows</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a><span class="k">def</span><span class="w"> </span><span class="nf">load_and_analyze_daphnet</span><span class="p">(</span><span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sensor_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">):</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">    Complete workflow for loading and analyzing Daphnet data.</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">    </span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">    Args:</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a><span class="sd">        data_dir: Directory containing the Daphnet dataset</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a><span class="sd">        sensor_type: Type of sensor to analyze (&#39;all&#39;, &#39;thigh&#39;, &#39;shank&#39;, &#39;trunk&#39;)</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="sd">        window_size: Size of sliding windows for feature extraction</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="sd">        </span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a><span class="sd">    Returns:</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a><span class="sd">        Dictionary containing data, features, and analysis results</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>    <span class="c1"># Load dataset</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>    <span class="n">loader</span> <span class="o">=</span> <span class="n">DaphnetLoader</span><span class="p">()</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>    <span class="n">data</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>    
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>    <span class="c1"># Create sliding windows</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>    <span class="n">windows</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">create_sliding_windows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="n">window_size</span><span class="p">)</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>    
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>    <span class="c1"># Extract features</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">GaitFeatureExtractor</span><span class="p">()</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>    <span class="n">features</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;windows&#39;</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>    
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>    <span class="c1"># Analyze data</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>    <span class="n">analyzer</span> <span class="o">=</span> <span class="n">DaphnetVisualizationAnalyzer</span><span class="p">()</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>    <span class="n">analysis</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>    
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>        <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="n">names</span><span class="p">,</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>        <span class="s1">&#39;windows&#39;</span><span class="p">:</span> <span class="n">windows</span><span class="p">,</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>        <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>        <span class="s1">&#39;analysis&#39;</span><span class="p">:</span> <span class="n">analysis</span><span class="p">,</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="s1">&#39;loader&#39;</span><span class="p">:</span> <span class="n">loader</span><span class="p">,</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>        <span class="s1">&#39;extractor&#39;</span><span class="p">:</span> <span class="n">extractor</span><span class="p">,</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>        <span class="s1">&#39;analyzer&#39;</span><span class="p">:</span> <span class="n">analyzer</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>    <span class="p">}</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="k">def</span><span class="w"> </span><span class="nf">train_gait_classifier</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">model_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;random_forest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">    Train a gait classification model.</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">    </span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="sd">    Args:</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="sd">        features: List of feature dictionaries</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="sd">        model_type: Type of model to train (&#39;random_forest&#39;, etc.)</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a><span class="sd">        **kwargs: Additional arguments for model training</span>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="sd">        </span>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="sd">    Returns:</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a><span class="sd">        Trained model instance</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>    <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;random_forest&#39;</span><span class="p">:</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestModel</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>        <span class="k">return</span> <span class="n">model</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model type &#39;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s2">&#39; not supported&quot;</span><span class="p">)</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>    <span class="c1"># Core architecture</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>    <span class="s1">&#39;BaseDatasetLoader&#39;</span><span class="p">,</span>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>    <span class="s1">&#39;BaseFeatureExtractor&#39;</span><span class="p">,</span> 
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>    <span class="s1">&#39;BasePreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>    <span class="s1">&#39;BaseEDAAnalyzer&#39;</span><span class="p">,</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>    <span class="s1">&#39;BaseClassificationModel&#39;</span><span class="p">,</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>    <span class="s1">&#39;DatasetManager&#39;</span><span class="p">,</span>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>    <span class="s1">&#39;FeatureManager&#39;</span><span class="p">,</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>    <span class="s1">&#39;PreprocessingManager&#39;</span><span class="p">,</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>    <span class="s1">&#39;EDAManager&#39;</span><span class="p">,</span>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>    <span class="s1">&#39;ClassificationManager&#39;</span><span class="p">,</span>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a>    
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a>    <span class="c1"># New class-based API</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>    <span class="s1">&#39;DaphnetLoader&#39;</span><span class="p">,</span>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>    <span class="s1">&#39;MobiFallLoader&#39;</span><span class="p">,</span>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>    <span class="s1">&#39;ArduousLoader&#39;</span><span class="p">,</span>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>    <span class="s1">&#39;GaitFeatureExtractor&#39;</span><span class="p">,</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>    <span class="s1">&#39;ClippingPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a>    <span class="s1">&#39;NoiseRemovalPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>    <span class="s1">&#39;OutlierRemovalPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>    <span class="s1">&#39;BaselineRemovalPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a>    <span class="s1">&#39;DriftRemovalPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a>    <span class="s1">&#39;HighFrequencyNoiseRemovalPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a>    <span class="s1">&#39;LowFrequencyNoiseRemovalPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a>    <span class="s1">&#39;ArtifactRemovalPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a>    <span class="s1">&#39;TrendRemovalPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a>    <span class="s1">&#39;DCOffsetRemovalPreprocessor&#39;</span><span class="p">,</span>
+</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a>    <span class="s1">&#39;DaphnetVisualizationAnalyzer&#39;</span><span class="p">,</span>
+</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>    <span class="s1">&#39;SensorStatisticsAnalyzer&#39;</span><span class="p">,</span>
+</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a>    <span class="s1">&#39;RandomForestModel&#39;</span><span class="p">,</span>
+</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a>    
+</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>    <span class="c1"># Manager access functions</span>
+</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>    <span class="s1">&#39;get_dataset_manager&#39;</span><span class="p">,</span>
+</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>    <span class="s1">&#39;get_feature_manager&#39;</span><span class="p">,</span>
+</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>    <span class="s1">&#39;get_preprocessing_manager&#39;</span><span class="p">,</span>
+</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a>    <span class="s1">&#39;get_eda_manager&#39;</span><span class="p">,</span>
+</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a>    <span class="s1">&#39;get_classification_manager&#39;</span><span class="p">,</span>
+</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>    <span class="s1">&#39;get_all_managers&#39;</span><span class="p">,</span>
+</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>    
+</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>    <span class="c1"># Utility functions</span>
+</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>    <span class="s1">&#39;get_available_datasets&#39;</span><span class="p">,</span>
+</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>    <span class="s1">&#39;get_available_extractors&#39;</span><span class="p">,</span>
+</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a>    <span class="s1">&#39;get_available_preprocessors&#39;</span><span class="p">,</span>
+</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a>    <span class="s1">&#39;get_available_analyzers&#39;</span><span class="p">,</span>
+</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>    <span class="s1">&#39;get_available_models&#39;</span><span class="p">,</span>
+</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>    <span class="s1">&#39;get_system_info&#39;</span><span class="p">,</span>
+</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>    
+</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a>    <span class="c1"># Workflow functions</span>
+</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>    <span class="s1">&#39;load_and_analyze_daphnet&#39;</span><span class="p">,</span>
+</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a>    <span class="s1">&#39;train_gait_classifier&#39;</span><span class="p">,</span>
+</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>    
+</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a>    <span class="c1"># Legacy API (imported via *)</span>
+</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a>    <span class="c1"># All legacy functions are included through wildcard imports</span>
+</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a><span class="p">]</span>
 </span></pre></div>
 
 
@@ -8768,9 +8769,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_dataset_manager"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_dataset_manager-41"><a href="#get_dataset_manager-41"><span class="linenos">41</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_dataset_manager</span><span class="p">():</span>
-</span><span id="get_dataset_manager-42"><a href="#get_dataset_manager-42"><span class="linenos">42</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton DatasetManager instance.&quot;&quot;&quot;</span>
-</span><span id="get_dataset_manager-43"><a href="#get_dataset_manager-43"><span class="linenos">43</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_dataset_manager-45"><a href="#get_dataset_manager-45"><span class="linenos">45</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_dataset_manager</span><span class="p">():</span>
+</span><span id="get_dataset_manager-46"><a href="#get_dataset_manager-46"><span class="linenos">46</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton DatasetManager instance.&quot;&quot;&quot;</span>
+</span><span id="get_dataset_manager-47"><a href="#get_dataset_manager-47"><span class="linenos">47</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -8790,9 +8791,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_feature_manager"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_feature_manager-83"><a href="#get_feature_manager-83"><span class="linenos">83</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_feature_manager</span><span class="p">():</span>
-</span><span id="get_feature_manager-84"><a href="#get_feature_manager-84"><span class="linenos">84</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton FeatureManager instance.&quot;&quot;&quot;</span>
-</span><span id="get_feature_manager-85"><a href="#get_feature_manager-85"><span class="linenos">85</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_feature_manager-88"><a href="#get_feature_manager-88"><span class="linenos">88</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_feature_manager</span><span class="p">():</span>
+</span><span id="get_feature_manager-89"><a href="#get_feature_manager-89"><span class="linenos">89</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton FeatureManager instance.&quot;&quot;&quot;</span>
+</span><span id="get_feature_manager-90"><a href="#get_feature_manager-90"><span class="linenos">90</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -8878,20 +8879,20 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_all_managers"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_all_managers-110"><a href="#get_all_managers-110"><span class="linenos">110</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_all_managers</span><span class="p">():</span>
-</span><span id="get_all_managers-111"><a href="#get_all_managers-111"><span class="linenos">111</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="get_all_managers-112"><a href="#get_all_managers-112"><span class="linenos">112</span></a><span class="sd">    Get all singleton managers.</span>
-</span><span id="get_all_managers-113"><a href="#get_all_managers-113"><span class="linenos">113</span></a><span class="sd">    </span>
-</span><span id="get_all_managers-114"><a href="#get_all_managers-114"><span class="linenos">114</span></a><span class="sd">    Returns:</span>
-</span><span id="get_all_managers-115"><a href="#get_all_managers-115"><span class="linenos">115</span></a><span class="sd">        Dictionary containing all manager instances</span>
-</span><span id="get_all_managers-116"><a href="#get_all_managers-116"><span class="linenos">116</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="get_all_managers-117"><a href="#get_all_managers-117"><span class="linenos">117</span></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="get_all_managers-118"><a href="#get_all_managers-118"><span class="linenos">118</span></a>        <span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="n">DatasetManager</span><span class="p">(),</span>
-</span><span id="get_all_managers-119"><a href="#get_all_managers-119"><span class="linenos">119</span></a>        <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="n">FeatureManager</span><span class="p">(),</span>
-</span><span id="get_all_managers-120"><a href="#get_all_managers-120"><span class="linenos">120</span></a>        <span class="s1">&#39;preprocessing&#39;</span><span class="p">:</span> <span class="n">PreprocessingManager</span><span class="p">(),</span>
-</span><span id="get_all_managers-121"><a href="#get_all_managers-121"><span class="linenos">121</span></a>        <span class="s1">&#39;eda&#39;</span><span class="p">:</span> <span class="n">EDAManager</span><span class="p">(),</span>
-</span><span id="get_all_managers-122"><a href="#get_all_managers-122"><span class="linenos">122</span></a>        <span class="s1">&#39;classification&#39;</span><span class="p">:</span> <span class="n">ClassificationManager</span><span class="p">()</span>
-</span><span id="get_all_managers-123"><a href="#get_all_managers-123"><span class="linenos">123</span></a>    <span class="p">}</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_all_managers-111"><a href="#get_all_managers-111"><span class="linenos">111</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_all_managers</span><span class="p">():</span>
+</span><span id="get_all_managers-112"><a href="#get_all_managers-112"><span class="linenos">112</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="get_all_managers-113"><a href="#get_all_managers-113"><span class="linenos">113</span></a><span class="sd">    Get all singleton managers.</span>
+</span><span id="get_all_managers-114"><a href="#get_all_managers-114"><span class="linenos">114</span></a><span class="sd">    </span>
+</span><span id="get_all_managers-115"><a href="#get_all_managers-115"><span class="linenos">115</span></a><span class="sd">    Returns:</span>
+</span><span id="get_all_managers-116"><a href="#get_all_managers-116"><span class="linenos">116</span></a><span class="sd">        Dictionary containing all manager instances</span>
+</span><span id="get_all_managers-117"><a href="#get_all_managers-117"><span class="linenos">117</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="get_all_managers-118"><a href="#get_all_managers-118"><span class="linenos">118</span></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="get_all_managers-119"><a href="#get_all_managers-119"><span class="linenos">119</span></a>        <span class="s1">&#39;dataset&#39;</span><span class="p">:</span> <span class="n">DatasetManager</span><span class="p">(),</span>
+</span><span id="get_all_managers-120"><a href="#get_all_managers-120"><span class="linenos">120</span></a>        <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="n">FeatureManager</span><span class="p">(),</span>
+</span><span id="get_all_managers-121"><a href="#get_all_managers-121"><span class="linenos">121</span></a>        <span class="s1">&#39;preprocessing&#39;</span><span class="p">:</span> <span class="n">PreprocessingManager</span><span class="p">(),</span>
+</span><span id="get_all_managers-122"><a href="#get_all_managers-122"><span class="linenos">122</span></a>        <span class="s1">&#39;eda&#39;</span><span class="p">:</span> <span class="n">EDAManager</span><span class="p">(),</span>
+</span><span id="get_all_managers-123"><a href="#get_all_managers-123"><span class="linenos">123</span></a>        <span class="s1">&#39;classification&#39;</span><span class="p">:</span> <span class="n">ClassificationManager</span><span class="p">()</span>
+</span><span id="get_all_managers-124"><a href="#get_all_managers-124"><span class="linenos">124</span></a>    <span class="p">}</span>
 </span></pre></div>
 
 
@@ -8914,9 +8915,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_available_datasets"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_datasets-46"><a href="#get_available_datasets-46"><span class="linenos">46</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_datasets</span><span class="p">():</span>
-</span><span id="get_available_datasets-47"><a href="#get_available_datasets-47"><span class="linenos">47</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available dataset names.&quot;&quot;&quot;</span>
-</span><span id="get_available_datasets-48"><a href="#get_available_datasets-48"><span class="linenos">48</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_datasets-50"><a href="#get_available_datasets-50"><span class="linenos">50</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_datasets</span><span class="p">():</span>
+</span><span id="get_available_datasets-51"><a href="#get_available_datasets-51"><span class="linenos">51</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available dataset names.&quot;&quot;&quot;</span>
+</span><span id="get_available_datasets-52"><a href="#get_available_datasets-52"><span class="linenos">52</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -8936,9 +8937,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_available_extractors"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_extractors-88"><a href="#get_available_extractors-88"><span class="linenos">88</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_extractors</span><span class="p">():</span>
-</span><span id="get_available_extractors-89"><a href="#get_available_extractors-89"><span class="linenos">89</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available feature extractor names.&quot;&quot;&quot;</span>
-</span><span id="get_available_extractors-90"><a href="#get_available_extractors-90"><span class="linenos">90</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_extractors-93"><a href="#get_available_extractors-93"><span class="linenos">93</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_extractors</span><span class="p">():</span>
+</span><span id="get_available_extractors-94"><a href="#get_available_extractors-94"><span class="linenos">94</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available feature extractor names.&quot;&quot;&quot;</span>
+</span><span id="get_available_extractors-95"><a href="#get_available_extractors-95"><span class="linenos">95</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -9024,23 +9025,23 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_system_info"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_system_info-126"><a href="#get_system_info-126"><span class="linenos">126</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_system_info</span><span class="p">():</span>
-</span><span id="get_system_info-127"><a href="#get_system_info-127"><span class="linenos">127</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="get_system_info-128"><a href="#get_system_info-128"><span class="linenos">128</span></a><span class="sd">    Get information about the available components in the system.</span>
-</span><span id="get_system_info-129"><a href="#get_system_info-129"><span class="linenos">129</span></a><span class="sd">    </span>
-</span><span id="get_system_info-130"><a href="#get_system_info-130"><span class="linenos">130</span></a><span class="sd">    Returns:</span>
-</span><span id="get_system_info-131"><a href="#get_system_info-131"><span class="linenos">131</span></a><span class="sd">        Dictionary containing system information</span>
-</span><span id="get_system_info-132"><a href="#get_system_info-132"><span class="linenos">132</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="get_system_info-133"><a href="#get_system_info-133"><span class="linenos">133</span></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="get_system_info-134"><a href="#get_system_info-134"><span class="linenos">134</span></a>        <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">,</span>
-</span><span id="get_system_info-135"><a href="#get_system_info-135"><span class="linenos">135</span></a>        <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">__author__</span><span class="p">,</span>
-</span><span id="get_system_info-136"><a href="#get_system_info-136"><span class="linenos">136</span></a>        <span class="s1">&#39;available_datasets&#39;</span><span class="p">:</span> <span class="n">get_available_datasets</span><span class="p">(),</span>
-</span><span id="get_system_info-137"><a href="#get_system_info-137"><span class="linenos">137</span></a>        <span class="s1">&#39;available_extractors&#39;</span><span class="p">:</span> <span class="n">get_available_extractors</span><span class="p">(),</span>
-</span><span id="get_system_info-138"><a href="#get_system_info-138"><span class="linenos">138</span></a>        <span class="s1">&#39;available_preprocessors&#39;</span><span class="p">:</span> <span class="n">get_available_preprocessors</span><span class="p">(),</span>
-</span><span id="get_system_info-139"><a href="#get_system_info-139"><span class="linenos">139</span></a>        <span class="s1">&#39;available_analyzers&#39;</span><span class="p">:</span> <span class="n">get_available_analyzers</span><span class="p">(),</span>
-</span><span id="get_system_info-140"><a href="#get_system_info-140"><span class="linenos">140</span></a>        <span class="s1">&#39;available_models&#39;</span><span class="p">:</span> <span class="n">get_available_models</span><span class="p">(),</span>
-</span><span id="get_system_info-141"><a href="#get_system_info-141"><span class="linenos">141</span></a>        <span class="s1">&#39;architecture&#39;</span><span class="p">:</span> <span class="s1">&#39;Modular with singleton design pattern&#39;</span>
-</span><span id="get_system_info-142"><a href="#get_system_info-142"><span class="linenos">142</span></a>    <span class="p">}</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_system_info-127"><a href="#get_system_info-127"><span class="linenos">127</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_system_info</span><span class="p">():</span>
+</span><span id="get_system_info-128"><a href="#get_system_info-128"><span class="linenos">128</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="get_system_info-129"><a href="#get_system_info-129"><span class="linenos">129</span></a><span class="sd">    Get information about the available components in the system.</span>
+</span><span id="get_system_info-130"><a href="#get_system_info-130"><span class="linenos">130</span></a><span class="sd">    </span>
+</span><span id="get_system_info-131"><a href="#get_system_info-131"><span class="linenos">131</span></a><span class="sd">    Returns:</span>
+</span><span id="get_system_info-132"><a href="#get_system_info-132"><span class="linenos">132</span></a><span class="sd">        Dictionary containing system information</span>
+</span><span id="get_system_info-133"><a href="#get_system_info-133"><span class="linenos">133</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="get_system_info-134"><a href="#get_system_info-134"><span class="linenos">134</span></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="get_system_info-135"><a href="#get_system_info-135"><span class="linenos">135</span></a>        <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">,</span>
+</span><span id="get_system_info-136"><a href="#get_system_info-136"><span class="linenos">136</span></a>        <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="n">__author__</span><span class="p">,</span>
+</span><span id="get_system_info-137"><a href="#get_system_info-137"><span class="linenos">137</span></a>        <span class="s1">&#39;available_datasets&#39;</span><span class="p">:</span> <span class="n">get_available_datasets</span><span class="p">(),</span>
+</span><span id="get_system_info-138"><a href="#get_system_info-138"><span class="linenos">138</span></a>        <span class="s1">&#39;available_extractors&#39;</span><span class="p">:</span> <span class="n">get_available_extractors</span><span class="p">(),</span>
+</span><span id="get_system_info-139"><a href="#get_system_info-139"><span class="linenos">139</span></a>        <span class="s1">&#39;available_preprocessors&#39;</span><span class="p">:</span> <span class="n">get_available_preprocessors</span><span class="p">(),</span>
+</span><span id="get_system_info-140"><a href="#get_system_info-140"><span class="linenos">140</span></a>        <span class="s1">&#39;available_analyzers&#39;</span><span class="p">:</span> <span class="n">get_available_analyzers</span><span class="p">(),</span>
+</span><span id="get_system_info-141"><a href="#get_system_info-141"><span class="linenos">141</span></a>        <span class="s1">&#39;available_models&#39;</span><span class="p">:</span> <span class="n">get_available_models</span><span class="p">(),</span>
+</span><span id="get_system_info-142"><a href="#get_system_info-142"><span class="linenos">142</span></a>        <span class="s1">&#39;architecture&#39;</span><span class="p">:</span> <span class="s1">&#39;Modular with singleton design pattern&#39;</span>
+</span><span id="get_system_info-143"><a href="#get_system_info-143"><span class="linenos">143</span></a>    <span class="p">}</span>
 </span></pre></div>
 
 
@@ -9063,43 +9064,43 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#load_and_analyze_daphnet"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="load_and_analyze_daphnet-145"><a href="#load_and_analyze_daphnet-145"><span class="linenos">145</span></a><span class="k">def</span><span class="w"> </span><span class="nf">load_and_analyze_daphnet</span><span class="p">(</span><span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sensor_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">):</span>
-</span><span id="load_and_analyze_daphnet-146"><a href="#load_and_analyze_daphnet-146"><span class="linenos">146</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="load_and_analyze_daphnet-147"><a href="#load_and_analyze_daphnet-147"><span class="linenos">147</span></a><span class="sd">    Complete workflow for loading and analyzing Daphnet data.</span>
-</span><span id="load_and_analyze_daphnet-148"><a href="#load_and_analyze_daphnet-148"><span class="linenos">148</span></a><span class="sd">    </span>
-</span><span id="load_and_analyze_daphnet-149"><a href="#load_and_analyze_daphnet-149"><span class="linenos">149</span></a><span class="sd">    Args:</span>
-</span><span id="load_and_analyze_daphnet-150"><a href="#load_and_analyze_daphnet-150"><span class="linenos">150</span></a><span class="sd">        data_dir: Directory containing the Daphnet dataset</span>
-</span><span id="load_and_analyze_daphnet-151"><a href="#load_and_analyze_daphnet-151"><span class="linenos">151</span></a><span class="sd">        sensor_type: Type of sensor to analyze (&#39;all&#39;, &#39;thigh&#39;, &#39;shank&#39;, &#39;trunk&#39;)</span>
-</span><span id="load_and_analyze_daphnet-152"><a href="#load_and_analyze_daphnet-152"><span class="linenos">152</span></a><span class="sd">        window_size: Size of sliding windows for feature extraction</span>
-</span><span id="load_and_analyze_daphnet-153"><a href="#load_and_analyze_daphnet-153"><span class="linenos">153</span></a><span class="sd">        </span>
-</span><span id="load_and_analyze_daphnet-154"><a href="#load_and_analyze_daphnet-154"><span class="linenos">154</span></a><span class="sd">    Returns:</span>
-</span><span id="load_and_analyze_daphnet-155"><a href="#load_and_analyze_daphnet-155"><span class="linenos">155</span></a><span class="sd">        Dictionary containing data, features, and analysis results</span>
-</span><span id="load_and_analyze_daphnet-156"><a href="#load_and_analyze_daphnet-156"><span class="linenos">156</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="load_and_analyze_daphnet-157"><a href="#load_and_analyze_daphnet-157"><span class="linenos">157</span></a>    <span class="c1"># Load dataset</span>
-</span><span id="load_and_analyze_daphnet-158"><a href="#load_and_analyze_daphnet-158"><span class="linenos">158</span></a>    <span class="n">loader</span> <span class="o">=</span> <span class="n">DaphnetLoader</span><span class="p">()</span>
-</span><span id="load_and_analyze_daphnet-159"><a href="#load_and_analyze_daphnet-159"><span class="linenos">159</span></a>    <span class="n">data</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="load_and_analyze_daphnet-160"><a href="#load_and_analyze_daphnet-160"><span class="linenos">160</span></a>    
-</span><span id="load_and_analyze_daphnet-161"><a href="#load_and_analyze_daphnet-161"><span class="linenos">161</span></a>    <span class="c1"># Create sliding windows</span>
-</span><span id="load_and_analyze_daphnet-162"><a href="#load_and_analyze_daphnet-162"><span class="linenos">162</span></a>    <span class="n">windows</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">create_sliding_windows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="n">window_size</span><span class="p">)</span>
-</span><span id="load_and_analyze_daphnet-163"><a href="#load_and_analyze_daphnet-163"><span class="linenos">163</span></a>    
-</span><span id="load_and_analyze_daphnet-164"><a href="#load_and_analyze_daphnet-164"><span class="linenos">164</span></a>    <span class="c1"># Extract features</span>
-</span><span id="load_and_analyze_daphnet-165"><a href="#load_and_analyze_daphnet-165"><span class="linenos">165</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">GaitFeatureExtractor</span><span class="p">()</span>
-</span><span id="load_and_analyze_daphnet-166"><a href="#load_and_analyze_daphnet-166"><span class="linenos">166</span></a>    <span class="n">features</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;windows&#39;</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
-</span><span id="load_and_analyze_daphnet-167"><a href="#load_and_analyze_daphnet-167"><span class="linenos">167</span></a>    
-</span><span id="load_and_analyze_daphnet-168"><a href="#load_and_analyze_daphnet-168"><span class="linenos">168</span></a>    <span class="c1"># Analyze data</span>
-</span><span id="load_and_analyze_daphnet-169"><a href="#load_and_analyze_daphnet-169"><span class="linenos">169</span></a>    <span class="n">analyzer</span> <span class="o">=</span> <span class="n">DaphnetVisualizationAnalyzer</span><span class="p">()</span>
-</span><span id="load_and_analyze_daphnet-170"><a href="#load_and_analyze_daphnet-170"><span class="linenos">170</span></a>    <span class="n">analysis</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</span><span id="load_and_analyze_daphnet-171"><a href="#load_and_analyze_daphnet-171"><span class="linenos">171</span></a>    
-</span><span id="load_and_analyze_daphnet-172"><a href="#load_and_analyze_daphnet-172"><span class="linenos">172</span></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="load_and_analyze_daphnet-173"><a href="#load_and_analyze_daphnet-173"><span class="linenos">173</span></a>        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
-</span><span id="load_and_analyze_daphnet-174"><a href="#load_and_analyze_daphnet-174"><span class="linenos">174</span></a>        <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="n">names</span><span class="p">,</span>
-</span><span id="load_and_analyze_daphnet-175"><a href="#load_and_analyze_daphnet-175"><span class="linenos">175</span></a>        <span class="s1">&#39;windows&#39;</span><span class="p">:</span> <span class="n">windows</span><span class="p">,</span>
-</span><span id="load_and_analyze_daphnet-176"><a href="#load_and_analyze_daphnet-176"><span class="linenos">176</span></a>        <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span>
-</span><span id="load_and_analyze_daphnet-177"><a href="#load_and_analyze_daphnet-177"><span class="linenos">177</span></a>        <span class="s1">&#39;analysis&#39;</span><span class="p">:</span> <span class="n">analysis</span><span class="p">,</span>
-</span><span id="load_and_analyze_daphnet-178"><a href="#load_and_analyze_daphnet-178"><span class="linenos">178</span></a>        <span class="s1">&#39;loader&#39;</span><span class="p">:</span> <span class="n">loader</span><span class="p">,</span>
-</span><span id="load_and_analyze_daphnet-179"><a href="#load_and_analyze_daphnet-179"><span class="linenos">179</span></a>        <span class="s1">&#39;extractor&#39;</span><span class="p">:</span> <span class="n">extractor</span><span class="p">,</span>
-</span><span id="load_and_analyze_daphnet-180"><a href="#load_and_analyze_daphnet-180"><span class="linenos">180</span></a>        <span class="s1">&#39;analyzer&#39;</span><span class="p">:</span> <span class="n">analyzer</span>
-</span><span id="load_and_analyze_daphnet-181"><a href="#load_and_analyze_daphnet-181"><span class="linenos">181</span></a>    <span class="p">}</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="load_and_analyze_daphnet-146"><a href="#load_and_analyze_daphnet-146"><span class="linenos">146</span></a><span class="k">def</span><span class="w"> </span><span class="nf">load_and_analyze_daphnet</span><span class="p">(</span><span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sensor_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">):</span>
+</span><span id="load_and_analyze_daphnet-147"><a href="#load_and_analyze_daphnet-147"><span class="linenos">147</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="load_and_analyze_daphnet-148"><a href="#load_and_analyze_daphnet-148"><span class="linenos">148</span></a><span class="sd">    Complete workflow for loading and analyzing Daphnet data.</span>
+</span><span id="load_and_analyze_daphnet-149"><a href="#load_and_analyze_daphnet-149"><span class="linenos">149</span></a><span class="sd">    </span>
+</span><span id="load_and_analyze_daphnet-150"><a href="#load_and_analyze_daphnet-150"><span class="linenos">150</span></a><span class="sd">    Args:</span>
+</span><span id="load_and_analyze_daphnet-151"><a href="#load_and_analyze_daphnet-151"><span class="linenos">151</span></a><span class="sd">        data_dir: Directory containing the Daphnet dataset</span>
+</span><span id="load_and_analyze_daphnet-152"><a href="#load_and_analyze_daphnet-152"><span class="linenos">152</span></a><span class="sd">        sensor_type: Type of sensor to analyze (&#39;all&#39;, &#39;thigh&#39;, &#39;shank&#39;, &#39;trunk&#39;)</span>
+</span><span id="load_and_analyze_daphnet-153"><a href="#load_and_analyze_daphnet-153"><span class="linenos">153</span></a><span class="sd">        window_size: Size of sliding windows for feature extraction</span>
+</span><span id="load_and_analyze_daphnet-154"><a href="#load_and_analyze_daphnet-154"><span class="linenos">154</span></a><span class="sd">        </span>
+</span><span id="load_and_analyze_daphnet-155"><a href="#load_and_analyze_daphnet-155"><span class="linenos">155</span></a><span class="sd">    Returns:</span>
+</span><span id="load_and_analyze_daphnet-156"><a href="#load_and_analyze_daphnet-156"><span class="linenos">156</span></a><span class="sd">        Dictionary containing data, features, and analysis results</span>
+</span><span id="load_and_analyze_daphnet-157"><a href="#load_and_analyze_daphnet-157"><span class="linenos">157</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="load_and_analyze_daphnet-158"><a href="#load_and_analyze_daphnet-158"><span class="linenos">158</span></a>    <span class="c1"># Load dataset</span>
+</span><span id="load_and_analyze_daphnet-159"><a href="#load_and_analyze_daphnet-159"><span class="linenos">159</span></a>    <span class="n">loader</span> <span class="o">=</span> <span class="n">DaphnetLoader</span><span class="p">()</span>
+</span><span id="load_and_analyze_daphnet-160"><a href="#load_and_analyze_daphnet-160"><span class="linenos">160</span></a>    <span class="n">data</span><span class="p">,</span> <span class="n">names</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="load_and_analyze_daphnet-161"><a href="#load_and_analyze_daphnet-161"><span class="linenos">161</span></a>    
+</span><span id="load_and_analyze_daphnet-162"><a href="#load_and_analyze_daphnet-162"><span class="linenos">162</span></a>    <span class="c1"># Create sliding windows</span>
+</span><span id="load_and_analyze_daphnet-163"><a href="#load_and_analyze_daphnet-163"><span class="linenos">163</span></a>    <span class="n">windows</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">create_sliding_windows</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="n">window_size</span><span class="p">)</span>
+</span><span id="load_and_analyze_daphnet-164"><a href="#load_and_analyze_daphnet-164"><span class="linenos">164</span></a>    
+</span><span id="load_and_analyze_daphnet-165"><a href="#load_and_analyze_daphnet-165"><span class="linenos">165</span></a>    <span class="c1"># Extract features</span>
+</span><span id="load_and_analyze_daphnet-166"><a href="#load_and_analyze_daphnet-166"><span class="linenos">166</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">GaitFeatureExtractor</span><span class="p">()</span>
+</span><span id="load_and_analyze_daphnet-167"><a href="#load_and_analyze_daphnet-167"><span class="linenos">167</span></a>    <span class="n">features</span> <span class="o">=</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;windows&#39;</span><span class="p">],</span> <span class="n">fs</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span>
+</span><span id="load_and_analyze_daphnet-168"><a href="#load_and_analyze_daphnet-168"><span class="linenos">168</span></a>    
+</span><span id="load_and_analyze_daphnet-169"><a href="#load_and_analyze_daphnet-169"><span class="linenos">169</span></a>    <span class="c1"># Analyze data</span>
+</span><span id="load_and_analyze_daphnet-170"><a href="#load_and_analyze_daphnet-170"><span class="linenos">170</span></a>    <span class="n">analyzer</span> <span class="o">=</span> <span class="n">DaphnetVisualizationAnalyzer</span><span class="p">()</span>
+</span><span id="load_and_analyze_daphnet-171"><a href="#load_and_analyze_daphnet-171"><span class="linenos">171</span></a>    <span class="n">analysis</span> <span class="o">=</span> <span class="n">analyzer</span><span class="o">.</span><span class="n">analyze</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span id="load_and_analyze_daphnet-172"><a href="#load_and_analyze_daphnet-172"><span class="linenos">172</span></a>    
+</span><span id="load_and_analyze_daphnet-173"><a href="#load_and_analyze_daphnet-173"><span class="linenos">173</span></a>    <span class="k">return</span> <span class="p">{</span>
+</span><span id="load_and_analyze_daphnet-174"><a href="#load_and_analyze_daphnet-174"><span class="linenos">174</span></a>        <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+</span><span id="load_and_analyze_daphnet-175"><a href="#load_and_analyze_daphnet-175"><span class="linenos">175</span></a>        <span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="n">names</span><span class="p">,</span>
+</span><span id="load_and_analyze_daphnet-176"><a href="#load_and_analyze_daphnet-176"><span class="linenos">176</span></a>        <span class="s1">&#39;windows&#39;</span><span class="p">:</span> <span class="n">windows</span><span class="p">,</span>
+</span><span id="load_and_analyze_daphnet-177"><a href="#load_and_analyze_daphnet-177"><span class="linenos">177</span></a>        <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span>
+</span><span id="load_and_analyze_daphnet-178"><a href="#load_and_analyze_daphnet-178"><span class="linenos">178</span></a>        <span class="s1">&#39;analysis&#39;</span><span class="p">:</span> <span class="n">analysis</span><span class="p">,</span>
+</span><span id="load_and_analyze_daphnet-179"><a href="#load_and_analyze_daphnet-179"><span class="linenos">179</span></a>        <span class="s1">&#39;loader&#39;</span><span class="p">:</span> <span class="n">loader</span><span class="p">,</span>
+</span><span id="load_and_analyze_daphnet-180"><a href="#load_and_analyze_daphnet-180"><span class="linenos">180</span></a>        <span class="s1">&#39;extractor&#39;</span><span class="p">:</span> <span class="n">extractor</span><span class="p">,</span>
+</span><span id="load_and_analyze_daphnet-181"><a href="#load_and_analyze_daphnet-181"><span class="linenos">181</span></a>        <span class="s1">&#39;analyzer&#39;</span><span class="p">:</span> <span class="n">analyzer</span>
+</span><span id="load_and_analyze_daphnet-182"><a href="#load_and_analyze_daphnet-182"><span class="linenos">182</span></a>    <span class="p">}</span>
 </span></pre></div>
 
 
@@ -9127,24 +9128,24 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#train_gait_classifier"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="train_gait_classifier-183"><a href="#train_gait_classifier-183"><span class="linenos">183</span></a><span class="k">def</span><span class="w"> </span><span class="nf">train_gait_classifier</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">model_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;random_forest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="train_gait_classifier-184"><a href="#train_gait_classifier-184"><span class="linenos">184</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="train_gait_classifier-185"><a href="#train_gait_classifier-185"><span class="linenos">185</span></a><span class="sd">    Train a gait classification model.</span>
-</span><span id="train_gait_classifier-186"><a href="#train_gait_classifier-186"><span class="linenos">186</span></a><span class="sd">    </span>
-</span><span id="train_gait_classifier-187"><a href="#train_gait_classifier-187"><span class="linenos">187</span></a><span class="sd">    Args:</span>
-</span><span id="train_gait_classifier-188"><a href="#train_gait_classifier-188"><span class="linenos">188</span></a><span class="sd">        features: List of feature dictionaries</span>
-</span><span id="train_gait_classifier-189"><a href="#train_gait_classifier-189"><span class="linenos">189</span></a><span class="sd">        model_type: Type of model to train (&#39;random_forest&#39;, etc.)</span>
-</span><span id="train_gait_classifier-190"><a href="#train_gait_classifier-190"><span class="linenos">190</span></a><span class="sd">        **kwargs: Additional arguments for model training</span>
-</span><span id="train_gait_classifier-191"><a href="#train_gait_classifier-191"><span class="linenos">191</span></a><span class="sd">        </span>
-</span><span id="train_gait_classifier-192"><a href="#train_gait_classifier-192"><span class="linenos">192</span></a><span class="sd">    Returns:</span>
-</span><span id="train_gait_classifier-193"><a href="#train_gait_classifier-193"><span class="linenos">193</span></a><span class="sd">        Trained model instance</span>
-</span><span id="train_gait_classifier-194"><a href="#train_gait_classifier-194"><span class="linenos">194</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="train_gait_classifier-195"><a href="#train_gait_classifier-195"><span class="linenos">195</span></a>    <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;random_forest&#39;</span><span class="p">:</span>
-</span><span id="train_gait_classifier-196"><a href="#train_gait_classifier-196"><span class="linenos">196</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestModel</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span id="train_gait_classifier-197"><a href="#train_gait_classifier-197"><span class="linenos">197</span></a>        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span id="train_gait_classifier-198"><a href="#train_gait_classifier-198"><span class="linenos">198</span></a>        <span class="k">return</span> <span class="n">model</span>
-</span><span id="train_gait_classifier-199"><a href="#train_gait_classifier-199"><span class="linenos">199</span></a>    <span class="k">else</span><span class="p">:</span>
-</span><span id="train_gait_classifier-200"><a href="#train_gait_classifier-200"><span class="linenos">200</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model type &#39;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s2">&#39; not supported&quot;</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="train_gait_classifier-184"><a href="#train_gait_classifier-184"><span class="linenos">184</span></a><span class="k">def</span><span class="w"> </span><span class="nf">train_gait_classifier</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">model_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;random_forest&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="train_gait_classifier-185"><a href="#train_gait_classifier-185"><span class="linenos">185</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="train_gait_classifier-186"><a href="#train_gait_classifier-186"><span class="linenos">186</span></a><span class="sd">    Train a gait classification model.</span>
+</span><span id="train_gait_classifier-187"><a href="#train_gait_classifier-187"><span class="linenos">187</span></a><span class="sd">    </span>
+</span><span id="train_gait_classifier-188"><a href="#train_gait_classifier-188"><span class="linenos">188</span></a><span class="sd">    Args:</span>
+</span><span id="train_gait_classifier-189"><a href="#train_gait_classifier-189"><span class="linenos">189</span></a><span class="sd">        features: List of feature dictionaries</span>
+</span><span id="train_gait_classifier-190"><a href="#train_gait_classifier-190"><span class="linenos">190</span></a><span class="sd">        model_type: Type of model to train (&#39;random_forest&#39;, etc.)</span>
+</span><span id="train_gait_classifier-191"><a href="#train_gait_classifier-191"><span class="linenos">191</span></a><span class="sd">        **kwargs: Additional arguments for model training</span>
+</span><span id="train_gait_classifier-192"><a href="#train_gait_classifier-192"><span class="linenos">192</span></a><span class="sd">        </span>
+</span><span id="train_gait_classifier-193"><a href="#train_gait_classifier-193"><span class="linenos">193</span></a><span class="sd">    Returns:</span>
+</span><span id="train_gait_classifier-194"><a href="#train_gait_classifier-194"><span class="linenos">194</span></a><span class="sd">        Trained model instance</span>
+</span><span id="train_gait_classifier-195"><a href="#train_gait_classifier-195"><span class="linenos">195</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="train_gait_classifier-196"><a href="#train_gait_classifier-196"><span class="linenos">196</span></a>    <span class="k">if</span> <span class="n">model_type</span> <span class="o">==</span> <span class="s1">&#39;random_forest&#39;</span><span class="p">:</span>
+</span><span id="train_gait_classifier-197"><a href="#train_gait_classifier-197"><span class="linenos">197</span></a>        <span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestModel</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="train_gait_classifier-198"><a href="#train_gait_classifier-198"><span class="linenos">198</span></a>        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="train_gait_classifier-199"><a href="#train_gait_classifier-199"><span class="linenos">199</span></a>        <span class="k">return</span> <span class="n">model</span>
+</span><span id="train_gait_classifier-200"><a href="#train_gait_classifier-200"><span class="linenos">200</span></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="train_gait_classifier-201"><a href="#train_gait_classifier-201"><span class="linenos">201</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model type &#39;</span><span class="si">{</span><span class="n">model_type</span><span class="si">}</span><span class="s2">&#39; not supported&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
