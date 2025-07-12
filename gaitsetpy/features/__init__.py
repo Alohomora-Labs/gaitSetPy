@@ -7,10 +7,12 @@ All feature extractors inherit from BaseFeatureExtractor and are registered with
 Maintainer: @aharshit123456
 '''
 
-# Import the new class-based feature extractor
+# Import the new class-based feature extractors
 from .gait_features import GaitFeatureExtractor
+from .physionet_features import LBPFeatureExtractor, FourierSeriesFeatureExtractor, PhysioNetFeatureExtractor
 
 # Import legacy functions for backward compatibility
+from .physionet_features import extract_lbp_features, extract_fourier_features, extract_physionet_features
 from .utils import (
     calculate_mean,
     calculate_standard_deviation,
@@ -74,6 +76,9 @@ def _register_extractors():
     """Register all available feature extractors with the FeatureManager."""
     manager = FeatureManager()
     manager.register_extractor("gait_features", GaitFeatureExtractor)
+    manager.register_extractor("lbp_features", LBPFeatureExtractor)
+    manager.register_extractor("fourier_features", FourierSeriesFeatureExtractor)
+    manager.register_extractor("physionet_features", PhysioNetFeatureExtractor)
 
 # Auto-register extractors when module is imported
 _register_extractors()
@@ -105,8 +110,11 @@ def extract_features(extractor_name: str, windows, fs: int, **kwargs):
     return FeatureManager().extract_features(extractor_name, windows, fs, **kwargs)
 
 __all__ = [
-    # New class-based extractor
+    # New class-based extractors
     'GaitFeatureExtractor',
+    'LBPFeatureExtractor',
+    'FourierSeriesFeatureExtractor',
+    'PhysioNetFeatureExtractor',
     # Legacy utility functions
     'calculate_mean',
     'calculate_standard_deviation',
@@ -158,6 +166,10 @@ __all__ = [
     'get_correlation_for_windows',
     'get_auto_regression_coefficients_for_windows',
     'extract_gait_features',
+    # PhysioNet legacy functions
+    'extract_lbp_features',
+    'extract_fourier_features',
+    'extract_physionet_features',
     # Manager functions
     'get_feature_manager',
     'get_available_extractors',

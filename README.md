@@ -20,7 +20,7 @@ GaitSetPy is a Python package for gait analysis and recognition. This package pr
 - Activity Net - Arduous : [https://www.mad.tf.fau.de/research/activitynet/wearable-multi-sensor-gait-based-daily-activity-data/](https://www.mad.tf.fau.de/research/activitynet/wearable-multi-sensor-gait-based-daily-activity-data/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
 
 ### Pressure Sensor Based
-- Physionet Gait in Parkinson's Disease: [https://physionet.org/content/gaitpdb/1.0.0/](https://physionet.org/content/gaitpdb/1.0.0/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
+- Physionet Gait in Parkinson's Disease: [https://physionet.org/content/gaitpdb/1.0.0/](https://physionet.org/content/gaitpdb/1.0.0/) ![Completed](https://img.shields.io/badge/status-completed-green)
 
 
 ## Installation

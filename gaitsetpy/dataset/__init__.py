@@ -8,6 +8,7 @@ Supported datasets:
 - Daphnet: Freezing of Gait dataset
 - MobiFall: Fall detection dataset
 - Arduous: Daily activity recognition dataset
+- PhysioNet: VGRF dataset for Parkinson's disease gait analysis
 
 """
 
@@ -15,11 +16,13 @@ Supported datasets:
 from .daphnet import DaphnetLoader
 from .mobifall import MobiFallLoader
 from .arduous import ArduousLoader
+from .physionet import PhysioNetLoader
 
 # Import legacy functions for backward compatibility
 from .daphnet import load_daphnet_data, create_sliding_windows
 from .mobifall import load_mobifall_data
 from .arduous import load_arduous_data
+from .physionet import load_physionet_data, create_physionet_windows
 from .utils import download_dataset, extract_dataset, sliding_window
 
 # Import managers
@@ -32,6 +35,7 @@ def _register_datasets():
     manager.register_dataset("daphnet", DaphnetLoader)
     manager.register_dataset("mobifall", MobiFallLoader)
     manager.register_dataset("arduous", ArduousLoader)
+    manager.register_dataset("physionet", PhysioNetLoader)
 
 # Auto-register datasets when module is imported
 _register_datasets()
@@ -66,11 +70,14 @@ __all__ = [
     'DaphnetLoader',
     'MobiFallLoader', 
     'ArduousLoader',
+    'PhysioNetLoader',
     # Legacy functions for backward compatibility
     'load_daphnet_data',
     'create_sliding_windows',
     'load_mobifall_data',
     'load_arduous_data',
+    'load_physionet_data',
+    'create_physionet_windows',
     'download_dataset',
     'extract_dataset',
     'sliding_window',

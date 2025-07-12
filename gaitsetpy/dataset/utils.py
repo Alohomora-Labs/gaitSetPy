@@ -28,6 +28,9 @@ def download_dataset(dataset_name, data_dir):
         download_mobifall_data(data_dir)
     elif dataset_name == "arduous":
         download_arduous_data(data_dir)
+    elif dataset_name == "physionet":
+        # PhysioNet dataset is handled by the PhysioNetLoader itself
+        pass
     else:
         raise ValueError(f"Dataset {dataset_name} not supported.")
     
@@ -138,6 +141,9 @@ def extract_dataset(dataset_name, data_dir):
         extract_mobifall_data(data_dir)
     elif dataset_name == "arduous":
         extract_arduous_data(data_dir)
+    elif dataset_name == "physionet":
+        # PhysioNet dataset is handled by the PhysioNetLoader itself
+        pass
     else:
         raise ValueError(f"Dataset {dataset_name} not supported.")
     
