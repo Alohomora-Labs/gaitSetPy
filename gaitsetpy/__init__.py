@@ -7,7 +7,7 @@ a modern class-based architecture and legacy function-based API for backward com
 Features:
 - Modular architecture with singleton design pattern
 - Plugin-based system for easy extension
-- Comprehensive dataset loaders (Daphnet, MobiFall, Arduous)
+- Comprehensive dataset loaders (Daphnet, MobiFall, Arduous, PhysioNet)
 - Feature extraction and preprocessing pipelines
 - Machine learning models for classification
 - Exploratory data analysis tools
@@ -51,6 +51,9 @@ from .dataset import (
 
 from .features import (
     GaitFeatureExtractor,
+    LBPFeatureExtractor,
+    FourierSeriesFeatureExtractor,
+    PhysioNetFeatureExtractor,
     get_feature_manager,
     get_available_extractors,
     extract_features
@@ -180,6 +183,48 @@ def load_and_analyze_daphnet(data_dir: str, sensor_type: str = 'all', window_siz
         'analyzer': analyzer
     }
 
+def load_and_analyze_physionet(data_dir: str, window_size: int = 600, step_size: int = 100):
+    """
+    Complete workflow for loading and analyzing PhysioNet VGRF data.
+    
+    Args:
+        data_dir: Directory to store/find the PhysioNet dataset
+        window_size: Size of sliding windows for feature extraction (default: 600)
+        step_size: Step size for sliding windows (default: 100)
+        
+    Returns:
+        Dictionary containing data, features, and analysis results
+    """
+    # Load dataset
+    loader = PhysioNetLoader()
+    data, names = loader.load_data(data_dir)
+    
+    # Create sliding windows
+    windows = loader.create_sliding_windows(data, names, window_size=window_size, step_size=step_size)
+    
+    # Extract PhysioNet-specific features
+    extractor = PhysioNetFeatureExtractor()
+    all_features = []
+    
+    for window_dict in windows:
+        if 'windows' in window_dict:
+            features = extractor.extract_features(window_dict['windows'], fs=100)
+            all_features.append({
+                'name': window_dict['name'],
+                'features': features,
+                'metadata': window_dict.get('metadata', {})
+            })
+    
+    return {
+        'data': data,
+        'names': names,
+        'windows': windows,
+        'features': all_features,
+        'labels': loader.get_labels(),
+        'loader': loader,
+        'extractor': extractor
+    }
+
 def train_gait_classifier(features, model_type: str = 'random_forest', **kwargs):
     """
     Train a gait classification model.
@@ -216,7 +261,11 @@ __all__ = [
     'DaphnetLoader',
     'MobiFallLoader',
     'ArduousLoader',
+    'PhysioNetLoader',
     'GaitFeatureExtractor',
+    'LBPFeatureExtractor',
+    'FourierSeriesFeatureExtractor',
+    'PhysioNetFeatureExtractor',
     'ClippingPreprocessor',
     'NoiseRemovalPreprocessor',
     'OutlierRemovalPreprocessor',
@@ -249,6 +298,7 @@ __all__ = [
     
     # Workflow functions
     'load_and_analyze_daphnet',
+    'load_and_analyze_physionet',
     'train_gait_classifier',
     
     # Legacy API (imported via *)
