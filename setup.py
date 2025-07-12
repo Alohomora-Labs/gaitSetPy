@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='gaitsetpy',
-    version='0.1',
+    version='0.1.1',
     packages=find_packages(include=["gaitsetpy", "gaitsetpy.*"]),
     description="A Python package for gait analysis using sensor data.",
     long_description=long_description,
