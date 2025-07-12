@@ -213,7 +213,7 @@ def calculate_median_absolute_deviation(signal):
 def calculate_peak_frequency(signal, fs):
     """Calculate the peak frequency of the signal."""
     try:
-        f, Pxx = welch(signal, fs=fs)
+        f, Pxx = welch(signal, fs=fs, nperseg=min(len(signal), 192))  # Ensure nperseg ≤ length
         return f[np.argmax(Pxx)]
     except Exception as e:
         print(f"An error occurred in feature 'peak_frequency': {e}")
@@ -232,7 +232,7 @@ def calculate_peak_width(signal, fs):
 def calculate_power_spectral_entropy(signal, fs):
     """Calculate the power spectral entropy of the signal."""
     try:
-        f, Pxx = welch(signal, fs=fs)
+        f, Pxx = welch(signal, fs=fs, nperseg=min(len(signal), 192))  # Ensure nperseg ≤ length
         Pxx_norm = Pxx / np.sum(Pxx)
         return -np.sum(Pxx_norm * np.log2(Pxx_norm + np.finfo(float).eps))
     except Exception as e:

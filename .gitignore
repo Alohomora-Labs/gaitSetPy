@@ -169,3 +169,4 @@ cython_debug/
 testing.ipynb
 testing1\[1].ipynb
 dataset_downloaded/dataset_fog_release/*
+data/*
