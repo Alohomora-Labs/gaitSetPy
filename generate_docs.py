@@ -31,9 +31,7 @@ def main():
         # This will create HTML files for all modules and submodules
         result = subprocess.run([
             sys.executable, "-m", "pdoc",
-            "--html",
-            "--force",
-            "--output-dir", ".",
+            "-o", ".",
             "gaitsetpy"
         ], check=True, capture_output=True, text=True)
         
