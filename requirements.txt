@@ -7,3 +7,4 @@ matplotlib
 scikit-learn
 joblib
 tqdm
+pdoc

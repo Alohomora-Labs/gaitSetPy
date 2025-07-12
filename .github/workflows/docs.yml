@@ -1,0 +1,71 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'gaitsetpy/**'
+      - 'generate_docs.py'
+      - 'requirements.txt'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'gaitsetpy/**'
+      - 'generate_docs.py'
+      - 'requirements.txt'
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Generate documentation
+      run: |
+        python generate_docs.py
+    
+    - name: Configure Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+    
+    - name: Commit documentation changes
+      run: |
+        git add -A
+        if git diff --staged --quiet; then
+          echo "No documentation changes to commit"
+        else
+          git commit -m "Auto-update documentation [skip ci]"
+          git push
+        fi
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Prepare documentation for GitHub Pages
+      run: |
+        mkdir -p ./docs-temp
+        cp index.html ./docs-temp/
+        cp gaitsetpy.html ./docs-temp/
+        cp search.js ./docs-temp/
+        cp -r gaitsetpy/ ./docs-temp/
+        
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs-temp
+        publish_branch: gh-pages
+        destination_dir: docs 
