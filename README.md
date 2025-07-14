@@ -28,6 +28,8 @@ GaitSetPy is a Python package for gait analysis and recognition. This package pr
 
 ## Installation
 
+MINOR CHANGES
+
 You can install GaitSetPy using pip:
 
 ```bash
