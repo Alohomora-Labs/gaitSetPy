@@ -8,3 +8,5 @@ scikit-learn
 joblib
 tqdm
 pdoc
+torch  # PyTorch for LSTM, BiLSTM, CNN, GNN models
+# Optional: torch-geometric for advanced GNNs (install separately as per https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html)
