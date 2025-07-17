@@ -11319,9 +11319,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_dataset_manager"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_dataset_manager-45"><a href="#get_dataset_manager-45"><span class="linenos">45</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_dataset_manager</span><span class="p">():</span>
-</span><span id="get_dataset_manager-46"><a href="#get_dataset_manager-46"><span class="linenos">46</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton DatasetManager instance.&quot;&quot;&quot;</span>
-</span><span id="get_dataset_manager-47"><a href="#get_dataset_manager-47"><span class="linenos">47</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_dataset_manager-49"><a href="#get_dataset_manager-49"><span class="linenos">49</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_dataset_manager</span><span class="p">():</span>
+</span><span id="get_dataset_manager-50"><a href="#get_dataset_manager-50"><span class="linenos">50</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton DatasetManager instance.&quot;&quot;&quot;</span>
+</span><span id="get_dataset_manager-51"><a href="#get_dataset_manager-51"><span class="linenos">51</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -11341,9 +11341,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_feature_manager"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_feature_manager-88"><a href="#get_feature_manager-88"><span class="linenos">88</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_feature_manager</span><span class="p">():</span>
-</span><span id="get_feature_manager-89"><a href="#get_feature_manager-89"><span class="linenos">89</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton FeatureManager instance.&quot;&quot;&quot;</span>
-</span><span id="get_feature_manager-90"><a href="#get_feature_manager-90"><span class="linenos">90</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_feature_manager-91"><a href="#get_feature_manager-91"><span class="linenos">91</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_feature_manager</span><span class="p">():</span>
+</span><span id="get_feature_manager-92"><a href="#get_feature_manager-92"><span class="linenos">92</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton FeatureManager instance.&quot;&quot;&quot;</span>
+</span><span id="get_feature_manager-93"><a href="#get_feature_manager-93"><span class="linenos">93</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -11465,9 +11465,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_available_datasets"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_datasets-50"><a href="#get_available_datasets-50"><span class="linenos">50</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_datasets</span><span class="p">():</span>
-</span><span id="get_available_datasets-51"><a href="#get_available_datasets-51"><span class="linenos">51</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available dataset names.&quot;&quot;&quot;</span>
-</span><span id="get_available_datasets-52"><a href="#get_available_datasets-52"><span class="linenos">52</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_datasets-54"><a href="#get_available_datasets-54"><span class="linenos">54</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_datasets</span><span class="p">():</span>
+</span><span id="get_available_datasets-55"><a href="#get_available_datasets-55"><span class="linenos">55</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available dataset names.&quot;&quot;&quot;</span>
+</span><span id="get_available_datasets-56"><a href="#get_available_datasets-56"><span class="linenos">56</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -11487,9 +11487,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_available_extractors"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_extractors-93"><a href="#get_available_extractors-93"><span class="linenos">93</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_extractors</span><span class="p">():</span>
-</span><span id="get_available_extractors-94"><a href="#get_available_extractors-94"><span class="linenos">94</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available feature extractor names.&quot;&quot;&quot;</span>
-</span><span id="get_available_extractors-95"><a href="#get_available_extractors-95"><span class="linenos">95</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_extractors-96"><a href="#get_available_extractors-96"><span class="linenos">96</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_extractors</span><span class="p">():</span>
+</span><span id="get_available_extractors-97"><a href="#get_available_extractors-97"><span class="linenos">97</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available feature extractor names.&quot;&quot;&quot;</span>
+</span><span id="get_available_extractors-98"><a href="#get_available_extractors-98"><span class="linenos">98</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
 </span></pre></div>
 
 
