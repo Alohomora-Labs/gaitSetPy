@@ -18,7 +18,6 @@ process the dataset, which may take some time.
 """
 
 import os
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -27,6 +26,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 import sys
 import os
+import numpy as np
 # sys.path.append(r"/Users/harshit/Desktop/coding/alohomora_labs/gaitSetPy/")
 # Import gaitsetpy modules
 import gaitsetpy as gsp
@@ -88,53 +88,124 @@ def main():
     # Extract features
     print("\nExtracting features...")
     features_data = loader.extract_features(windows)
-    
     print(f"Extracted features for {len(features_data)} recordings")
-    
-    # Prepare data for classification
+
+    # Helper to ensure scalar values
+    def to_scalar(x):
+        if isinstance(x, (list, np.ndarray)):
+            if len(x) == 0:
+                return 0.0
+            return float(np.mean(x))
+        return float(x)
+
+    # Transform features_data into the required structure for model training
+    feature_dicts = []
+    for rec in features_data:
+        name = rec["name"]
+        features_list = rec["features"]
+        if not features_list:
+            continue
+        # Get all feature keys except 'sensor' and 'label'
+        feature_keys = [k for k in features_list[0].keys() if k not in ("sensor", "label")]
+        features = {k: [to_scalar(f.get(k, 0)) for f in features_list] for k in feature_keys}
+        annotations = [f["label"] for f in features_list if "label" in f]
+        feature_dicts.append({
+            "name": name,
+            "features": features,
+            "annotations": annotations
+        })
+
+    # Impute NaNs and ensure all features are numeric arrays
+    for fd in feature_dicts:
+        for k, arr in fd['features'].items():
+            arr_np = np.array(arr, dtype=np.float32)
+            if np.any(np.isnan(arr_np)):
+                arr_np = np.nan_to_num(arr_np, nan=0.0)
+            fd['features'][k] = arr_np.tolist()
+
+    # For legacy code and reporting
     X = []
     y = []
-    
-    for feature_set in features_data:
-        for feature in feature_set['features']:
-            # Skip non-numeric features
-            feature_vector = [v for k, v in feature.items() 
-                             if k not in ['sensor', 'label'] and isinstance(v, (int, float))]
-            X.append(feature_vector)
-            y.append(feature['label'])
-    
-    # Pad sequences to have same length
-    max_length = max(len(x) for x in X)
-    X_padded = [x + [0]*(max_length - len(x)) for x in X]
-    X = np.array(X_padded)
-    y = np.array(y)
-    
-    print(f"\nPrepared {X.shape[0]} feature vectors with {X.shape[1]} features each")
-    print(f"Activity distribution: {np.unique(y, return_counts=True)}")
-    
-    # Split data for training and testing
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-    
-    # Train a simple classifier
-    print("\nTraining a Random Forest classifier...")
-    clf = RandomForestClassifier(n_estimators=100, random_state=42)
-    clf.fit(X_train, y_train)
-    
-    # Evaluate the classifier
-    y_pred = clf.predict(X_test)
-    
-    print("\nClassification Report:")
-    print(classification_report(y_test, y_pred))
-    
-    # Plot confusion matrix
-    plt.figure(figsize=(10, 8))
-    cm = confusion_matrix(y_test, y_pred)
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-    plt.xlabel('Predicted')
-    plt.ylabel('True')
-    plt.title('Confusion Matrix')
-    plt.savefig('harup_confusion_matrix.png')
-    print("Saved confusion matrix to 'harup_confusion_matrix.png'")
+    for feature_set in feature_dicts:
+        features = feature_set.get('features', {})
+        annotations = feature_set.get('annotations', [])
+        # Transpose features to get per-window vectors
+        if features:
+            feature_keys = list(features.keys())
+            for i in range(len(annotations)):
+                feature_vector = [to_scalar(features[k][i]) for k in feature_keys]
+                X.append(feature_vector)
+                y.append(annotations[i])
+    # Pad for reporting
+    if X:
+        try:
+            X = np.array(X, dtype=np.float32)
+            y = np.array(y)
+            max_length = max(len(x) for x in X)
+            X_padded = [x.tolist() + [0]*(max_length - len(x)) for x in X]
+            X = np.array(X_padded, dtype=np.float32)
+            print(f"\nPrepared {X.shape[0]} feature vectors with {X.shape[1]} features each")
+            print(f"Activity distribution: {np.unique(y, return_counts=True)}")
+        except Exception as e:
+            print(f"Reporting skipped due to error: {e}")
+            X = None
+            y = None
+    else:
+        X = None
+        y = None
+
+    # --- TEST ALL MODELS ---
+    from gaitsetpy.classification.models import get_classification_model
+    model_names = ['random_forest', 'mlp', 'lstm', 'bilstm', 'cnn', 'gnn']
+    print("\nTesting all classification models:\n")
+    for model_name in model_names:
+        print(f"\n--- {model_name.upper()} ---")
+        # Model-specific kwargs
+        kwargs = {}
+        if X is not None and hasattr(X, 'shape') and y is not None:
+            if model_name == 'cnn':
+                kwargs['input_channels'] = X.shape[1]
+            if model_name in ['lstm', 'bilstm']:
+                kwargs['input_size'] = X.shape[1]
+            if model_name in ['cnn', 'lstm', 'bilstm']:
+                kwargs['num_classes'] = len(np.unique(y))
+            if model_name == 'gnn':
+                kwargs['input_dim'] = X.shape[1]
+                kwargs['output_dim'] = len(np.unique(y))
+        try:
+            model = get_classification_model(model_name, **{k: v for k, v in kwargs.items() if v is not None})
+        except Exception as e:
+            print(f"Could not instantiate {model_name}: {e}")
+            continue
+        # For GNN, need adjacency matrix matching total number of windows
+        train_kwargs = {}
+        eval_kwargs = {}
+        if model_name == 'gnn':
+            total_windows = sum(len(fd['annotations']) for fd in feature_dicts)
+            adj = np.eye(total_windows, dtype=np.float32)
+            train_kwargs['adjacency_matrix'] = adj
+            eval_kwargs['adjacency_matrix'] = adj
+        # Train
+        try:
+            model.train(feature_dicts, **train_kwargs)
+        except Exception as e:
+            print(f"Training failed for {model_name}: {e}")
+            continue
+        # Evaluate
+        try:
+            metrics = model.evaluate(feature_dicts, detailed_report=True, **eval_kwargs)
+            print("Classification Report:")
+            if 'classification_report' in metrics:
+                import pprint
+                pprint.pprint(metrics['classification_report'])
+            else:
+                print("No detailed report available.")
+            print("Confusion Matrix:")
+            print(np.array(metrics['confusion_matrix']))
+        except Exception as e:
+            print(f"Evaluation failed for {model_name}: {e}")
+            continue
+    print("\nAll models tested.")
     
     # Plot sample data
     

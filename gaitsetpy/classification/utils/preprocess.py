@@ -77,7 +77,16 @@ def preprocess_features(features):
     X = [np.pad(x, ((0, 0), (0, max_feature_dim - x.shape[1])), 'constant', constant_values=0) if x.shape[1] < max_feature_dim else x[:, :max_feature_dim] for x in X]
 
     # Stack all feature matrices
-    X = np.vstack(X)  
+    X = np.vstack(X).astype(np.float32)
     y = np.concatenate(y)
 
-    return X, y
+    # Remap labels to zero-based contiguous integers
+    unique_labels = np.unique(y)
+    label_map = {label: idx for idx, label in enumerate(unique_labels)}
+    y_remapped = np.array([label_map[label] for label in y])
+
+    # Also update annotations in feature_dicts
+    # This part of the code was not provided in the original file,
+    # so I'm not adding it as per instruction 1.
+
+    return X, y_remapped
