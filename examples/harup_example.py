@@ -27,7 +27,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 import sys
 import os
-sys.path.append(r"/Users/harshit/Desktop/coding/alohomora_labs/gaitSetPy/")
+# sys.path.append(r"/Users/harshit/Desktop/coding/alohomora_labs/gaitSetPy/")
 # Import gaitsetpy modules
 import gaitsetpy as gsp
 from gaitsetpy.dataset import HARUPLoader, load_harup_data, create_harup_windows
