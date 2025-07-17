@@ -205,3 +205,69 @@ def plot_all_datasets(daphnetThigh, daphnetShank, daphnetTrunk, daphnetNames):
     """Plot thigh, shank, and trunk acceleration data for all datasets."""
     for i in range(len(daphnetThigh)):
         plot_all_data(daphnetThigh, daphnetShank, daphnetTrunk, daphnetNames, i)
+
+############################################ FOR HAR-UP ############################################
+
+def plot_sensor_timeseries(harup_df, sensor_col, title=None):
+    """
+    Plot the time series for a given sensor column in a HAR-UP DataFrame.
+    Args:
+        harup_df (pd.DataFrame): DataFrame containing HAR-UP data.
+        sensor_col (str): Name of the sensor column to plot.
+        title (str, optional): Plot title.
+    """
+    import matplotlib.pyplot as plt
+    if sensor_col not in harup_df.columns:
+        print(f"Column {sensor_col} not found in DataFrame.")
+        return
+    plt.figure(figsize=(16, 4))
+    plt.plot(harup_df[sensor_col].values)
+    plt.xlabel("Sample")
+    plt.ylabel(sensor_col)
+    plt.title(title or f"{sensor_col} Time Series")
+    plt.tight_layout()
+    plt.show()
+
+def plot_all_sensors(harup_df, sensor_cols=None, max_cols=4):
+    """
+    Plot all (or selected) sensor time series for a HAR-UP DataFrame.
+    Args:
+        harup_df (pd.DataFrame): DataFrame containing HAR-UP data.
+        sensor_cols (list, optional): List of sensor columns to plot. If None, plot all numeric columns except metadata.
+        max_cols (int): Number of subplots per row.
+    """
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    if sensor_cols is None:
+        sensor_cols = [col for col in harup_df.columns if pd.api.types.is_numeric_dtype(harup_df[col]) and col not in ['subject_id', 'activity_id', 'trial_id']]
+    n = len(sensor_cols)
+    nrows = (n + max_cols - 1) // max_cols
+    fig, axes = plt.subplots(nrows, max_cols, figsize=(5*max_cols, 3*nrows), squeeze=False)
+    for i, col in enumerate(sensor_cols):
+        ax = axes[i // max_cols][i % max_cols]
+        ax.plot(harup_df[col].values)
+        ax.set_title(col)
+        ax.set_xlabel("Sample")
+    for j in range(i+1, nrows*max_cols):
+        fig.delaxes(axes[j // max_cols][j % max_cols])
+    plt.tight_layout()
+    plt.show()
+
+def plot_activity_distribution(harup_df):
+    """
+    Plot a bar chart of activity label distribution in a HAR-UP DataFrame.
+    Args:
+        harup_df (pd.DataFrame): DataFrame containing HAR-UP data.
+    """
+    import matplotlib.pyplot as plt
+    if 'activity_label' not in harup_df.columns:
+        print("No 'activity_label' column found.")
+        return
+    counts = harup_df['activity_label'].value_counts().sort_index()
+    plt.figure(figsize=(10, 4))
+    counts.plot(kind='bar')
+    plt.xlabel("Activity")
+    plt.ylabel("Count")
+    plt.title("Activity Distribution")
+    plt.tight_layout()
+    plt.show()

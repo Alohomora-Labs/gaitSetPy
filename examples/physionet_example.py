@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 from gaitsetpy.dataset import PhysioNetLoader
 from gaitsetpy.features import PhysioNetFeatureExtractor, LBPFeatureExtractor, FourierSeriesFeatureExtractor
-from gaitsetpy.classification.models import RandomForestModel
+# from gaitsetpy.classification.models import RandomForestModel
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, confusion_matrix

@@ -10,9 +10,11 @@ Maintainer: @aharshit123456
 # Import the new class-based feature extractors
 from .gait_features import GaitFeatureExtractor
 from .physionet_features import LBPFeatureExtractor, FourierSeriesFeatureExtractor, PhysioNetFeatureExtractor
+from .harup_features import HARUPFeatureExtractor
 
 # Import legacy functions for backward compatibility
 from .physionet_features import extract_lbp_features, extract_fourier_features, extract_physionet_features
+from .harup_features import extract_harup_features
 from .utils import (
     calculate_mean,
     calculate_standard_deviation,
@@ -79,6 +81,7 @@ def _register_extractors():
     manager.register_extractor("lbp_features", LBPFeatureExtractor)
     manager.register_extractor("fourier_features", FourierSeriesFeatureExtractor)
     manager.register_extractor("physionet_features", PhysioNetFeatureExtractor)
+    manager.register_extractor("harup_features", HARUPFeatureExtractor)
 
 # Auto-register extractors when module is imported
 _register_extractors()
@@ -115,6 +118,7 @@ __all__ = [
     'LBPFeatureExtractor',
     'FourierSeriesFeatureExtractor',
     'PhysioNetFeatureExtractor',
+    'HARUPFeatureExtractor',
     # Legacy utility functions
     'calculate_mean',
     'calculate_standard_deviation',
@@ -170,6 +174,8 @@ __all__ = [
     'extract_lbp_features',
     'extract_fourier_features',
     'extract_physionet_features',
+    # HAR-UP legacy functions
+    'extract_harup_features',
     # Manager functions
     'get_feature_manager',
     'get_available_extractors',

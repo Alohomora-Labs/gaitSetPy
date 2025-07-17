@@ -18,7 +18,7 @@ GaitSetPy is a Python package for gait analysis and recognition. This package pr
 - Daphnet: [https://archive.ics.uci.edu/dataset/245/daphnet+freezing+of+gait](https://archive.ics.uci.edu/dataset/245/daphnet+freezing+of+gait) ![Supported](https://img.shields.io/badge/status-supported-brightgreen)
 - MobiFall: [https://bmi.hmu.gr/the-mobifall-and-mobiact-datasets-2/](https://bmi.hmu.gr/the-mobifall-and-mobiact-datasets-2/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
 
-- UPFall: [https://sites.google.com/up.edu.mx/har-up/](https://sites.google.com/up.edu.mx/har-up/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
+- HAR-UP (formerly UPFall): [https://sites.google.com/up.edu.mx/har-up/](https://sites.google.com/up.edu.mx/har-up/) ![Supported](https://img.shields.io/badge/status-supported-brightgreen)
 - URFall: [https://fenix.ur.edu.pl/~mkepski/ds/uf.html](https://fenix.ur.edu.pl/~mkepski/ds/uf.html) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
 - Activity Net - Arduous : [https://www.mad.tf.fau.de/research/activitynet/wearable-multi-sensor-gait-based-daily-activity-data/](https://www.mad.tf.fau.de/research/activitynet/wearable-multi-sensor-gait-based-daily-activity-data/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
 
@@ -44,12 +44,13 @@ pip install -r requirements.txt
 
 Here is a simple example to get you started with GaitSetPy:
 
+### Daphnet Dataset Example
+
 ```python
 import gaitsetpy as gsp
 
 # Load gait data
 daphnet, names = gsp.load_daphnet_data("")
-
 
 # Preprocess data
 sliding_windows = gsp.create_sliding_windows(daphnet, names)
@@ -59,6 +60,26 @@ features = gsp.extract_gait_features(sliding_windows[0]['windows'], freq, True, 
 
 # Visualize gait features
 gsp.plot_sensor_with_features(sliding_windows[0]['windows'], features, sensor_name="shank", num_windows=15)
+```
+
+### HAR-UP Dataset Example
+
+```python
+import gaitsetpy as gsp
+
+# Load HAR-UP data
+data_dir = "data/harup"
+harup_data, harup_names = gsp.load_harup_data(data_dir)
+
+# Create sliding windows
+window_size = 100  # 1 second at 100Hz
+step_size = 50     # 0.5 second overlap
+windows = gsp.create_harup_windows(harup_data, harup_names, window_size, step_size)
+
+# Extract features
+features_data = gsp.extract_harup_features(windows)
+
+# For more advanced usage, see examples/harup_example.py
 ```
 ![alt text](image.png)
 

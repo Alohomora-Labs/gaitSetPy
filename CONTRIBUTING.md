@@ -12,9 +12,9 @@ We welcome new feature requests! Please open an issue on GitHub and describe the
 
 ### Submitting Changes
 1. Fork the repository.
-2. Create a new branch for your changes: `git checkout -b my-feature-branch`.
+2. Create a new branch for your changes: `git checkout -b feat|improv|bug/<feature-name>`.
 3. Make your changes and commit them with clear and concise commit messages.
-4. Push your changes to your fork: `git push origin my-feature-branch`.
+4. Push your changes to your fork: `git push origin feat|improv|bug/<feature-name>`.
 5. Open a pull request on the main repository.
 
 ### Code Style

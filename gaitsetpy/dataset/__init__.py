@@ -9,6 +9,7 @@ Supported datasets:
 - MobiFall: Fall detection dataset
 - Arduous: Daily activity recognition dataset
 - PhysioNet: VGRF dataset for Parkinson's disease gait analysis
+- HAR-UP: Multimodal System for Fall Detection and Human Activity Recognition
 
 """
 
@@ -17,12 +18,14 @@ from .daphnet import DaphnetLoader
 from .mobifall import MobiFallLoader
 from .arduous import ArduousLoader
 from .physionet import PhysioNetLoader
+from .harup import HARUPLoader
 
 # Import legacy functions for backward compatibility
 from .daphnet import load_daphnet_data, create_sliding_windows
 from .mobifall import load_mobifall_data
 from .arduous import load_arduous_data
 from .physionet import load_physionet_data, create_physionet_windows
+from .harup import load_harup_data, create_harup_windows, extract_harup_features
 from .utils import download_dataset, extract_dataset, sliding_window
 
 # Import managers
@@ -36,6 +39,7 @@ def _register_datasets():
     manager.register_dataset("mobifall", MobiFallLoader)
     manager.register_dataset("arduous", ArduousLoader)
     manager.register_dataset("physionet", PhysioNetLoader)
+    manager.register_dataset("harup", HARUPLoader)
 
 # Auto-register datasets when module is imported
 _register_datasets()
@@ -71,6 +75,7 @@ __all__ = [
     'MobiFallLoader', 
     'ArduousLoader',
     'PhysioNetLoader',
+    'HARUPLoader',
     # Legacy functions for backward compatibility
     'load_daphnet_data',
     'create_sliding_windows',
@@ -78,6 +83,9 @@ __all__ = [
     'load_arduous_data',
     'load_physionet_data',
     'create_physionet_windows',
+    'load_harup_data',
+    'create_harup_windows',
+    'extract_harup_features',
     'download_dataset',
     'extract_dataset',
     'sliding_window',

@@ -506,3 +506,44 @@ class SensorStatisticsAnalyzer(BaseEDAAnalyzer):
             print(f"Plot saved at {file_path}")
         else:
             plt.show() 
+
+
+def harup_basic_stats(harup_df):
+    """
+    Print and return basic statistics for each sensor column in a HAR-UP DataFrame.
+    Args:
+        harup_df (pd.DataFrame): DataFrame containing HAR-UP data.
+    Returns:
+        pd.DataFrame: DataFrame of statistics.
+    """
+    import pandas as pd
+    stats = harup_df.describe().T
+    print(stats)
+    return stats
+
+def harup_missing_data_report(harup_df):
+    """
+    Print and return missing value counts for each column in a HAR-UP DataFrame.
+    Args:
+        harup_df (pd.DataFrame): DataFrame containing HAR-UP data.
+    Returns:
+        pd.Series: Series of missing value counts.
+    """
+    missing = harup_df.isnull().sum()
+    print(missing)
+    return missing
+
+def harup_activity_stats(harup_df):
+    """
+    Print and return counts for each activity label in a HAR-UP DataFrame.
+    Args:
+        harup_df (pd.DataFrame): DataFrame containing HAR-UP data.
+    Returns:
+        pd.Series: Series of activity label counts.
+    """
+    if 'activity_label' not in harup_df.columns:
+        print("No 'activity_label' column found.")
+        return None
+    counts = harup_df['activity_label'].value_counts().sort_index()
+    print(counts)
+    return counts 

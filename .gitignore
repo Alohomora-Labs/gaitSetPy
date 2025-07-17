@@ -170,3 +170,5 @@ testing.ipynb
 testing1\[1].ipynb
 dataset_downloaded/dataset_fog_release/*
 data/*
+__MACOSX/*
+UP_Fall_Detection_Dataset/*
