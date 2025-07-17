@@ -48,7 +48,7 @@ jobs:
           echo "No documentation changes to commit"
         else
           git commit -m "Auto-update documentation [skip ci]"
-          git push
+          git push origin HEAD:${GITHUB_REF_NAME}
         fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
