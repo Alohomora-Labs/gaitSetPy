@@ -8,105 +8,116 @@ from ..utils.preprocess import preprocess_features
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-class SimpleGCN(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim):
-        super(SimpleGCN, self).__init__()
-        self.fc1 = nn.Linear(input_dim, hidden_dim)
-        self.fc2 = nn.Linear(hidden_dim, output_dim)
-    def forward(self, x, adj):
-        h = torch.relu(self.fc1(torch.matmul(adj, x)))
-        out = self.fc2(torch.matmul(adj, h))
-        return out
+class SimpleCNN(nn.Module):
+    def __init__(self, input_channels, num_classes, seq_len=1):
+        super(SimpleCNN, self).__init__()
+        self.conv1 = nn.Conv1d(input_channels, 32, kernel_size=3, padding=1)
+        self.relu = nn.ReLU()
+        self.pool = nn.AdaptiveMaxPool1d(1)
+        self.fc = nn.Linear(32, num_classes)
+    def forward(self, x):
+        # x: (batch, channels, seq_len)
+        x = self.conv1(x)
+        x = self.relu(x)
+        x = self.pool(x)
+        x = x.view(x.size(0), -1)
+        x = self.fc(x)
+        return x
 
-class GNNModel(BaseClassificationModel):
+class CNNModel(BaseClassificationModel):
     """
-    Simple Graph Neural Network (GCN) classification model using PyTorch.
+    Simple 1D CNN classification model using PyTorch.
     Implements the BaseClassificationModel interface.
-    Expects features as node features and adjacency matrix in kwargs.
     """
-    def __init__(self, input_dim=10, hidden_dim=32, output_dim=2, lr=0.001, epochs=20, device=None):
+    def __init__(self, input_channels=10, num_classes=2, lr=0.001, epochs=20, batch_size=32, device=None):
         super().__init__(
-            name="gnn",
-            description="Graph Convolutional Network (GCN) classifier for gait data classification"
+            name="cnn",
+            description="1D CNN classifier for gait data classification"
         )
         self.config = {
-            'input_dim': input_dim,
-            'hidden_dim': hidden_dim,
-            'output_dim': output_dim,
+            'input_channels': input_channels,
+            'num_classes': num_classes,
             'lr': lr,
-            'epochs': epochs
+            'epochs': epochs,
+            'batch_size': batch_size
         }
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
-        self.model = SimpleGCN(input_dim, hidden_dim, output_dim).to(self.device)
+        self.model = SimpleCNN(input_channels, num_classes).to(self.device)
         self.epochs = epochs
+        self.batch_size = batch_size
         self.trained = False
         self.feature_names = []
         self.class_names = []
 
     def train(self, features: List[Dict], **kwargs):
         X, y = preprocess_features(features)
-        # X: (num_nodes, num_features), y: (num_nodes,)
-        adj = kwargs.get('adjacency_matrix')
-        if adj is None:
-            raise ValueError("Adjacency matrix must be provided as 'adjacency_matrix' in kwargs for GNN training.")
-        X = torch.tensor(X, dtype=torch.float32).to(self.device)
-        y = torch.tensor(y, dtype=torch.long).to(self.device)
-        adj = torch.tensor(adj, dtype=torch.float32).to(self.device)
+        # Reshape X for CNN: (samples, channels, seq_len)
+        # Here, treat each feature vector as a channel with seq_len=1
+        X = X.reshape((X.shape[0], X.shape[1], 1))
         self.feature_names = [f"feature_{i}" for i in range(X.shape[1])]
-        self.class_names = list(set(y.cpu().numpy()))
+        self.class_names = list(set(y))
+        test_size = kwargs.get('test_size', 0.2)
+        validation_split = kwargs.get('validation_split', True)
+        if validation_split:
+            X_train, X_test, y_train, y_test = train_test_split(
+                X, y, test_size=test_size, random_state=42
+            )
+            self.X_test = X_test
+            self.y_test = y_test
+        else:
+            X_train, y_train = X, y
+        X_train = torch.tensor(X_train, dtype=torch.float32).to(self.device)
+        y_train = torch.tensor(y_train, dtype=torch.long).to(self.device)
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.Adam(self.model.parameters(), lr=self.config['lr'])
         for epoch in range(self.epochs):
             self.model.train()
             optimizer.zero_grad()
-            outputs = self.model(X, adj)
-            loss = criterion(outputs, y)
+            outputs = self.model(X_train)
+            loss = criterion(outputs, y_train)
             loss.backward()
             optimizer.step()
             if (epoch+1) % 5 == 0 or epoch == 0:
                 print(f"Epoch [{epoch+1}/{self.epochs}], Loss: {loss.item():.4f}")
         self.trained = True
-        print("GNN model trained successfully.")
+        print("CNN model trained successfully.")
 
     def predict(self, features: List[Dict], **kwargs) -> np.ndarray:
         if not self.trained:
             raise ValueError("Model must be trained before making predictions")
         X, _ = preprocess_features(features)
-        adj = kwargs.get('adjacency_matrix')
-        if adj is None:
-            raise ValueError("Adjacency matrix must be provided as 'adjacency_matrix' in kwargs for GNN prediction.")
+        X = X.reshape((X.shape[0], X.shape[1], 1))
         X = torch.tensor(X, dtype=torch.float32).to(self.device)
-        adj = torch.tensor(adj, dtype=torch.float32).to(self.device)
         self.model.eval()
         with torch.no_grad():
-            outputs = self.model(X, adj)
+            outputs = self.model(X)
             _, predicted = torch.max(outputs.data, 1)
         return predicted.cpu().numpy()
 
     def evaluate(self, features: List[Dict], **kwargs) -> Dict[str, float]:
         if not self.trained:
             raise ValueError("Model must be trained before evaluation")
-        X, y = preprocess_features(features)
-        adj = kwargs.get('adjacency_matrix')
-        if adj is None:
-            raise ValueError("Adjacency matrix must be provided as 'adjacency_matrix' in kwargs for GNN evaluation.")
-        X = torch.tensor(X, dtype=torch.float32).to(self.device)
-        y = np.array(y)
-        adj = torch.tensor(adj, dtype=torch.float32).to(self.device)
+        if hasattr(self, 'X_test') and hasattr(self, 'y_test'):
+            X_test, y_test = self.X_test, self.y_test
+        else:
+            X_test, y_test = preprocess_features(features)
+            X_test = X_test.reshape((X_test.shape[0], X_test.shape[1], 1))
+        X_test = torch.tensor(X_test, dtype=torch.float32).to(self.device)
+        y_test = np.array(y_test)
         self.model.eval()
         with torch.no_grad():
-            outputs = self.model(X, adj)
+            outputs = self.model(X_test)
             _, y_pred = torch.max(outputs.data, 1)
         y_pred = y_pred.cpu().numpy()
-        accuracy = accuracy_score(y, y_pred)
-        conf_matrix = confusion_matrix(y, y_pred)
+        accuracy = accuracy_score(y_test, y_pred)
+        conf_matrix = confusion_matrix(y_test, y_pred)
         metrics = {
             'accuracy': accuracy,
             'confusion_matrix': conf_matrix.tolist()
         }
         detailed_report = kwargs.get('detailed_report', False)
         if detailed_report:
-            class_report = classification_report(y, y_pred, output_dict=True)
+            class_report = classification_report(y_test, y_pred, output_dict=True)
             metrics['classification_report'] = class_report
         return metrics
 
@@ -120,18 +131,17 @@ class GNNModel(BaseClassificationModel):
             'class_names': self.class_names,
             'trained': self.trained
         }, filepath)
-        print(f"GNN model saved to {filepath}")
+        print(f"CNN model saved to {filepath}")
 
     def load_model(self, filepath: str):
         checkpoint = torch.load(filepath, map_location=self.device)
-        self.model = SimpleGCN(
-            self.config['input_dim'],
-            self.config['hidden_dim'],
-            self.config['output_dim']
+        self.model = SimpleCNN(
+            self.config['input_channels'],
+            self.config['num_classes']
         ).to(self.device)
         self.model.load_state_dict(checkpoint['model_state_dict'])
         self.config = checkpoint.get('config', self.config)
         self.feature_names = checkpoint.get('feature_names', [])
         self.class_names = checkpoint.get('class_names', [])
         self.trained = checkpoint.get('trained', True)
-        print(f"GNN model loaded from {filepath}")
+        print(f"CNN model loaded from {filepath}") 

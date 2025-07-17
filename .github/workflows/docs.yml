@@ -26,6 +26,14 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
     
     - name: Install dependencies
       run: |
@@ -48,24 +56,7 @@ jobs:
           echo "No documentation changes to commit"
         else
           git commit -m "Auto-update documentation [skip ci]"
-          git push
+          git push origin HEAD:${GITHUB_REF_NAME}
         fi
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-    - name: Prepare documentation for GitHub Pages
-      run: |
-        mkdir -p ./docs-temp
-        cp index.html ./docs-temp/
-        cp gaitsetpy.html ./docs-temp/
-        cp search.js ./docs-temp/
-        cp -r gaitsetpy/ ./docs-temp/
-        
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      if: github.ref == 'refs/heads/main'
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs-temp
-        publish_branch: gh-pages
-        destination_dir: docs 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
