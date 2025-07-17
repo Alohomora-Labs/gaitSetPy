@@ -28,6 +28,46 @@
 
 
 
+            <h2>API Documentation</h2>
+                <ul class="memberlist">
+            <li>
+                    <a class="class" href="#MLPModel">MLPModel</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#MLPModel.__init__">MLPModel</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MLPModel.config">config</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MLPModel.model">model</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MLPModel.feature_names">feature_names</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#MLPModel.class_names">class_names</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#MLPModel.train">train</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#MLPModel.predict">predict</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#MLPModel.evaluate">evaluate</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#MLPModel.save_model">save_model</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#MLPModel.load_model">load_model</a>
+                        </li>
+                </ul>
+
+            </li>
+    </ul>
+
 
 
         <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev" target="_blank">
@@ -47,11 +87,554 @@
 
                         <label class="view-source-button" for="mod-mlp-view-source"><span>View Source</span></label>
 
-                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">1</span></a>
+                        <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">joblib</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neural_network</span><span class="w"> </span><span class="kn">import</span> <span class="n">MLPClassifier</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">...core.base_classes</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseClassificationModel</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">..utils.preprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">preprocess_features</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="k">class</span><span class="w"> </span><span class="nc">MLPModel</span><span class="p">(</span><span class="n">BaseClassificationModel</span><span class="p">):</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="sd">    Multi-Layer Perceptron (MLP) classification model.</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">    Implements the BaseClassificationModel interface using scikit-learn&#39;s MLPClassifier.</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mlp&quot;</span><span class="p">,</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Multi-Layer Perceptron classifier for gait data classification&quot;</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>        <span class="p">)</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>            <span class="s1">&#39;hidden_layer_sizes&#39;</span><span class="p">:</span> <span class="n">hidden_layer_sizes</span><span class="p">,</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>            <span class="s1">&#39;activation&#39;</span><span class="p">:</span> <span class="n">activation</span><span class="p">,</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>            <span class="s1">&#39;solver&#39;</span><span class="p">:</span> <span class="n">solver</span><span class="p">,</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>            <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="n">random_state</span><span class="p">,</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>            <span class="s1">&#39;max_iter&#39;</span><span class="p">:</span> <span class="n">max_iter</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>        <span class="p">}</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">MLPClassifier</span><span class="p">(</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>            <span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="n">hidden_layer_sizes</span><span class="p">,</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>            <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>            <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>            <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>        <span class="p">)</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;feature_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>        <span class="n">test_size</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;test_size&#39;</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>        <span class="n">validation_split</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;validation_split&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>        <span class="k">if</span> <span class="n">validation_split</span><span class="p">:</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>                <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;random_state&#39;</span><span class="p">]</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>            <span class="p">)</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span> <span class="o">=</span> <span class="n">y_test</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>            <span class="n">train_accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>            <span class="n">test_accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training accuracy: </span><span class="si">{</span><span class="n">train_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation accuracy: </span><span class="si">{</span><span class="n">test_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>            <span class="n">train_accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training accuracy: </span><span class="si">{</span><span class="n">train_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">trained</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MLP model trained successfully.&quot;</span><span class="p">)</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span><span class="p">:</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before making predictions&quot;</span><span class="p">)</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>        <span class="n">X</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>        <span class="n">return_probabilities</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;return_probabilities&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>        <span class="k">if</span> <span class="n">return_probabilities</span><span class="p">:</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span><span class="p">:</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before evaluation&quot;</span><span class="p">)</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;X_test&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_test&#39;</span><span class="p">):</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>            <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>            <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>        <span class="n">conf_matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>            <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>            <span class="s1">&#39;confusion_matrix&#39;</span><span class="p">:</span> <span class="n">conf_matrix</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>        <span class="p">}</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>        <span class="n">detailed_report</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;detailed_report&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>        <span class="k">if</span> <span class="n">detailed_report</span><span class="p">:</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>            <span class="n">class_report</span> <span class="o">=</span> <span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>            <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;classification_report&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">class_report</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>        <span class="k">return</span> <span class="n">metrics</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span><span class="p">:</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before saving&quot;</span><span class="p">)</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>        <span class="n">model_data</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>            <span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>            <span class="s1">&#39;feature_names&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>            <span class="s1">&#39;class_names&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">,</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>            <span class="s1">&#39;trained&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>        <span class="p">}</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model_data</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MLP model saved to </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>            <span class="n">model_data</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_data</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;feature_names&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;class_names&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">trained</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;trained&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_data</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">trained</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MLP model loaded from </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to load MLP model: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
             </section>
+                <section id="MLPModel">
+                            <input id="MLPModel-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">MLPModel</span><wbr>(<span class="base"><a href="../../core/base_classes.html#BaseClassificationModel">gaitsetpy.core.base_classes.BaseClassificationModel</a></span>):
+
+                <label class="view-source-button" for="MLPModel-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#MLPModel"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="MLPModel-11"><a href="#MLPModel-11"><span class="linenos"> 11</span></a><span class="k">class</span><span class="w"> </span><span class="nc">MLPModel</span><span class="p">(</span><span class="n">BaseClassificationModel</span><span class="p">):</span>
+</span><span id="MLPModel-12"><a href="#MLPModel-12"><span class="linenos"> 12</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="MLPModel-13"><a href="#MLPModel-13"><span class="linenos"> 13</span></a><span class="sd">    Multi-Layer Perceptron (MLP) classification model.</span>
+</span><span id="MLPModel-14"><a href="#MLPModel-14"><span class="linenos"> 14</span></a><span class="sd">    Implements the BaseClassificationModel interface using scikit-learn&#39;s MLPClassifier.</span>
+</span><span id="MLPModel-15"><a href="#MLPModel-15"><span class="linenos"> 15</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="MLPModel-16"><a href="#MLPModel-16"><span class="linenos"> 16</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+</span><span id="MLPModel-17"><a href="#MLPModel-17"><span class="linenos"> 17</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="MLPModel-18"><a href="#MLPModel-18"><span class="linenos"> 18</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mlp&quot;</span><span class="p">,</span>
+</span><span id="MLPModel-19"><a href="#MLPModel-19"><span class="linenos"> 19</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Multi-Layer Perceptron classifier for gait data classification&quot;</span>
+</span><span id="MLPModel-20"><a href="#MLPModel-20"><span class="linenos"> 20</span></a>        <span class="p">)</span>
+</span><span id="MLPModel-21"><a href="#MLPModel-21"><span class="linenos"> 21</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="MLPModel-22"><a href="#MLPModel-22"><span class="linenos"> 22</span></a>            <span class="s1">&#39;hidden_layer_sizes&#39;</span><span class="p">:</span> <span class="n">hidden_layer_sizes</span><span class="p">,</span>
+</span><span id="MLPModel-23"><a href="#MLPModel-23"><span class="linenos"> 23</span></a>            <span class="s1">&#39;activation&#39;</span><span class="p">:</span> <span class="n">activation</span><span class="p">,</span>
+</span><span id="MLPModel-24"><a href="#MLPModel-24"><span class="linenos"> 24</span></a>            <span class="s1">&#39;solver&#39;</span><span class="p">:</span> <span class="n">solver</span><span class="p">,</span>
+</span><span id="MLPModel-25"><a href="#MLPModel-25"><span class="linenos"> 25</span></a>            <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="n">random_state</span><span class="p">,</span>
+</span><span id="MLPModel-26"><a href="#MLPModel-26"><span class="linenos"> 26</span></a>            <span class="s1">&#39;max_iter&#39;</span><span class="p">:</span> <span class="n">max_iter</span>
+</span><span id="MLPModel-27"><a href="#MLPModel-27"><span class="linenos"> 27</span></a>        <span class="p">}</span>
+</span><span id="MLPModel-28"><a href="#MLPModel-28"><span class="linenos"> 28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">MLPClassifier</span><span class="p">(</span>
+</span><span id="MLPModel-29"><a href="#MLPModel-29"><span class="linenos"> 29</span></a>            <span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="n">hidden_layer_sizes</span><span class="p">,</span>
+</span><span id="MLPModel-30"><a href="#MLPModel-30"><span class="linenos"> 30</span></a>            <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span>
+</span><span id="MLPModel-31"><a href="#MLPModel-31"><span class="linenos"> 31</span></a>            <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
+</span><span id="MLPModel-32"><a href="#MLPModel-32"><span class="linenos"> 32</span></a>            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+</span><span id="MLPModel-33"><a href="#MLPModel-33"><span class="linenos"> 33</span></a>            <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span>
+</span><span id="MLPModel-34"><a href="#MLPModel-34"><span class="linenos"> 34</span></a>        <span class="p">)</span>
+</span><span id="MLPModel-35"><a href="#MLPModel-35"><span class="linenos"> 35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="MLPModel-36"><a href="#MLPModel-36"><span class="linenos"> 36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="MLPModel-37"><a href="#MLPModel-37"><span class="linenos"> 37</span></a>
+</span><span id="MLPModel-38"><a href="#MLPModel-38"><span class="linenos"> 38</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="MLPModel-39"><a href="#MLPModel-39"><span class="linenos"> 39</span></a>        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span><span id="MLPModel-40"><a href="#MLPModel-40"><span class="linenos"> 40</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;feature_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+</span><span id="MLPModel-41"><a href="#MLPModel-41"><span class="linenos"> 41</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+</span><span id="MLPModel-42"><a href="#MLPModel-42"><span class="linenos"> 42</span></a>        <span class="n">test_size</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;test_size&#39;</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+</span><span id="MLPModel-43"><a href="#MLPModel-43"><span class="linenos"> 43</span></a>        <span class="n">validation_split</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;validation_split&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span id="MLPModel-44"><a href="#MLPModel-44"><span class="linenos"> 44</span></a>        <span class="k">if</span> <span class="n">validation_split</span><span class="p">:</span>
+</span><span id="MLPModel-45"><a href="#MLPModel-45"><span class="linenos"> 45</span></a>            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+</span><span id="MLPModel-46"><a href="#MLPModel-46"><span class="linenos"> 46</span></a>                <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;random_state&#39;</span><span class="p">]</span>
+</span><span id="MLPModel-47"><a href="#MLPModel-47"><span class="linenos"> 47</span></a>            <span class="p">)</span>
+</span><span id="MLPModel-48"><a href="#MLPModel-48"><span class="linenos"> 48</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span><span id="MLPModel-49"><a href="#MLPModel-49"><span class="linenos"> 49</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span>
+</span><span id="MLPModel-50"><a href="#MLPModel-50"><span class="linenos"> 50</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span> <span class="o">=</span> <span class="n">y_test</span>
+</span><span id="MLPModel-51"><a href="#MLPModel-51"><span class="linenos"> 51</span></a>            <span class="n">train_accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span><span id="MLPModel-52"><a href="#MLPModel-52"><span class="linenos"> 52</span></a>            <span class="n">test_accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</span><span id="MLPModel-53"><a href="#MLPModel-53"><span class="linenos"> 53</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training accuracy: </span><span class="si">{</span><span class="n">train_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="MLPModel-54"><a href="#MLPModel-54"><span class="linenos"> 54</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation accuracy: </span><span class="si">{</span><span class="n">test_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="MLPModel-55"><a href="#MLPModel-55"><span class="linenos"> 55</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="MLPModel-56"><a href="#MLPModel-56"><span class="linenos"> 56</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span id="MLPModel-57"><a href="#MLPModel-57"><span class="linenos"> 57</span></a>            <span class="n">train_accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span id="MLPModel-58"><a href="#MLPModel-58"><span class="linenos"> 58</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training accuracy: </span><span class="si">{</span><span class="n">train_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="MLPModel-59"><a href="#MLPModel-59"><span class="linenos"> 59</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">trained</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="MLPModel-60"><a href="#MLPModel-60"><span class="linenos"> 60</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MLP model trained successfully.&quot;</span><span class="p">)</span>
+</span><span id="MLPModel-61"><a href="#MLPModel-61"><span class="linenos"> 61</span></a>
+</span><span id="MLPModel-62"><a href="#MLPModel-62"><span class="linenos"> 62</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="MLPModel-63"><a href="#MLPModel-63"><span class="linenos"> 63</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span><span class="p">:</span>
+</span><span id="MLPModel-64"><a href="#MLPModel-64"><span class="linenos"> 64</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before making predictions&quot;</span><span class="p">)</span>
+</span><span id="MLPModel-65"><a href="#MLPModel-65"><span class="linenos"> 65</span></a>        <span class="n">X</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span><span id="MLPModel-66"><a href="#MLPModel-66"><span class="linenos"> 66</span></a>        <span class="n">return_probabilities</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;return_probabilities&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span id="MLPModel-67"><a href="#MLPModel-67"><span class="linenos"> 67</span></a>        <span class="k">if</span> <span class="n">return_probabilities</span><span class="p">:</span>
+</span><span id="MLPModel-68"><a href="#MLPModel-68"><span class="linenos"> 68</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span><span id="MLPModel-69"><a href="#MLPModel-69"><span class="linenos"> 69</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="MLPModel-70"><a href="#MLPModel-70"><span class="linenos"> 70</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span><span id="MLPModel-71"><a href="#MLPModel-71"><span class="linenos"> 71</span></a>
+</span><span id="MLPModel-72"><a href="#MLPModel-72"><span class="linenos"> 72</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+</span><span id="MLPModel-73"><a href="#MLPModel-73"><span class="linenos"> 73</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span><span class="p">:</span>
+</span><span id="MLPModel-74"><a href="#MLPModel-74"><span class="linenos"> 74</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before evaluation&quot;</span><span class="p">)</span>
+</span><span id="MLPModel-75"><a href="#MLPModel-75"><span class="linenos"> 75</span></a>        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;X_test&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_test&#39;</span><span class="p">):</span>
+</span><span id="MLPModel-76"><a href="#MLPModel-76"><span class="linenos"> 76</span></a>            <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span>
+</span><span id="MLPModel-77"><a href="#MLPModel-77"><span class="linenos"> 77</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="MLPModel-78"><a href="#MLPModel-78"><span class="linenos"> 78</span></a>            <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span><span id="MLPModel-79"><a href="#MLPModel-79"><span class="linenos"> 79</span></a>        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</span><span id="MLPModel-80"><a href="#MLPModel-80"><span class="linenos"> 80</span></a>        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="MLPModel-81"><a href="#MLPModel-81"><span class="linenos"> 81</span></a>        <span class="n">conf_matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="MLPModel-82"><a href="#MLPModel-82"><span class="linenos"> 82</span></a>        <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="MLPModel-83"><a href="#MLPModel-83"><span class="linenos"> 83</span></a>            <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span>
+</span><span id="MLPModel-84"><a href="#MLPModel-84"><span class="linenos"> 84</span></a>            <span class="s1">&#39;confusion_matrix&#39;</span><span class="p">:</span> <span class="n">conf_matrix</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span id="MLPModel-85"><a href="#MLPModel-85"><span class="linenos"> 85</span></a>        <span class="p">}</span>
+</span><span id="MLPModel-86"><a href="#MLPModel-86"><span class="linenos"> 86</span></a>        <span class="n">detailed_report</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;detailed_report&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span id="MLPModel-87"><a href="#MLPModel-87"><span class="linenos"> 87</span></a>        <span class="k">if</span> <span class="n">detailed_report</span><span class="p">:</span>
+</span><span id="MLPModel-88"><a href="#MLPModel-88"><span class="linenos"> 88</span></a>            <span class="n">class_report</span> <span class="o">=</span> <span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="MLPModel-89"><a href="#MLPModel-89"><span class="linenos"> 89</span></a>            <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;classification_report&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">class_report</span>
+</span><span id="MLPModel-90"><a href="#MLPModel-90"><span class="linenos"> 90</span></a>        <span class="k">return</span> <span class="n">metrics</span>
+</span><span id="MLPModel-91"><a href="#MLPModel-91"><span class="linenos"> 91</span></a>
+</span><span id="MLPModel-92"><a href="#MLPModel-92"><span class="linenos"> 92</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="MLPModel-93"><a href="#MLPModel-93"><span class="linenos"> 93</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span><span class="p">:</span>
+</span><span id="MLPModel-94"><a href="#MLPModel-94"><span class="linenos"> 94</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before saving&quot;</span><span class="p">)</span>
+</span><span id="MLPModel-95"><a href="#MLPModel-95"><span class="linenos"> 95</span></a>        <span class="n">model_data</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="MLPModel-96"><a href="#MLPModel-96"><span class="linenos"> 96</span></a>            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+</span><span id="MLPModel-97"><a href="#MLPModel-97"><span class="linenos"> 97</span></a>            <span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+</span><span id="MLPModel-98"><a href="#MLPModel-98"><span class="linenos"> 98</span></a>            <span class="s1">&#39;feature_names&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span>
+</span><span id="MLPModel-99"><a href="#MLPModel-99"><span class="linenos"> 99</span></a>            <span class="s1">&#39;class_names&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">,</span>
+</span><span id="MLPModel-100"><a href="#MLPModel-100"><span class="linenos">100</span></a>            <span class="s1">&#39;trained&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span>
+</span><span id="MLPModel-101"><a href="#MLPModel-101"><span class="linenos">101</span></a>        <span class="p">}</span>
+</span><span id="MLPModel-102"><a href="#MLPModel-102"><span class="linenos">102</span></a>        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model_data</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+</span><span id="MLPModel-103"><a href="#MLPModel-103"><span class="linenos">103</span></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MLP model saved to </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="MLPModel-104"><a href="#MLPModel-104"><span class="linenos">104</span></a>
+</span><span id="MLPModel-105"><a href="#MLPModel-105"><span class="linenos">105</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="MLPModel-106"><a href="#MLPModel-106"><span class="linenos">106</span></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="MLPModel-107"><a href="#MLPModel-107"><span class="linenos">107</span></a>            <span class="n">model_data</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+</span><span id="MLPModel-108"><a href="#MLPModel-108"><span class="linenos">108</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="MLPModel-109"><a href="#MLPModel-109"><span class="linenos">109</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_data</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
+</span><span id="MLPModel-110"><a href="#MLPModel-110"><span class="linenos">110</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+</span><span id="MLPModel-111"><a href="#MLPModel-111"><span class="linenos">111</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;feature_names&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="MLPModel-112"><a href="#MLPModel-112"><span class="linenos">112</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;class_names&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="MLPModel-113"><a href="#MLPModel-113"><span class="linenos">113</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">trained</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;trained&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span id="MLPModel-114"><a href="#MLPModel-114"><span class="linenos">114</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="MLPModel-115"><a href="#MLPModel-115"><span class="linenos">115</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_data</span>
+</span><span id="MLPModel-116"><a href="#MLPModel-116"><span class="linenos">116</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">trained</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="MLPModel-117"><a href="#MLPModel-117"><span class="linenos">117</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MLP model loaded from </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="MLPModel-118"><a href="#MLPModel-118"><span class="linenos">118</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="MLPModel-119"><a href="#MLPModel-119"><span class="linenos">119</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to load MLP model: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Multi-Layer Perceptron (MLP) classification model.
+Implements the BaseClassificationModel interface using scikit-learn's MLPClassifier.</p>
+</div>
+
+
+                            <div id="MLPModel.__init__" class="classattr">
+                                        <input id="MLPModel.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="name">MLPModel</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,)</span>,</span><span class="param">	<span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span>,</span><span class="param">	<span class="n">solver</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span>,</span><span class="param">	<span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>,</span><span class="param">	<span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span></span>)</span>
+
+                <label class="view-source-button" for="MLPModel.__init__-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#MLPModel.__init__"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="MLPModel.__init__-16"><a href="#MLPModel.__init__-16"><span class="linenos">16</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+</span><span id="MLPModel.__init__-17"><a href="#MLPModel.__init__-17"><span class="linenos">17</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="MLPModel.__init__-18"><a href="#MLPModel.__init__-18"><span class="linenos">18</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mlp&quot;</span><span class="p">,</span>
+</span><span id="MLPModel.__init__-19"><a href="#MLPModel.__init__-19"><span class="linenos">19</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Multi-Layer Perceptron classifier for gait data classification&quot;</span>
+</span><span id="MLPModel.__init__-20"><a href="#MLPModel.__init__-20"><span class="linenos">20</span></a>        <span class="p">)</span>
+</span><span id="MLPModel.__init__-21"><a href="#MLPModel.__init__-21"><span class="linenos">21</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="MLPModel.__init__-22"><a href="#MLPModel.__init__-22"><span class="linenos">22</span></a>            <span class="s1">&#39;hidden_layer_sizes&#39;</span><span class="p">:</span> <span class="n">hidden_layer_sizes</span><span class="p">,</span>
+</span><span id="MLPModel.__init__-23"><a href="#MLPModel.__init__-23"><span class="linenos">23</span></a>            <span class="s1">&#39;activation&#39;</span><span class="p">:</span> <span class="n">activation</span><span class="p">,</span>
+</span><span id="MLPModel.__init__-24"><a href="#MLPModel.__init__-24"><span class="linenos">24</span></a>            <span class="s1">&#39;solver&#39;</span><span class="p">:</span> <span class="n">solver</span><span class="p">,</span>
+</span><span id="MLPModel.__init__-25"><a href="#MLPModel.__init__-25"><span class="linenos">25</span></a>            <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="n">random_state</span><span class="p">,</span>
+</span><span id="MLPModel.__init__-26"><a href="#MLPModel.__init__-26"><span class="linenos">26</span></a>            <span class="s1">&#39;max_iter&#39;</span><span class="p">:</span> <span class="n">max_iter</span>
+</span><span id="MLPModel.__init__-27"><a href="#MLPModel.__init__-27"><span class="linenos">27</span></a>        <span class="p">}</span>
+</span><span id="MLPModel.__init__-28"><a href="#MLPModel.__init__-28"><span class="linenos">28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">MLPClassifier</span><span class="p">(</span>
+</span><span id="MLPModel.__init__-29"><a href="#MLPModel.__init__-29"><span class="linenos">29</span></a>            <span class="n">hidden_layer_sizes</span><span class="o">=</span><span class="n">hidden_layer_sizes</span><span class="p">,</span>
+</span><span id="MLPModel.__init__-30"><a href="#MLPModel.__init__-30"><span class="linenos">30</span></a>            <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">,</span>
+</span><span id="MLPModel.__init__-31"><a href="#MLPModel.__init__-31"><span class="linenos">31</span></a>            <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
+</span><span id="MLPModel.__init__-32"><a href="#MLPModel.__init__-32"><span class="linenos">32</span></a>            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+</span><span id="MLPModel.__init__-33"><a href="#MLPModel.__init__-33"><span class="linenos">33</span></a>            <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span>
+</span><span id="MLPModel.__init__-34"><a href="#MLPModel.__init__-34"><span class="linenos">34</span></a>        <span class="p">)</span>
+</span><span id="MLPModel.__init__-35"><a href="#MLPModel.__init__-35"><span class="linenos">35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="MLPModel.__init__-36"><a href="#MLPModel.__init__-36"><span class="linenos">36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="p">[]</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Initialize the classification model.</p>
+
+<p>Args:
+    name: Name of the classification model
+    description: Description of the classification model</p>
+</div>
+
+
+                            </div>
+                            <div id="MLPModel.config" class="classattr">
+                                <div class="attr variable">
+            <span class="name">config</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MLPModel.config"></a>
+    
+    
+
+                            </div>
+                            <div id="MLPModel.model" class="classattr">
+                                <div class="attr variable">
+            <span class="name">model</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MLPModel.model"></a>
+    
+    
+
+                            </div>
+                            <div id="MLPModel.feature_names" class="classattr">
+                                <div class="attr variable">
+            <span class="name">feature_names</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MLPModel.feature_names"></a>
+    
+    
+
+                            </div>
+                            <div id="MLPModel.class_names" class="classattr">
+                                <div class="attr variable">
+            <span class="name">class_names</span>
+
+        
+    </div>
+    <a class="headerlink" href="#MLPModel.class_names"></a>
+    
+    
+
+                            </div>
+                            <div id="MLPModel.train" class="classattr">
+                                        <input id="MLPModel.train-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">train</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="MLPModel.train-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#MLPModel.train"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="MLPModel.train-38"><a href="#MLPModel.train-38"><span class="linenos">38</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="MLPModel.train-39"><a href="#MLPModel.train-39"><span class="linenos">39</span></a>        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span><span id="MLPModel.train-40"><a href="#MLPModel.train-40"><span class="linenos">40</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;feature_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+</span><span id="MLPModel.train-41"><a href="#MLPModel.train-41"><span class="linenos">41</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+</span><span id="MLPModel.train-42"><a href="#MLPModel.train-42"><span class="linenos">42</span></a>        <span class="n">test_size</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;test_size&#39;</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+</span><span id="MLPModel.train-43"><a href="#MLPModel.train-43"><span class="linenos">43</span></a>        <span class="n">validation_split</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;validation_split&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</span><span id="MLPModel.train-44"><a href="#MLPModel.train-44"><span class="linenos">44</span></a>        <span class="k">if</span> <span class="n">validation_split</span><span class="p">:</span>
+</span><span id="MLPModel.train-45"><a href="#MLPModel.train-45"><span class="linenos">45</span></a>            <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+</span><span id="MLPModel.train-46"><a href="#MLPModel.train-46"><span class="linenos">46</span></a>                <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="n">test_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;random_state&#39;</span><span class="p">]</span>
+</span><span id="MLPModel.train-47"><a href="#MLPModel.train-47"><span class="linenos">47</span></a>            <span class="p">)</span>
+</span><span id="MLPModel.train-48"><a href="#MLPModel.train-48"><span class="linenos">48</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span><span id="MLPModel.train-49"><a href="#MLPModel.train-49"><span class="linenos">49</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span>
+</span><span id="MLPModel.train-50"><a href="#MLPModel.train-50"><span class="linenos">50</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span> <span class="o">=</span> <span class="n">y_test</span>
+</span><span id="MLPModel.train-51"><a href="#MLPModel.train-51"><span class="linenos">51</span></a>            <span class="n">train_accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</span><span id="MLPModel.train-52"><a href="#MLPModel.train-52"><span class="linenos">52</span></a>            <span class="n">test_accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</span><span id="MLPModel.train-53"><a href="#MLPModel.train-53"><span class="linenos">53</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training accuracy: </span><span class="si">{</span><span class="n">train_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="MLPModel.train-54"><a href="#MLPModel.train-54"><span class="linenos">54</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Validation accuracy: </span><span class="si">{</span><span class="n">test_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="MLPModel.train-55"><a href="#MLPModel.train-55"><span class="linenos">55</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="MLPModel.train-56"><a href="#MLPModel.train-56"><span class="linenos">56</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span id="MLPModel.train-57"><a href="#MLPModel.train-57"><span class="linenos">57</span></a>            <span class="n">train_accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span id="MLPModel.train-58"><a href="#MLPModel.train-58"><span class="linenos">58</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training accuracy: </span><span class="si">{</span><span class="n">train_accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="MLPModel.train-59"><a href="#MLPModel.train-59"><span class="linenos">59</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">trained</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="MLPModel.train-60"><a href="#MLPModel.train-60"><span class="linenos">60</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;MLP model trained successfully.&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Train the classification model.</p>
+
+<p>Args:
+    features: List of feature dictionaries
+    **kwargs: Additional arguments for training</p>
+</div>
+
+
+                            </div>
+                            <div id="MLPModel.predict" class="classattr">
+                                        <input id="MLPModel.predict-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">predict</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="MLPModel.predict-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#MLPModel.predict"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="MLPModel.predict-62"><a href="#MLPModel.predict-62"><span class="linenos">62</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="MLPModel.predict-63"><a href="#MLPModel.predict-63"><span class="linenos">63</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span><span class="p">:</span>
+</span><span id="MLPModel.predict-64"><a href="#MLPModel.predict-64"><span class="linenos">64</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before making predictions&quot;</span><span class="p">)</span>
+</span><span id="MLPModel.predict-65"><a href="#MLPModel.predict-65"><span class="linenos">65</span></a>        <span class="n">X</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span><span id="MLPModel.predict-66"><a href="#MLPModel.predict-66"><span class="linenos">66</span></a>        <span class="n">return_probabilities</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;return_probabilities&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span id="MLPModel.predict-67"><a href="#MLPModel.predict-67"><span class="linenos">67</span></a>        <span class="k">if</span> <span class="n">return_probabilities</span><span class="p">:</span>
+</span><span id="MLPModel.predict-68"><a href="#MLPModel.predict-68"><span class="linenos">68</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span><span id="MLPModel.predict-69"><a href="#MLPModel.predict-69"><span class="linenos">69</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="MLPModel.predict-70"><a href="#MLPModel.predict-70"><span class="linenos">70</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Make predictions using the trained model.</p>
+
+<p>Args:
+    features: List of feature dictionaries
+    **kwargs: Additional arguments for prediction</p>
+
+<p>Returns:
+    Array of predictions</p>
+</div>
+
+
+                            </div>
+                            <div id="MLPModel.evaluate" class="classattr">
+                                        <input id="MLPModel.evaluate-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">evaluate</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="MLPModel.evaluate-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#MLPModel.evaluate"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="MLPModel.evaluate-72"><a href="#MLPModel.evaluate-72"><span class="linenos">72</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+</span><span id="MLPModel.evaluate-73"><a href="#MLPModel.evaluate-73"><span class="linenos">73</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span><span class="p">:</span>
+</span><span id="MLPModel.evaluate-74"><a href="#MLPModel.evaluate-74"><span class="linenos">74</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before evaluation&quot;</span><span class="p">)</span>
+</span><span id="MLPModel.evaluate-75"><a href="#MLPModel.evaluate-75"><span class="linenos">75</span></a>        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;X_test&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_test&#39;</span><span class="p">):</span>
+</span><span id="MLPModel.evaluate-76"><a href="#MLPModel.evaluate-76"><span class="linenos">76</span></a>            <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X_test</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_test</span>
+</span><span id="MLPModel.evaluate-77"><a href="#MLPModel.evaluate-77"><span class="linenos">77</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="MLPModel.evaluate-78"><a href="#MLPModel.evaluate-78"><span class="linenos">78</span></a>            <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">preprocess_features</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+</span><span id="MLPModel.evaluate-79"><a href="#MLPModel.evaluate-79"><span class="linenos">79</span></a>        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</span><span id="MLPModel.evaluate-80"><a href="#MLPModel.evaluate-80"><span class="linenos">80</span></a>        <span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="MLPModel.evaluate-81"><a href="#MLPModel.evaluate-81"><span class="linenos">81</span></a>        <span class="n">conf_matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+</span><span id="MLPModel.evaluate-82"><a href="#MLPModel.evaluate-82"><span class="linenos">82</span></a>        <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="MLPModel.evaluate-83"><a href="#MLPModel.evaluate-83"><span class="linenos">83</span></a>            <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span> <span class="n">accuracy</span><span class="p">,</span>
+</span><span id="MLPModel.evaluate-84"><a href="#MLPModel.evaluate-84"><span class="linenos">84</span></a>            <span class="s1">&#39;confusion_matrix&#39;</span><span class="p">:</span> <span class="n">conf_matrix</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span id="MLPModel.evaluate-85"><a href="#MLPModel.evaluate-85"><span class="linenos">85</span></a>        <span class="p">}</span>
+</span><span id="MLPModel.evaluate-86"><a href="#MLPModel.evaluate-86"><span class="linenos">86</span></a>        <span class="n">detailed_report</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;detailed_report&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span id="MLPModel.evaluate-87"><a href="#MLPModel.evaluate-87"><span class="linenos">87</span></a>        <span class="k">if</span> <span class="n">detailed_report</span><span class="p">:</span>
+</span><span id="MLPModel.evaluate-88"><a href="#MLPModel.evaluate-88"><span class="linenos">88</span></a>            <span class="n">class_report</span> <span class="o">=</span> <span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">output_dict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="MLPModel.evaluate-89"><a href="#MLPModel.evaluate-89"><span class="linenos">89</span></a>            <span class="n">metrics</span><span class="p">[</span><span class="s1">&#39;classification_report&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">class_report</span>
+</span><span id="MLPModel.evaluate-90"><a href="#MLPModel.evaluate-90"><span class="linenos">90</span></a>        <span class="k">return</span> <span class="n">metrics</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Evaluate the model performance.</p>
+
+<p>Args:
+    features: List of feature dictionaries
+    **kwargs: Additional arguments for evaluation</p>
+
+<p>Returns:
+    Dictionary containing evaluation metrics</p>
+</div>
+
+
+                            </div>
+                            <div id="MLPModel.save_model" class="classattr">
+                                        <input id="MLPModel.save_model-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">save_model</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="MLPModel.save_model-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#MLPModel.save_model"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="MLPModel.save_model-92"><a href="#MLPModel.save_model-92"><span class="linenos"> 92</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">save_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="MLPModel.save_model-93"><a href="#MLPModel.save_model-93"><span class="linenos"> 93</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span><span class="p">:</span>
+</span><span id="MLPModel.save_model-94"><a href="#MLPModel.save_model-94"><span class="linenos"> 94</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model must be trained before saving&quot;</span><span class="p">)</span>
+</span><span id="MLPModel.save_model-95"><a href="#MLPModel.save_model-95"><span class="linenos"> 95</span></a>        <span class="n">model_data</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="MLPModel.save_model-96"><a href="#MLPModel.save_model-96"><span class="linenos"> 96</span></a>            <span class="s1">&#39;model&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+</span><span id="MLPModel.save_model-97"><a href="#MLPModel.save_model-97"><span class="linenos"> 97</span></a>            <span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+</span><span id="MLPModel.save_model-98"><a href="#MLPModel.save_model-98"><span class="linenos"> 98</span></a>            <span class="s1">&#39;feature_names&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span><span class="p">,</span>
+</span><span id="MLPModel.save_model-99"><a href="#MLPModel.save_model-99"><span class="linenos"> 99</span></a>            <span class="s1">&#39;class_names&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span><span class="p">,</span>
+</span><span id="MLPModel.save_model-100"><a href="#MLPModel.save_model-100"><span class="linenos">100</span></a>            <span class="s1">&#39;trained&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">trained</span>
+</span><span id="MLPModel.save_model-101"><a href="#MLPModel.save_model-101"><span class="linenos">101</span></a>        <span class="p">}</span>
+</span><span id="MLPModel.save_model-102"><a href="#MLPModel.save_model-102"><span class="linenos">102</span></a>        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">model_data</span><span class="p">,</span> <span class="n">filepath</span><span class="p">)</span>
+</span><span id="MLPModel.save_model-103"><a href="#MLPModel.save_model-103"><span class="linenos">103</span></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MLP model saved to </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Save the trained model to a file.</p>
+
+<p>Args:
+    filepath: Path to save the model</p>
+</div>
+
+
+                            </div>
+                            <div id="MLPModel.load_model" class="classattr">
+                                        <input id="MLPModel.load_model-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">load_model</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="MLPModel.load_model-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#MLPModel.load_model"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="MLPModel.load_model-105"><a href="#MLPModel.load_model-105"><span class="linenos">105</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="MLPModel.load_model-106"><a href="#MLPModel.load_model-106"><span class="linenos">106</span></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="MLPModel.load_model-107"><a href="#MLPModel.load_model-107"><span class="linenos">107</span></a>            <span class="n">model_data</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+</span><span id="MLPModel.load_model-108"><a href="#MLPModel.load_model-108"><span class="linenos">108</span></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+</span><span id="MLPModel.load_model-109"><a href="#MLPModel.load_model-109"><span class="linenos">109</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_data</span><span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">]</span>
+</span><span id="MLPModel.load_model-110"><a href="#MLPModel.load_model-110"><span class="linenos">110</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+</span><span id="MLPModel.load_model-111"><a href="#MLPModel.load_model-111"><span class="linenos">111</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">feature_names</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;feature_names&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="MLPModel.load_model-112"><a href="#MLPModel.load_model-112"><span class="linenos">112</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">class_names</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;class_names&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="MLPModel.load_model-113"><a href="#MLPModel.load_model-113"><span class="linenos">113</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">trained</span> <span class="o">=</span> <span class="n">model_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;trained&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+</span><span id="MLPModel.load_model-114"><a href="#MLPModel.load_model-114"><span class="linenos">114</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="MLPModel.load_model-115"><a href="#MLPModel.load_model-115"><span class="linenos">115</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model_data</span>
+</span><span id="MLPModel.load_model-116"><a href="#MLPModel.load_model-116"><span class="linenos">116</span></a>                <span class="bp">self</span><span class="o">.</span><span class="n">trained</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="MLPModel.load_model-117"><a href="#MLPModel.load_model-117"><span class="linenos">117</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MLP model loaded from </span><span class="si">{</span><span class="n">filepath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="MLPModel.load_model-118"><a href="#MLPModel.load_model-118"><span class="linenos">118</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="MLPModel.load_model-119"><a href="#MLPModel.load_model-119"><span class="linenos">119</span></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to load MLP model: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Load a trained model from a file.</p>
+
+<p>Args:
+    filepath: Path to the saved model</p>
+</div>
+
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="../../core/base_classes.html#BaseClassificationModel">gaitsetpy.core.base_classes.BaseClassificationModel</a></dt>
+                                <dd id="MLPModel.name" class="variable"><a href="../../core/base_classes.html#BaseClassificationModel.name">name</a></dd>
+                <dd id="MLPModel.description" class="variable"><a href="../../core/base_classes.html#BaseClassificationModel.description">description</a></dd>
+                <dd id="MLPModel.trained" class="variable"><a href="../../core/base_classes.html#BaseClassificationModel.trained">trained</a></dd>
+                <dd id="MLPModel.configure" class="function"><a href="../../core/base_classes.html#BaseClassificationModel.configure">configure</a></dd>
+                <dd id="MLPModel.get_info" class="function"><a href="../../core/base_classes.html#BaseClassificationModel.get_info">get_info</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
     </main>
 <script>
     function escapeHTML(html) {
