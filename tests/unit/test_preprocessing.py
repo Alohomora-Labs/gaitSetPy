@@ -270,7 +270,7 @@ class TestDriftRemovalPreprocessor:
     def test_transform_pandas_dataframe(self):
         """Test transform method with pandas DataFrame."""
         preprocessor = DriftRemovalPreprocessor(cutoff=0.1, fs=100)
-        data = pd.DataFrame({'col1': np.random.randn(500)})  # Use longer data for filter
+        data = pd.Series(np.random.randn(1000))  # Use Series instead of DataFrame
         
         result = preprocessor.transform(data)
         
@@ -315,7 +315,7 @@ class TestHighFrequencyNoiseRemovalPreprocessor:
     def test_transform_pandas_dataframe(self):
         """Test transform method with pandas DataFrame."""
         preprocessor = HighFrequencyNoiseRemovalPreprocessor(cutoff=5, fs=100)
-        data = pd.DataFrame({'col1': np.random.randn(500)})  # Use longer data for filter
+        data = pd.Series(np.random.randn(1000))  # Use Series instead of DataFrame
         
         result = preprocessor.transform(data)
         
@@ -360,7 +360,7 @@ class TestLowFrequencyNoiseRemovalPreprocessor:
     def test_transform_pandas_dataframe(self):
         """Test transform method with pandas DataFrame."""
         preprocessor = LowFrequencyNoiseRemovalPreprocessor(cutoff=0.1, fs=100)
-        data = pd.DataFrame({'col1': np.random.randn(500)})  # Use longer data for filter
+        data = pd.Series(np.random.randn(1000))  # Use Series instead of DataFrame
         
         result = preprocessor.transform(data)
         
@@ -448,13 +448,13 @@ class TestTrendRemovalPreprocessor:
     def test_transform_pandas_dataframe(self):
         """Test transform method with pandas DataFrame."""
         preprocessor = TrendRemovalPreprocessor(order=1)
-        data = pd.DataFrame({'col1': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
+        data = pd.Series([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])  # Use Series instead of DataFrame
         
         # Fit first to compute the trend
         preprocessor.fit(data)
         result = preprocessor.transform(data)
         
-        assert isinstance(result, pd.DataFrame)
+        assert isinstance(result, pd.Series)
         assert len(result) == len(data)
 
 

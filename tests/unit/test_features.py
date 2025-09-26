@@ -531,5 +531,5 @@ class TestFeatureExtractionPerformance:
         # Extract features should not cause memory issues
         for i in range(data.shape[1]):
             calculate_mean(data[:, i])
-            calculate_std(data[:, i])
+            calculate_standard_deviation(data[:, i])
             calculate_entropy(data[:, i])
