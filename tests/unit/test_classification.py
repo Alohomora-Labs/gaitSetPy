@@ -363,7 +363,7 @@ class TestRandomForestModel:
         assert 'feature1' in importance
         assert 'feature2' in importance
         # Check that importance values are between 0 and 1
-        assert all(0 <= val <= 1 for val in importance.values)
+        assert all(0 <= val <= 1 for val in importance.values())
     
     def test_get_feature_importance_not_trained(self):
         """Test getting feature importance without training."""

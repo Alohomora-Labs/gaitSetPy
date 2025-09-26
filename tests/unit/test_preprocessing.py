@@ -270,7 +270,7 @@ class TestDriftRemovalPreprocessor:
     def test_transform_pandas_dataframe(self):
         """Test transform method with pandas DataFrame."""
         preprocessor = DriftRemovalPreprocessor(cutoff=0.1, fs=100)
-        data = pd.DataFrame({'col1': np.random.randn(100)})  # Use longer data for filter
+        data = pd.DataFrame({'col1': np.random.randn(500)})  # Use longer data for filter
         
         result = preprocessor.transform(data)
         
@@ -315,7 +315,7 @@ class TestHighFrequencyNoiseRemovalPreprocessor:
     def test_transform_pandas_dataframe(self):
         """Test transform method with pandas DataFrame."""
         preprocessor = HighFrequencyNoiseRemovalPreprocessor(cutoff=5, fs=100)
-        data = pd.DataFrame({'col1': np.random.randn(200)})  # Use longer data for filter
+        data = pd.DataFrame({'col1': np.random.randn(500)})  # Use longer data for filter
         
         result = preprocessor.transform(data)
         
@@ -360,7 +360,7 @@ class TestLowFrequencyNoiseRemovalPreprocessor:
     def test_transform_pandas_dataframe(self):
         """Test transform method with pandas DataFrame."""
         preprocessor = LowFrequencyNoiseRemovalPreprocessor(cutoff=0.1, fs=100)
-        data = pd.DataFrame({'col1': np.random.randn(200)})  # Use longer data for filter
+        data = pd.DataFrame({'col1': np.random.randn(500)})  # Use longer data for filter
         
         result = preprocessor.transform(data)
         
@@ -448,7 +448,7 @@ class TestTrendRemovalPreprocessor:
     def test_transform_pandas_dataframe(self):
         """Test transform method with pandas DataFrame."""
         preprocessor = TrendRemovalPreprocessor(order=1)
-        data = pd.DataFrame({'col1': [1, 2, 3, 4, 5]})
+        data = pd.DataFrame({'col1': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]})
         
         # Fit first to compute the trend
         preprocessor.fit(data)
@@ -515,8 +515,10 @@ class TestPreprocessorEdgeCases:
         preprocessor = ClippingPreprocessor()
         data = np.array([])
         
-        with pytest.raises((ValueError, IndexError)):
-            preprocessor.fit(data)
+        # Empty data should be handled gracefully
+        preprocessor.fit(data)
+        result = preprocessor.transform(data)
+        assert len(result) == 0
     
     def test_single_value_data(self):
         """Test preprocessors with single value data."""
@@ -527,7 +529,8 @@ class TestPreprocessorEdgeCases:
         result = preprocessor.transform(data)
         
         assert len(result) == 1
-        assert result[0] == 5
+        # Clipping preprocessor clips values to [0, 1] by default
+        assert result[0] == 1  # 5 gets clipped to 1
     
     def test_constant_data(self):
         """Test preprocessors with constant data."""

@@ -512,7 +512,7 @@ class TestFeatureExtractionPerformance:
         
         # Test multiple features
         calculate_mean(large_data)
-        calculate_std(large_data)
+        calculate_standard_deviation(large_data)
         calculate_entropy(large_data)
         
         end_time = time.time()
