@@ -33,6 +33,9 @@ from gaitsetpy.core.base_classes import (
 class MockDatasetLoader(BaseDatasetLoader):
     """Mock dataset loader for testing."""
     
+    def __init__(self, name: str = "mock_dataset", description: str = "Mock dataset for testing"):
+        super().__init__(name, description)
+    
     def load_data(self, data_dir: str, **kwargs):
         return [], []
     
@@ -46,6 +49,9 @@ class MockDatasetLoader(BaseDatasetLoader):
 class MockFeatureExtractor(BaseFeatureExtractor):
     """Mock feature extractor for testing."""
     
+    def __init__(self, name: str = "mock_extractor", description: str = "Mock feature extractor for testing"):
+        super().__init__(name, description)
+    
     def extract_features(self, windows, fs, **kwargs):
         return []
     
@@ -55,6 +61,9 @@ class MockFeatureExtractor(BaseFeatureExtractor):
 
 class MockPreprocessor(BasePreprocessor):
     """Mock preprocessor for testing."""
+    
+    def __init__(self, name: str = "mock_preprocessor", description: str = "Mock preprocessor for testing"):
+        super().__init__(name, description)
     
     def fit(self, data, **kwargs):
         self.fitted = True
@@ -66,6 +75,9 @@ class MockPreprocessor(BasePreprocessor):
 class MockEDAAnalyzer(BaseEDAAnalyzer):
     """Mock EDA analyzer for testing."""
     
+    def __init__(self, name: str = "mock_analyzer", description: str = "Mock EDA analyzer for testing"):
+        super().__init__(name, description)
+    
     def analyze(self, data, **kwargs):
         return {'result': 'analysis'}
     
@@ -75,6 +87,9 @@ class MockEDAAnalyzer(BaseEDAAnalyzer):
 
 class MockClassificationModel(BaseClassificationModel):
     """Mock classification model for testing."""
+    
+    def __init__(self, name: str = "mock_model", description: str = "Mock classification model for testing"):
+        super().__init__(name, description)
     
     def train(self, features, **kwargs):
         self.trained = True
