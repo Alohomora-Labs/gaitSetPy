@@ -50,7 +50,8 @@ Here is a simple example to get you started with GaitSetPy:
 import gaitsetpy as gsp
 
 # Load gait data
-daphnet, names = gsp.load_daphnet_data("")
+data_dir = "data/daphnet"
+daphnet, names = gsp.load_daphnet_data(data_dir)
 
 # Preprocess data
 sliding_windows = gsp.create_sliding_windows(daphnet, names)
