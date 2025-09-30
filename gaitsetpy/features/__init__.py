@@ -11,6 +11,7 @@ Maintainer: @aharshit123456
 from .gait_features import GaitFeatureExtractor
 from .physionet_features import LBPFeatureExtractor, FourierSeriesFeatureExtractor, PhysioNetFeatureExtractor
 from .harup_features import HARUPFeatureExtractor
+from .urfall_features import UrFallMediaFeatureExtractor
 
 # Import legacy functions for backward compatibility
 from .physionet_features import extract_lbp_features, extract_fourier_features, extract_physionet_features
@@ -82,6 +83,7 @@ def _register_extractors():
     manager.register_extractor("fourier_features", FourierSeriesFeatureExtractor)
     manager.register_extractor("physionet_features", PhysioNetFeatureExtractor)
     manager.register_extractor("harup_features", HARUPFeatureExtractor)
+    manager.register_extractor("urfall_media", UrFallMediaFeatureExtractor)
 
 # Auto-register extractors when module is imported
 _register_extractors()
@@ -113,13 +115,19 @@ def extract_features(extractor_name: str, windows, fs: int, **kwargs):
     return FeatureManager().extract_features(extractor_name, windows, fs, **kwargs)
 
 __all__ = [
-    # New class-based extractors
+    # New class-based feature extractors
     'GaitFeatureExtractor',
     'LBPFeatureExtractor',
     'FourierSeriesFeatureExtractor',
     'PhysioNetFeatureExtractor',
     'HARUPFeatureExtractor',
-    # Legacy utility functions
+    'UrFallMediaFeatureExtractor',
+    # Legacy functions
+    'extract_lbp_features',
+    'extract_fourier_features',
+    'extract_physionet_features',
+    'extract_harup_features',
+    # Utility exports
     'calculate_mean',
     'calculate_standard_deviation',
     'calculate_variance',
@@ -144,7 +152,7 @@ __all__ = [
     'calculate_interquartile_range',
     'calculate_correlation',
     'calculate_auto_regression_coefficients',
-    # Legacy window functions
+    # Gait feature convenience
     'get_mean_for_windows',
     'get_standard_deviation_for_windows',
     'get_variance_for_windows',
@@ -170,14 +178,4 @@ __all__ = [
     'get_correlation_for_windows',
     'get_auto_regression_coefficients_for_windows',
     'extract_gait_features',
-    # PhysioNet legacy functions
-    'extract_lbp_features',
-    'extract_fourier_features',
-    'extract_physionet_features',
-    # HAR-UP legacy functions
-    'extract_harup_features',
-    # Manager functions
-    'get_feature_manager',
-    'get_available_extractors',
-    'extract_features'
 ]

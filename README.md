@@ -19,7 +19,7 @@ GaitSetPy is a Python package for gait analysis and recognition. This package pr
 - MobiFall: [https://bmi.hmu.gr/the-mobifall-and-mobiact-datasets-2/](https://bmi.hmu.gr/the-mobifall-and-mobiact-datasets-2/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
 
 - HAR-UP (formerly UPFall): [https://sites.google.com/up.edu.mx/har-up/](https://sites.google.com/up.edu.mx/har-up/) ![Supported](https://img.shields.io/badge/status-supported-brightgreen)
-- URFall: [https://fenix.ur.edu.pl/~mkepski/ds/uf.html](https://fenix.ur.edu.pl/~mkepski/ds/uf.html) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
+- UrFall: [https://fenix.ur.edu.pl/~mkepski/ds/uf.html](https://fenix.ur.edu.pl/~mkepski/ds/uf.html) ![Supported](https://img.shields.io/badge/status-supported-brightgreen)
 - Activity Net - Arduous : [https://www.mad.tf.fau.de/research/activitynet/wearable-multi-sensor-gait-based-daily-activity-data/](https://www.mad.tf.fau.de/research/activitynet/wearable-multi-sensor-gait-based-daily-activity-data/) ![In Progress](https://img.shields.io/badge/status-in%20progress-yellow)
 
 ### Pressure Sensor Based
@@ -102,6 +102,51 @@ print(metrics.get('accuracy'))
 # Load a saved model (optional)
 rf_model.load_model("gaitsetpy/classification/weights/random_forest_model_40_10.pkl")
 ```
+
+### UrFall Dataset (class-based API)
+
+```python
+import gaitsetpy as gsp
+
+# Load UrFall data via class-based loader
+loader = gsp.UrFallLoader()
+
+# Load pre-extracted features (default)
+data, names = loader.load_data("data/urfall", data_types=['features'])
+
+# Or load specific data types
+data, names = loader.load_data("data/urfall", 
+                               data_types=['features', 'accelerometer'],
+                               use_falls=True, 
+                               use_adls=True)
+
+# Load only fall sequences
+fall_data, fall_names = loader.load_data("data/urfall",
+                                         data_types=['features'],
+                                         use_falls=True,
+                                         use_adls=False)
+
+# Create sliding windows from features
+window_size = 30  # 30 frames at 30Hz = 1 second
+step_size = 15    # 0.5 second overlap
+windows = loader.create_sliding_windows(data, names, window_size, step_size)
+
+# Get file paths for image/video data
+video_paths = loader.get_file_paths("data/urfall", 'video')
+depth_paths = loader.get_file_paths("data/urfall", 'depth', sequences=['fall-01'])
+
+# Display dataset information
+print(loader.get_activity_info())
+print(loader.get_feature_info())
+```
+
+**UrFall Dataset Features:**
+- 30 fall sequences and 20 ADL (Activities of Daily Living) sequences
+- Multiple data modalities: depth images, RGB images, accelerometer, synchronization, video
+- Pre-extracted features from depth maps (11 features per frame)
+- Configurable data type loading
+- Front camera (cam0) data
+- Labels: -1 (standing/walking), 0 (falling - transient), 1 (lying on ground)
 
 ## Documentation
 

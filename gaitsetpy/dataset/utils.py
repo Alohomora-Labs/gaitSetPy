@@ -15,6 +15,7 @@ import json
 import pandas as pd
 import numpy as np
 from glob import glob
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 #################################################################################
 ############################## DATASET DOWNLOAD #################################
@@ -30,6 +31,8 @@ def download_dataset(dataset_name, data_dir):
         download_arduous_data(data_dir)
     elif dataset_name == "harup":
         download_harup_data(data_dir)
+    elif dataset_name == "urfall":
+        download_urfall_data(data_dir)
     elif dataset_name == "physionet":
         # PhysioNet dataset is handled by the PhysioNetLoader itself
         pass
@@ -130,6 +133,107 @@ def download_arduous_data(data_dir):
     """Download the Arduous dataset."""
     pass
 
+def download_urfall_data(data_dir, sequences=None, data_types=None, use_falls=True, use_adls=True, max_workers: int = 8):
+    """
+    Download the UrFall dataset files.
+    
+    Args:
+        data_dir: Directory where the dataset will be downloaded
+        sequences: List of specific sequences to download (e.g., ['fall-01', 'adl-01'])
+                  If None, downloads based on use_falls and use_adls
+        data_types: List of data types to download. Options: 'depth', 'rgb', 'accelerometer',
+                   'synchronization', 'video', 'features' (default: ['features'])
+        use_falls: Whether to download fall sequences (default: True)
+        use_adls: Whether to download ADL sequences (default: True)
+        max_workers: Max concurrent download workers (default: 8)
+        
+    Returns:
+        str: Path to the data directory
+    """
+    from tqdm import tqdm
+    
+    base_url = "http://fenix.univ.rzeszow.pl/~mkepski/ds/data/"
+    
+    # Default to downloading pre-extracted features
+    if data_types is None:
+        data_types = ['features']
+    
+    # Create directory if it doesn't exist
+    os.makedirs(data_dir, exist_ok=True)
+    
+    # Determine which sequences to download
+    seq_list = []
+    if sequences is not None:
+        seq_list = sequences
+    else:
+        if use_falls:
+            seq_list.extend([f"fall-{i:02d}" for i in range(1, 31)])
+        if use_adls:
+            seq_list.extend([f"adl-{i:02d}" for i in range(1, 21)])
+    
+    # Prepare feature files
+    feature_tasks = []
+    if 'features' in data_types:
+        if use_falls:
+            feature_tasks.append("urfall-cam0-falls.csv")
+        if use_adls:
+            feature_tasks.append("urfall-cam0-adls.csv")
+    
+    # Prepare raw file tasks
+    file_extension_map = {
+        'depth': '-cam0-d.zip',
+        'rgb': '-cam0-rgb.zip',
+        'accelerometer': '-acc.csv',
+        'synchronization': '-data.csv',
+        'video': '-cam0.mp4'
+    }
+    raw_tasks = []
+    for seq in seq_list:
+        for dtype in data_types:
+            if dtype == 'features':
+                continue
+            if dtype not in file_extension_map:
+                continue
+            raw_tasks.append(seq + file_extension_map[dtype])
+    
+    # Build list of (url, dest_path, desc)
+    download_jobs = []
+    for filename in feature_tasks:
+        dest = os.path.join(data_dir, filename)
+        if not os.path.exists(dest):
+            download_jobs.append((base_url + filename, dest, filename))
+    for filename in raw_tasks:
+        dest = os.path.join(data_dir, filename)
+        if not os.path.exists(dest):
+            download_jobs.append((base_url + filename, dest, filename))
+    
+    if not download_jobs:
+        print("All requested UrFall files already present.")
+        return data_dir
+    
+    print(f"Starting concurrent downloads: {len(download_jobs)} file(s) with up to {max_workers} workers...")
+    successes = 0
+    failures = []
+    
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_job = {executor.submit(_download_file, url, dest, desc): (url, dest) for url, dest, desc in download_jobs}
+        for future in as_completed(future_to_job):
+            (url, dest) = future_to_job[future]
+            ok, info = future.result()
+            if ok:
+                successes += 1
+            else:
+                failures.append((url, info))
+    
+    print(f"Completed downloads: {successes} succeeded, {len(failures)} failed.")
+    if failures:
+        for url, err in failures[:10]:
+            print(f" - Failed: {url} -> {err}")
+        if len(failures) > 10:
+            print(f" ... and {len(failures) - 10} more failures")
+    
+    return data_dir
+
 
 #################################################################################
 ############################## EXTRACT DOWNLOAD #################################
@@ -145,6 +249,8 @@ def extract_dataset(dataset_name, data_dir):
         extract_arduous_data(data_dir)
     elif dataset_name == "harup":
         extract_harup_data(data_dir)
+    elif dataset_name == "urfall":
+        extract_urfall_data(data_dir)
     elif dataset_name == "physionet":
         # PhysioNet dataset is handled by the PhysioNetLoader itself
         pass
@@ -166,6 +272,44 @@ def extract_arduous_data(data_dir):
     """Extract the Arduous dataset."""
     pass
 
+def extract_urfall_data(data_dir, sequences=None, use_falls=True, use_adls=True):
+    """
+    Extract the UrFall dataset zip files (depth and RGB data).
+    
+    Args:
+        data_dir: Directory containing the dataset
+        sequences: List of specific sequences to extract
+        use_falls: Whether to extract fall sequences
+        use_adls: Whether to extract ADL sequences
+    """
+    # Determine which sequences to extract
+    seq_list = []
+    if sequences is not None:
+        seq_list = sequences
+    else:
+        if use_falls:
+            seq_list.extend([f"fall-{i:02d}" for i in range(1, 31)])
+        if use_adls:
+            seq_list.extend([f"adl-{i:02d}" for i in range(1, 21)])
+    
+    # Extract depth and RGB zip files
+    for seq in seq_list:
+        for data_type, ext in [('depth', '-cam0-d.zip'), ('rgb', '-cam0-rgb.zip')]:
+            zip_file = os.path.join(data_dir, seq + ext)
+            if os.path.exists(zip_file):
+                extract_dir = os.path.join(data_dir, seq + f"-cam0-{data_type[0]}")
+                if os.path.exists(extract_dir):
+                    print(f"Already extracted: {extract_dir}")
+                    continue
+                
+                try:
+                    print(f"Extracting {zip_file}...")
+                    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+                        zip_ref.extractall(extract_dir)
+                    print(f"Extracted to: {extract_dir}")
+                except Exception as e:
+                    print(f"Failed to extract {zip_file}: {e}")
+
 
 #################################################################################
 ############################ OTHER UTILS DOWNLOAD ###############################
@@ -180,6 +324,31 @@ def sliding_window(data, window_size, step_size):
         end = start + window_size
         windows.append(data[start:end])
     return windows
+
+def _download_file(url: str, dest_path: str, desc: str = None):
+    """Download a single file to dest_path with a simple progress indicator."""
+    from tqdm import tqdm
+    try:
+        response = requests.get(url, stream=True, timeout=60)
+        response.raise_for_status()
+        total_size = int(response.headers.get('content-length', 0))
+        progress_bar = tqdm(total=total_size, unit='iB', unit_scale=True, desc=desc or os.path.basename(dest_path))
+        with open(dest_path, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    written = f.write(chunk)
+                    progress_bar.update(written)
+        progress_bar.close()
+        if total_size != 0 and os.path.getsize(dest_path) < total_size:
+            raise IOError(f"Incomplete download for {dest_path}")
+        return True, dest_path
+    except Exception as e:
+        try:
+            if os.path.exists(dest_path):
+                os.remove(dest_path)
+        except Exception:
+            pass
+        return False, f"{dest_path}: {e}"
 
 def download_harup_data(data_dir):
     """
