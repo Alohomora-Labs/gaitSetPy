@@ -250,3 +250,95 @@ def test_legacy_create_urfall_windows():
     windows = create_urfall_windows([df], ["test"], window_size=20, step_size=10)
     assert isinstance(windows, list)
     assert len(windows) > 0
+
+
+def test_load_accelerometer_with_mock_files(tmp_path):
+    """Test loading accelerometer CSV files for specific sequences."""
+    loader = UrFallLoader()
+
+    # Create mock accelerometer CSVs
+    fall_acc = tmp_path / "fall-01-acc.csv"
+    adl_acc = tmp_path / "adl-01-acc.csv"
+    fall_df = pd.DataFrame({
+        't': [0, 10, 20, 30],
+        'SV_total': [1.0, 1.1, 1.2, 1.3],
+        'Ax': [0.1, 0.2, 0.3, 0.4],
+        'Ay': [0.0, -0.1, -0.2, -0.3],
+        'Az': [0.9, 0.85, 0.8, 0.75],
+    })
+    adl_df = pd.DataFrame({
+        't': [0, 8, 16, 24, 32],
+        'SV_total': [1.2, 1.15, 1.1, 1.05, 1.0],
+        'Ax': [0.0, 0.05, 0.1, 0.05, 0.0],
+        'Ay': [0.1, 0.1, 0.1, 0.1, 0.1],
+        'Az': [0.9, 0.88, 0.87, 0.86, 0.85],
+    })
+    fall_df.to_csv(fall_acc, index=False)
+    adl_df.to_csv(adl_acc, index=False)
+
+    data, names = loader.load_data(str(tmp_path), data_types=['accelerometer'], sequences=['fall-01', 'adl-01'])
+
+    assert len(data) == 2
+    assert set(names) == {"fall-01-accelerometer", "adl-01-accelerometer"}
+    # Check metadata columns added
+    for df, seq in zip(data, ['fall-01', 'adl-01']):
+        assert 'sequence_name' in df.columns
+        assert 'activity_type' in df.columns
+        assert 'activity_id' in df.columns
+        assert df['sequence_name'].iloc[0] == seq
+
+
+def test_load_synchronization_with_mock_files(tmp_path):
+    """Test loading synchronization CSV files for specific sequences."""
+    loader = UrFallLoader()
+
+    fall_sync = tmp_path / "fall-01-data.csv"
+    adl_sync = tmp_path / "adl-01-data.csv"
+    fall_df = pd.DataFrame({
+        'frame': [1, 2, 3],
+        'time_ms': [0, 33, 66],
+        'SV_total': [1.0, 1.05, 1.1],
+    })
+    adl_df = pd.DataFrame({
+        'frame': [1, 2],
+        'time_ms': [0, 33],
+        'SV_total': [1.2, 1.15],
+    })
+    fall_df.to_csv(fall_sync, index=False)
+    adl_df.to_csv(adl_sync, index=False)
+
+    data, names = loader.load_data(str(tmp_path), data_types=['synchronization'], sequences=['fall-01', 'adl-01'])
+
+    assert len(data) == 2
+    assert set(names) == {"fall-01-synchronization", "adl-01-synchronization"}
+    for df, seq in zip(data, ['fall-01', 'adl-01']):
+        assert 'sequence_name' in df.columns
+        assert 'activity_type' in df.columns
+        assert 'activity_id' in df.columns
+        assert df['sequence_name'].iloc[0] == seq
+
+
+def test_get_file_paths_detects_existing_files(tmp_path):
+    """Test get_file_paths returns existing depth/rgb/video files for sequences."""
+    loader = UrFallLoader()
+
+    # Create dummy files
+    (tmp_path / "fall-01-cam0-d.zip").write_bytes(b"")
+    (tmp_path / "fall-01-cam0-rgb.zip").write_bytes(b"")
+    (tmp_path / "fall-01-cam0.mp4").write_bytes(b"")
+
+    depth = loader.get_file_paths(str(tmp_path), 'depth', sequences=['fall-01'])
+    rgb = loader.get_file_paths(str(tmp_path), 'rgb', sequences=['fall-01'])
+    video = loader.get_file_paths(str(tmp_path), 'video', sequences=['fall-01'])
+
+    assert depth.get('fall-01') == os.path.join(str(tmp_path), 'fall-01-cam0-d.zip')
+    assert rgb.get('fall-01') == os.path.join(str(tmp_path), 'fall-01-cam0-rgb.zip')
+    assert video.get('fall-01') == os.path.join(str(tmp_path), 'fall-01-cam0.mp4')
+
+
+def test_create_sliding_windows_handles_empty():
+    """Test that empty DataFrames are skipped and return no windows."""
+    loader = UrFallLoader()
+    empty_df = pd.DataFrame()
+    windows = loader.create_sliding_windows([empty_df], ["empty"], window_size=30, step_size=15)
+    assert windows == []

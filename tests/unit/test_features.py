@@ -41,6 +41,7 @@ from gaitsetpy.features.utils import (
     calculate_zero_crossing_rate,
     calculate_energy,
 )
+from gaitsetpy.features.urfall_features import UrFallMediaFeatureExtractor
 
 
 class TestStatisticalFeatures:
@@ -533,3 +534,43 @@ class TestFeatureExtractionPerformance:
             calculate_mean(data[:, i])
             calculate_standard_deviation(data[:, i])
             calculate_entropy(data[:, i])
+
+
+def test_urfall_media_extractor_basic_intensity():
+    extractor = UrFallMediaFeatureExtractor(verbose=False)
+    # Create a window with two simple grayscale frames
+    frame1 = np.zeros((4, 4), dtype=np.float32)
+    frame2 = np.ones((4, 4), dtype=np.float32)
+    windows = [{'name': 'seq-01', 'data': [frame1, frame2]}]
+    feats = extractor.extract_features(windows, fs=30, grayscale=True)
+    assert isinstance(feats, list)
+    assert feats and 'features' in feats[0]
+    f = feats[0]['features']
+    assert 'mean_intensity' in f and 'std_intensity' in f
+    # Mean ~ 0.5, std > 0 for [0,1]
+    assert 0.4 <= f['mean_intensity'] <= 0.6
+    assert f['std_intensity'] >= 0.0
+
+
+def test_urfall_media_extractor_motion():
+    extractor = UrFallMediaFeatureExtractor(verbose=False)
+    # Two frames with a change to trigger motion
+    frame1 = np.zeros((4, 4), dtype=np.float32)
+    frame2 = np.ones((4, 4), dtype=np.float32)
+    windows = [{'name': 'seq-02', 'data': [frame1, frame2]}]
+    feats = extractor.extract_features(windows, fs=30, grayscale=True)
+    f = feats[0]['features']
+    assert 'motion_mean' in f and 'motion_std' in f
+    assert f['motion_mean'] > 0.0
+
+
+def test_urfall_media_extractor_rgb_to_gray():
+    extractor = UrFallMediaFeatureExtractor(verbose=False)
+    # RGB frames should be converted to grayscale before stats when grayscale=True
+    rgb = np.dstack([np.zeros((3, 3)), np.ones((3, 3)), np.zeros((3, 3))]).astype(np.float32)
+    windows = [{'name': 'seq-03', 'data': [rgb]}]
+    feats = extractor.extract_features(windows, fs=30, grayscale=True)
+    f = feats[0]['features']
+    assert 'mean_intensity' in f
+    # green channel mean -> ~1/3 if simple mean over channels
+    assert 0.2 <= f['mean_intensity'] <= 0.5
