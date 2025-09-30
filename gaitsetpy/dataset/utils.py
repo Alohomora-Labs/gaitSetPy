@@ -30,6 +30,8 @@ def download_dataset(dataset_name, data_dir):
         download_arduous_data(data_dir)
     elif dataset_name == "harup":
         download_harup_data(data_dir)
+    elif dataset_name == "urfall":
+        download_urfall_data(data_dir)
     elif dataset_name == "physionet":
         # PhysioNet dataset is handled by the PhysioNetLoader itself
         pass
@@ -130,6 +132,123 @@ def download_arduous_data(data_dir):
     """Download the Arduous dataset."""
     pass
 
+def download_urfall_data(data_dir, sequences=None, data_types=None, use_falls=True, use_adls=True):
+    """
+    Download the UrFall dataset files.
+    
+    Args:
+        data_dir: Directory where the dataset will be downloaded
+        sequences: List of specific sequences to download (e.g., ['fall-01', 'adl-01'])
+                  If None, downloads based on use_falls and use_adls
+        data_types: List of data types to download. Options: 'depth', 'rgb', 'accelerometer',
+                   'synchronization', 'video', 'features' (default: ['features'])
+        use_falls: Whether to download fall sequences (default: True)
+        use_adls: Whether to download ADL sequences (default: True)
+        
+    Returns:
+        str: Path to the data directory
+    """
+    from tqdm import tqdm
+    
+    base_url = "https://fenix.ur.edu.pl/~mkepski/ds/data/"
+    
+    # Default to downloading pre-extracted features
+    if data_types is None:
+        data_types = ['features']
+    
+    # Create directory if it doesn't exist
+    os.makedirs(data_dir, exist_ok=True)
+    
+    # Determine which sequences to download
+    seq_list = []
+    if sequences is not None:
+        seq_list = sequences
+    else:
+        if use_falls:
+            seq_list.extend([f"fall-{i:02d}" for i in range(1, 31)])
+        if use_adls:
+            seq_list.extend([f"adl-{i:02d}" for i in range(1, 21)])
+    
+    # Download pre-extracted features CSV files
+    if 'features' in data_types:
+        feature_files = []
+        if use_falls:
+            feature_files.append("urfall-cam0-falls.csv")
+        if use_adls:
+            feature_files.append("urfall-cam0-adls.csv")
+        
+        for filename in feature_files:
+            file_path = os.path.join(data_dir, filename)
+            if os.path.exists(file_path):
+                print(f"Feature file already exists: {file_path}")
+                continue
+            
+            url = base_url + filename
+            try:
+                print(f"Downloading {filename}...")
+                response = requests.get(url, stream=True)
+                response.raise_for_status()
+                
+                total_size = int(response.headers.get('content-length', 0))
+                progress_bar = tqdm(total=total_size, unit='iB', unit_scale=True, desc=filename)
+                
+                with open(file_path, 'wb') as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        if chunk:
+                            size = f.write(chunk)
+                            progress_bar.update(size)
+                progress_bar.close()
+                print(f"Downloaded: {file_path}")
+            except Exception as e:
+                print(f"Failed to download {filename}: {e}")
+    
+    # Download raw data files for each sequence
+    file_extension_map = {
+        'depth': '-cam0-d.zip',
+        'rgb': '-cam0-rgb.zip',
+        'accelerometer': '-cam0-acc.csv',
+        'synchronization': '-cam0-sync.csv',
+        'video': '-cam0.mp4'
+    }
+    
+    for seq in seq_list:
+        for dtype in data_types:
+            if dtype == 'features':
+                continue  # Already handled above
+            
+            if dtype not in file_extension_map:
+                print(f"Unknown data type: {dtype}")
+                continue
+            
+            filename = seq + file_extension_map[dtype]
+            file_path = os.path.join(data_dir, filename)
+            
+            if os.path.exists(file_path):
+                print(f"File already exists: {file_path}")
+                continue
+            
+            url = base_url + filename
+            try:
+                print(f"Downloading {filename}...")
+                response = requests.get(url, stream=True)
+                response.raise_for_status()
+                
+                total_size = int(response.headers.get('content-length', 0))
+                progress_bar = tqdm(total=total_size, unit='iB', unit_scale=True, desc=filename)
+                
+                with open(file_path, 'wb') as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        if chunk:
+                            size = f.write(chunk)
+                            progress_bar.update(size)
+                progress_bar.close()
+                print(f"Downloaded: {file_path}")
+            except Exception as e:
+                print(f"Warning: Failed to download {filename}: {e}")
+                # Don't raise, continue with other files
+    
+    return data_dir
+
 
 #################################################################################
 ############################## EXTRACT DOWNLOAD #################################
@@ -145,6 +264,8 @@ def extract_dataset(dataset_name, data_dir):
         extract_arduous_data(data_dir)
     elif dataset_name == "harup":
         extract_harup_data(data_dir)
+    elif dataset_name == "urfall":
+        extract_urfall_data(data_dir)
     elif dataset_name == "physionet":
         # PhysioNet dataset is handled by the PhysioNetLoader itself
         pass
@@ -165,6 +286,44 @@ def extract_mobifall_data(data_dir):
 def extract_arduous_data(data_dir):
     """Extract the Arduous dataset."""
     pass
+
+def extract_urfall_data(data_dir, sequences=None, use_falls=True, use_adls=True):
+    """
+    Extract the UrFall dataset zip files (depth and RGB data).
+    
+    Args:
+        data_dir: Directory containing the dataset
+        sequences: List of specific sequences to extract
+        use_falls: Whether to extract fall sequences
+        use_adls: Whether to extract ADL sequences
+    """
+    # Determine which sequences to extract
+    seq_list = []
+    if sequences is not None:
+        seq_list = sequences
+    else:
+        if use_falls:
+            seq_list.extend([f"fall-{i:02d}" for i in range(1, 31)])
+        if use_adls:
+            seq_list.extend([f"adl-{i:02d}" for i in range(1, 21)])
+    
+    # Extract depth and RGB zip files
+    for seq in seq_list:
+        for data_type, ext in [('depth', '-cam0-d.zip'), ('rgb', '-cam0-rgb.zip')]:
+            zip_file = os.path.join(data_dir, seq + ext)
+            if os.path.exists(zip_file):
+                extract_dir = os.path.join(data_dir, seq + f"-cam0-{data_type[0]}")
+                if os.path.exists(extract_dir):
+                    print(f"Already extracted: {extract_dir}")
+                    continue
+                
+                try:
+                    print(f"Extracting {zip_file}...")
+                    with zipfile.ZipFile(zip_file, 'r') as zip_ref:
+                        zip_ref.extractall(extract_dir)
+                    print(f"Extracted to: {extract_dir}")
+                except Exception as e:
+                    print(f"Failed to extract {zip_file}: {e}")
 
 
 #################################################################################
