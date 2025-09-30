@@ -154,7 +154,18 @@ For detailed documentation and API reference, please visit the [official documen
 
 ## Contributing
 
-We welcome contributions! Please read our [contributing guidelines](CONTRIBUTING.md) to get started.
+We welcome contributions! 🎉
+
+**For Contributors:**
+- 🚀 [Quick Start Guide](QUICKSTART_CONTRIBUTORS.md) - Get set up in minutes
+- 📋 [Issues for Contributors](ISSUES_FOR_CONTRIBUTORS.md) - Find issues to work on
+- 📖 [Contributing Guidelines](CONTRIBUTING.md) - General guidelines
+- 🗂️ [Dataset Contributing Guide](CONTRIBUTING_DATASET.md) - Add new datasets
+- 🧪 [Testing Framework](TESTING_FRAMEWORK.md) - Testing guidelines
+
+**Looking for Issues?**
+- Check out [`good first issue`](https://github.com/Alohomora-Labs/gaitSetPy/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) label for beginner-friendly tasks
+- See [ISSUES_FOR_CONTRIBUTORS.md](ISSUES_FOR_CONTRIBUTORS.md) for a comprehensive list of improvement opportunities
 
 ## License
 

@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/Alohomora-Labs/gaitSetPy/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 📖 Documentation
+    url: https://alohomora-labs.github.io/gaitSetPy/gaitsetpy.html
+    about: Read the official documentation
+  - name: 📧 Contact Maintainers
+    url: mailto:aharshit123456@gmail.com
+    about: Email the maintainers for private inquiries
