@@ -1217,7 +1217,7 @@ a modern class-based architecture and legacy function-based API for backward com
 </span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>    <span class="n">evaluate_model</span>
 </span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="p">)</span>
 </span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>
-</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.2.0&quot;</span>  <span class="c1"># Updated version to reflect new architecture</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.2.1&quot;</span>  <span class="c1"># Updated version to reflect new architecture</span>
 </span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Harshit Agarwal | Alohomora Labs&quot;</span>
 </span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>
 </span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a><span class="c1"># Convenient access to all managers</span>
@@ -11649,9 +11649,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_dataset_manager"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_dataset_manager-49"><a href="#get_dataset_manager-49"><span class="linenos">49</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_dataset_manager</span><span class="p">():</span>
-</span><span id="get_dataset_manager-50"><a href="#get_dataset_manager-50"><span class="linenos">50</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton DatasetManager instance.&quot;&quot;&quot;</span>
-</span><span id="get_dataset_manager-51"><a href="#get_dataset_manager-51"><span class="linenos">51</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_dataset_manager-53"><a href="#get_dataset_manager-53"><span class="linenos">53</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_dataset_manager</span><span class="p">():</span>
+</span><span id="get_dataset_manager-54"><a href="#get_dataset_manager-54"><span class="linenos">54</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton DatasetManager instance.&quot;&quot;&quot;</span>
+</span><span id="get_dataset_manager-55"><a href="#get_dataset_manager-55"><span class="linenos">55</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -11671,9 +11671,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_feature_manager"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_feature_manager-91"><a href="#get_feature_manager-91"><span class="linenos">91</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_feature_manager</span><span class="p">():</span>
-</span><span id="get_feature_manager-92"><a href="#get_feature_manager-92"><span class="linenos">92</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton FeatureManager instance.&quot;&quot;&quot;</span>
-</span><span id="get_feature_manager-93"><a href="#get_feature_manager-93"><span class="linenos">93</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_feature_manager-93"><a href="#get_feature_manager-93"><span class="linenos">93</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_feature_manager</span><span class="p">():</span>
+</span><span id="get_feature_manager-94"><a href="#get_feature_manager-94"><span class="linenos">94</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton FeatureManager instance.&quot;&quot;&quot;</span>
+</span><span id="get_feature_manager-95"><a href="#get_feature_manager-95"><span class="linenos">95</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -11795,9 +11795,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_available_datasets"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_datasets-54"><a href="#get_available_datasets-54"><span class="linenos">54</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_datasets</span><span class="p">():</span>
-</span><span id="get_available_datasets-55"><a href="#get_available_datasets-55"><span class="linenos">55</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available dataset names.&quot;&quot;&quot;</span>
-</span><span id="get_available_datasets-56"><a href="#get_available_datasets-56"><span class="linenos">56</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_datasets-58"><a href="#get_available_datasets-58"><span class="linenos">58</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_datasets</span><span class="p">():</span>
+</span><span id="get_available_datasets-59"><a href="#get_available_datasets-59"><span class="linenos">59</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available dataset names.&quot;&quot;&quot;</span>
+</span><span id="get_available_datasets-60"><a href="#get_available_datasets-60"><span class="linenos">60</span></a>    <span class="k">return</span> <span class="n">DatasetManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -11817,9 +11817,9 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#get_available_extractors"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_extractors-96"><a href="#get_available_extractors-96"><span class="linenos">96</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_extractors</span><span class="p">():</span>
-</span><span id="get_available_extractors-97"><a href="#get_available_extractors-97"><span class="linenos">97</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available feature extractor names.&quot;&quot;&quot;</span>
-</span><span id="get_available_extractors-98"><a href="#get_available_extractors-98"><span class="linenos">98</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_extractors-98"><a href="#get_available_extractors-98"><span class="linenos"> 98</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_extractors</span><span class="p">():</span>
+</span><span id="get_available_extractors-99"><a href="#get_available_extractors-99"><span class="linenos"> 99</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available feature extractor names.&quot;&quot;&quot;</span>
+</span><span id="get_available_extractors-100"><a href="#get_available_extractors-100"><span class="linenos">100</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -12471,21 +12471,23 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#download_dataset"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="download_dataset-24"><a href="#download_dataset-24"><span class="linenos">24</span></a><span class="k">def</span><span class="w"> </span><span class="nf">download_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
-</span><span id="download_dataset-25"><a href="#download_dataset-25"><span class="linenos">25</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Download the dataset.&quot;&quot;&quot;</span>
-</span><span id="download_dataset-26"><a href="#download_dataset-26"><span class="linenos">26</span></a>    <span class="k">if</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;daphnet&quot;</span><span class="p">:</span>
-</span><span id="download_dataset-27"><a href="#download_dataset-27"><span class="linenos">27</span></a>        <span class="n">download_daphnet_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="download_dataset-28"><a href="#download_dataset-28"><span class="linenos">28</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;mobifall&quot;</span><span class="p">:</span>
-</span><span id="download_dataset-29"><a href="#download_dataset-29"><span class="linenos">29</span></a>        <span class="n">download_mobifall_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="download_dataset-30"><a href="#download_dataset-30"><span class="linenos">30</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;arduous&quot;</span><span class="p">:</span>
-</span><span id="download_dataset-31"><a href="#download_dataset-31"><span class="linenos">31</span></a>        <span class="n">download_arduous_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="download_dataset-32"><a href="#download_dataset-32"><span class="linenos">32</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;harup&quot;</span><span class="p">:</span>
-</span><span id="download_dataset-33"><a href="#download_dataset-33"><span class="linenos">33</span></a>        <span class="n">download_harup_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="download_dataset-34"><a href="#download_dataset-34"><span class="linenos">34</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;physionet&quot;</span><span class="p">:</span>
-</span><span id="download_dataset-35"><a href="#download_dataset-35"><span class="linenos">35</span></a>        <span class="c1"># PhysioNet dataset is handled by the PhysioNetLoader itself</span>
-</span><span id="download_dataset-36"><a href="#download_dataset-36"><span class="linenos">36</span></a>        <span class="k">pass</span>
-</span><span id="download_dataset-37"><a href="#download_dataset-37"><span class="linenos">37</span></a>    <span class="k">else</span><span class="p">:</span>
-</span><span id="download_dataset-38"><a href="#download_dataset-38"><span class="linenos">38</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2"> not supported.&quot;</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="download_dataset-25"><a href="#download_dataset-25"><span class="linenos">25</span></a><span class="k">def</span><span class="w"> </span><span class="nf">download_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+</span><span id="download_dataset-26"><a href="#download_dataset-26"><span class="linenos">26</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Download the dataset.&quot;&quot;&quot;</span>
+</span><span id="download_dataset-27"><a href="#download_dataset-27"><span class="linenos">27</span></a>    <span class="k">if</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;daphnet&quot;</span><span class="p">:</span>
+</span><span id="download_dataset-28"><a href="#download_dataset-28"><span class="linenos">28</span></a>        <span class="n">download_daphnet_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="download_dataset-29"><a href="#download_dataset-29"><span class="linenos">29</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;mobifall&quot;</span><span class="p">:</span>
+</span><span id="download_dataset-30"><a href="#download_dataset-30"><span class="linenos">30</span></a>        <span class="n">download_mobifall_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="download_dataset-31"><a href="#download_dataset-31"><span class="linenos">31</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;arduous&quot;</span><span class="p">:</span>
+</span><span id="download_dataset-32"><a href="#download_dataset-32"><span class="linenos">32</span></a>        <span class="n">download_arduous_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="download_dataset-33"><a href="#download_dataset-33"><span class="linenos">33</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;harup&quot;</span><span class="p">:</span>
+</span><span id="download_dataset-34"><a href="#download_dataset-34"><span class="linenos">34</span></a>        <span class="n">download_harup_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="download_dataset-35"><a href="#download_dataset-35"><span class="linenos">35</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;urfall&quot;</span><span class="p">:</span>
+</span><span id="download_dataset-36"><a href="#download_dataset-36"><span class="linenos">36</span></a>        <span class="n">download_urfall_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="download_dataset-37"><a href="#download_dataset-37"><span class="linenos">37</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;physionet&quot;</span><span class="p">:</span>
+</span><span id="download_dataset-38"><a href="#download_dataset-38"><span class="linenos">38</span></a>        <span class="c1"># PhysioNet dataset is handled by the PhysioNetLoader itself</span>
+</span><span id="download_dataset-39"><a href="#download_dataset-39"><span class="linenos">39</span></a>        <span class="k">pass</span>
+</span><span id="download_dataset-40"><a href="#download_dataset-40"><span class="linenos">40</span></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="download_dataset-41"><a href="#download_dataset-41"><span class="linenos">41</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2"> not supported.&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -12505,21 +12507,23 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#extract_dataset"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_dataset-139"><a href="#extract_dataset-139"><span class="linenos">139</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
-</span><span id="extract_dataset-140"><a href="#extract_dataset-140"><span class="linenos">140</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the dataset.&quot;&quot;&quot;</span>
-</span><span id="extract_dataset-141"><a href="#extract_dataset-141"><span class="linenos">141</span></a>    <span class="k">if</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;daphnet&quot;</span><span class="p">:</span>
-</span><span id="extract_dataset-142"><a href="#extract_dataset-142"><span class="linenos">142</span></a>        <span class="n">extract_daphnet_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="extract_dataset-143"><a href="#extract_dataset-143"><span class="linenos">143</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;mobifall&quot;</span><span class="p">:</span>
-</span><span id="extract_dataset-144"><a href="#extract_dataset-144"><span class="linenos">144</span></a>        <span class="n">extract_mobifall_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="extract_dataset-145"><a href="#extract_dataset-145"><span class="linenos">145</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;arduous&quot;</span><span class="p">:</span>
-</span><span id="extract_dataset-146"><a href="#extract_dataset-146"><span class="linenos">146</span></a>        <span class="n">extract_arduous_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="extract_dataset-147"><a href="#extract_dataset-147"><span class="linenos">147</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;harup&quot;</span><span class="p">:</span>
-</span><span id="extract_dataset-148"><a href="#extract_dataset-148"><span class="linenos">148</span></a>        <span class="n">extract_harup_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
-</span><span id="extract_dataset-149"><a href="#extract_dataset-149"><span class="linenos">149</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;physionet&quot;</span><span class="p">:</span>
-</span><span id="extract_dataset-150"><a href="#extract_dataset-150"><span class="linenos">150</span></a>        <span class="c1"># PhysioNet dataset is handled by the PhysioNetLoader itself</span>
-</span><span id="extract_dataset-151"><a href="#extract_dataset-151"><span class="linenos">151</span></a>        <span class="k">pass</span>
-</span><span id="extract_dataset-152"><a href="#extract_dataset-152"><span class="linenos">152</span></a>    <span class="k">else</span><span class="p">:</span>
-</span><span id="extract_dataset-153"><a href="#extract_dataset-153"><span class="linenos">153</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2"> not supported.&quot;</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_dataset-243"><a href="#extract_dataset-243"><span class="linenos">243</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_dataset</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">):</span>
+</span><span id="extract_dataset-244"><a href="#extract_dataset-244"><span class="linenos">244</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the dataset.&quot;&quot;&quot;</span>
+</span><span id="extract_dataset-245"><a href="#extract_dataset-245"><span class="linenos">245</span></a>    <span class="k">if</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;daphnet&quot;</span><span class="p">:</span>
+</span><span id="extract_dataset-246"><a href="#extract_dataset-246"><span class="linenos">246</span></a>        <span class="n">extract_daphnet_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="extract_dataset-247"><a href="#extract_dataset-247"><span class="linenos">247</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;mobifall&quot;</span><span class="p">:</span>
+</span><span id="extract_dataset-248"><a href="#extract_dataset-248"><span class="linenos">248</span></a>        <span class="n">extract_mobifall_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="extract_dataset-249"><a href="#extract_dataset-249"><span class="linenos">249</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;arduous&quot;</span><span class="p">:</span>
+</span><span id="extract_dataset-250"><a href="#extract_dataset-250"><span class="linenos">250</span></a>        <span class="n">extract_arduous_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="extract_dataset-251"><a href="#extract_dataset-251"><span class="linenos">251</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;harup&quot;</span><span class="p">:</span>
+</span><span id="extract_dataset-252"><a href="#extract_dataset-252"><span class="linenos">252</span></a>        <span class="n">extract_harup_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="extract_dataset-253"><a href="#extract_dataset-253"><span class="linenos">253</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;urfall&quot;</span><span class="p">:</span>
+</span><span id="extract_dataset-254"><a href="#extract_dataset-254"><span class="linenos">254</span></a>        <span class="n">extract_urfall_data</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+</span><span id="extract_dataset-255"><a href="#extract_dataset-255"><span class="linenos">255</span></a>    <span class="k">elif</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;physionet&quot;</span><span class="p">:</span>
+</span><span id="extract_dataset-256"><a href="#extract_dataset-256"><span class="linenos">256</span></a>        <span class="c1"># PhysioNet dataset is handled by the PhysioNetLoader itself</span>
+</span><span id="extract_dataset-257"><a href="#extract_dataset-257"><span class="linenos">257</span></a>        <span class="k">pass</span>
+</span><span id="extract_dataset-258"><a href="#extract_dataset-258"><span class="linenos">258</span></a>    <span class="k">else</span><span class="p">:</span>
+</span><span id="extract_dataset-259"><a href="#extract_dataset-259"><span class="linenos">259</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2"> not supported.&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -12539,14 +12543,14 @@ comprehensive training, prediction, and evaluation capabilities.</p>
 
     </div>
     <a class="headerlink" href="#sliding_window"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="sliding_window-176"><a href="#sliding_window-176"><span class="linenos">176</span></a><span class="k">def</span><span class="w"> </span><span class="nf">sliding_window</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">step_size</span><span class="p">):</span>
-</span><span id="sliding_window-177"><a href="#sliding_window-177"><span class="linenos">177</span></a>    <span class="n">num_windows</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">window_size</span><span class="p">)</span> <span class="o">//</span> <span class="n">step_size</span> <span class="o">+</span> <span class="mi">1</span>
-</span><span id="sliding_window-178"><a href="#sliding_window-178"><span class="linenos">178</span></a>    <span class="n">windows</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="sliding_window-179"><a href="#sliding_window-179"><span class="linenos">179</span></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_windows</span><span class="p">):</span>
-</span><span id="sliding_window-180"><a href="#sliding_window-180"><span class="linenos">180</span></a>        <span class="n">start</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step_size</span>
-</span><span id="sliding_window-181"><a href="#sliding_window-181"><span class="linenos">181</span></a>        <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">window_size</span>
-</span><span id="sliding_window-182"><a href="#sliding_window-182"><span class="linenos">182</span></a>        <span class="n">windows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
-</span><span id="sliding_window-183"><a href="#sliding_window-183"><span class="linenos">183</span></a>    <span class="k">return</span> <span class="n">windows</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="sliding_window-320"><a href="#sliding_window-320"><span class="linenos">320</span></a><span class="k">def</span><span class="w"> </span><span class="nf">sliding_window</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">step_size</span><span class="p">):</span>
+</span><span id="sliding_window-321"><a href="#sliding_window-321"><span class="linenos">321</span></a>    <span class="n">num_windows</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">window_size</span><span class="p">)</span> <span class="o">//</span> <span class="n">step_size</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="sliding_window-322"><a href="#sliding_window-322"><span class="linenos">322</span></a>    <span class="n">windows</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="sliding_window-323"><a href="#sliding_window-323"><span class="linenos">323</span></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_windows</span><span class="p">):</span>
+</span><span id="sliding_window-324"><a href="#sliding_window-324"><span class="linenos">324</span></a>        <span class="n">start</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step_size</span>
+</span><span id="sliding_window-325"><a href="#sliding_window-325"><span class="linenos">325</span></a>        <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">window_size</span>
+</span><span id="sliding_window-326"><a href="#sliding_window-326"><span class="linenos">326</span></a>        <span class="n">windows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span>
+</span><span id="sliding_window-327"><a href="#sliding_window-327"><span class="linenos">327</span></a>    <span class="k">return</span> <span class="n">windows</span>
 </span></pre></div>
 
 

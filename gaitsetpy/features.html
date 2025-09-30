@@ -154,6 +154,36 @@
 
             </li>
             <li>
+                    <a class="class" href="#UrFallMediaFeatureExtractor">UrFallMediaFeatureExtractor</a>
+                            <ul class="memberlist">
+                        <li>
+                                <a class="function" href="#UrFallMediaFeatureExtractor.__init__">UrFallMediaFeatureExtractor</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#UrFallMediaFeatureExtractor.config">config</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#UrFallMediaFeatureExtractor.extract_features">extract_features</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#UrFallMediaFeatureExtractor.get_feature_names">get_feature_names</a>
+                        </li>
+                </ul>
+
+            </li>
+            <li>
+                    <a class="function" href="#extract_lbp_features">extract_lbp_features</a>
+            </li>
+            <li>
+                    <a class="function" href="#extract_fourier_features">extract_fourier_features</a>
+            </li>
+            <li>
+                    <a class="function" href="#extract_physionet_features">extract_physionet_features</a>
+            </li>
+            <li>
+                    <a class="function" href="#extract_harup_features">extract_harup_features</a>
+            </li>
+            <li>
                     <a class="function" href="#calculate_mean">calculate_mean</a>
             </li>
             <li>
@@ -300,27 +330,6 @@
             <li>
                     <a class="function" href="#extract_gait_features">extract_gait_features</a>
             </li>
-            <li>
-                    <a class="function" href="#extract_lbp_features">extract_lbp_features</a>
-            </li>
-            <li>
-                    <a class="function" href="#extract_fourier_features">extract_fourier_features</a>
-            </li>
-            <li>
-                    <a class="function" href="#extract_physionet_features">extract_physionet_features</a>
-            </li>
-            <li>
-                    <a class="function" href="#extract_harup_features">extract_harup_features</a>
-            </li>
-            <li>
-                    <a class="function" href="#get_feature_manager">get_feature_manager</a>
-            </li>
-            <li>
-                    <a class="function" href="#get_available_extractors">get_available_extractors</a>
-            </li>
-            <li>
-                    <a class="function" href="#extract_features">extract_features</a>
-            </li>
     </ul>
 
 
@@ -362,176 +371,174 @@ All feature extractors inherit from BaseFeatureExtractor and are registered with
 </span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.gait_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaitFeatureExtractor</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.physionet_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">LBPFeatureExtractor</span><span class="p">,</span> <span class="n">FourierSeriesFeatureExtractor</span><span class="p">,</span> <span class="n">PhysioNetFeatureExtractor</span>
 </span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.harup_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">HARUPFeatureExtractor</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>
-</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="c1"># Import legacy functions for backward compatibility</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.physionet_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_lbp_features</span><span class="p">,</span> <span class="n">extract_fourier_features</span><span class="p">,</span> <span class="n">extract_physionet_features</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.harup_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_harup_features</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>    <span class="n">calculate_mean</span><span class="p">,</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>    <span class="n">calculate_standard_deviation</span><span class="p">,</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>    <span class="n">calculate_variance</span><span class="p">,</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>    <span class="n">calculate_skewness</span><span class="p">,</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="n">calculate_kurtosis</span><span class="p">,</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>    <span class="n">calculate_root_mean_square</span><span class="p">,</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>    <span class="n">calculate_range</span><span class="p">,</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>    <span class="n">calculate_median</span><span class="p">,</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>    <span class="n">calculate_mode</span><span class="p">,</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>    <span class="n">calculate_mean_absolute_value</span><span class="p">,</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>    <span class="n">calculate_median_absolute_deviation</span><span class="p">,</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>    <span class="n">calculate_peak_height</span><span class="p">,</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>    <span class="n">calculate_stride_times</span><span class="p">,</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    <span class="n">calculate_step_time</span><span class="p">,</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="n">calculate_cadence</span><span class="p">,</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>    <span class="n">calculate_freezing_index</span><span class="p">,</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>    <span class="n">calculate_dominant_frequency</span><span class="p">,</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>    <span class="n">calculate_peak_frequency</span><span class="p">,</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="n">calculate_power_spectral_entropy</span><span class="p">,</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>    <span class="n">calculate_principal_harmonic_frequency</span><span class="p">,</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="n">calculate_entropy</span><span class="p">,</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>    <span class="n">calculate_interquartile_range</span><span class="p">,</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>    <span class="n">calculate_correlation</span><span class="p">,</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>    <span class="n">calculate_auto_regression_coefficients</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="p">)</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.gait_features</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>    <span class="n">get_mean_for_windows</span><span class="p">,</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="n">get_standard_deviation_for_windows</span><span class="p">,</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>    <span class="n">get_variance_for_windows</span><span class="p">,</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>    <span class="n">get_skewness_for_windows</span><span class="p">,</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>    <span class="n">get_kurtosis_for_windows</span><span class="p">,</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>    <span class="n">get_root_mean_square_for_windows</span><span class="p">,</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>    <span class="n">get_range_for_windows</span><span class="p">,</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>    <span class="n">get_median_for_windows</span><span class="p">,</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>    <span class="n">get_mode_for_windows</span><span class="p">,</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>    <span class="n">get_mean_absolute_value_for_windows</span><span class="p">,</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>    <span class="n">get_median_absolute_deviation_for_windows</span><span class="p">,</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="n">get_peak_height_for_windows</span><span class="p">,</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="n">get_stride_times_for_windows</span><span class="p">,</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="n">get_step_times_for_windows</span><span class="p">,</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>    <span class="n">get_cadence_for_windows</span><span class="p">,</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="n">get_freezing_index_for_windows</span><span class="p">,</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="n">get_dominant_frequency_for_windows</span><span class="p">,</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="n">get_peak_frequency_for_windows</span><span class="p">,</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="n">get_power_spectral_entropy_for_windows</span><span class="p">,</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>    <span class="n">get_principal_harmonic_frequency_for_windows</span><span class="p">,</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    <span class="n">get_entropy_for_windows</span><span class="p">,</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="n">get_interquartile_range_for_windows</span><span class="p">,</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>    <span class="n">get_correlation_for_windows</span><span class="p">,</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    <span class="n">get_auto_regression_coefficients_for_windows</span><span class="p">,</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="n">extract_gait_features</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="p">)</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="c1"># Import managers</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">..core.managers</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeatureManager</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="c1"># Register all feature extractors with the manager</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="k">def</span><span class="w"> </span><span class="nf">_register_extractors</span><span class="p">():</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Register all available feature extractors with the FeatureManager.&quot;&quot;&quot;</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="n">manager</span> <span class="o">=</span> <span class="n">FeatureManager</span><span class="p">()</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;gait_features&quot;</span><span class="p">,</span> <span class="n">GaitFeatureExtractor</span><span class="p">)</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;lbp_features&quot;</span><span class="p">,</span> <span class="n">LBPFeatureExtractor</span><span class="p">)</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;fourier_features&quot;</span><span class="p">,</span> <span class="n">FourierSeriesFeatureExtractor</span><span class="p">)</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;physionet_features&quot;</span><span class="p">,</span> <span class="n">PhysioNetFeatureExtractor</span><span class="p">)</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;harup_features&quot;</span><span class="p">,</span> <span class="n">HARUPFeatureExtractor</span><span class="p">)</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="c1"># Auto-register extractors when module is imported</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="n">_register_extractors</span><span class="p">()</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="c1"># Convenient access to the feature manager</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_feature_manager</span><span class="p">():</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton FeatureManager instance.&quot;&quot;&quot;</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="c1"># Helper function to get available extractors</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_extractors</span><span class="p">():</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available feature extractor names.&quot;&quot;&quot;</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a><span class="c1"># Helper function to extract features using manager</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_features</span><span class="p">(</span><span class="n">extractor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">    Extract features using the FeatureManager.</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">    </span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">    Args:</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        extractor_name: Name of the feature extractor</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">        fs: Sampling frequency</span>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        **kwargs: Additional arguments for feature extraction</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">        </span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">    Returns:</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">        List of feature dictionaries</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">extractor_name</span><span class="p">,</span> <span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>    <span class="c1"># New class-based extractors</span>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>    <span class="s1">&#39;GaitFeatureExtractor&#39;</span><span class="p">,</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="s1">&#39;LBPFeatureExtractor&#39;</span><span class="p">,</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>    <span class="s1">&#39;FourierSeriesFeatureExtractor&#39;</span><span class="p">,</span>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>    <span class="s1">&#39;PhysioNetFeatureExtractor&#39;</span><span class="p">,</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>    <span class="s1">&#39;HARUPFeatureExtractor&#39;</span><span class="p">,</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>    <span class="c1"># Legacy utility functions</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="s1">&#39;calculate_mean&#39;</span><span class="p">,</span>
-</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>    <span class="s1">&#39;calculate_standard_deviation&#39;</span><span class="p">,</span>
-</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>    <span class="s1">&#39;calculate_variance&#39;</span><span class="p">,</span>
-</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>    <span class="s1">&#39;calculate_skewness&#39;</span><span class="p">,</span>
-</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>    <span class="s1">&#39;calculate_kurtosis&#39;</span><span class="p">,</span>
-</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>    <span class="s1">&#39;calculate_root_mean_square&#39;</span><span class="p">,</span>
-</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>    <span class="s1">&#39;calculate_range&#39;</span><span class="p">,</span>
-</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>    <span class="s1">&#39;calculate_median&#39;</span><span class="p">,</span>
-</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>    <span class="s1">&#39;calculate_mode&#39;</span><span class="p">,</span>
-</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>    <span class="s1">&#39;calculate_mean_absolute_value&#39;</span><span class="p">,</span>
-</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>    <span class="s1">&#39;calculate_median_absolute_deviation&#39;</span><span class="p">,</span>
-</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>    <span class="s1">&#39;calculate_peak_height&#39;</span><span class="p">,</span>
-</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>    <span class="s1">&#39;calculate_stride_times&#39;</span><span class="p">,</span>
-</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>    <span class="s1">&#39;calculate_step_time&#39;</span><span class="p">,</span>
-</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>    <span class="s1">&#39;calculate_cadence&#39;</span><span class="p">,</span>
-</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>    <span class="s1">&#39;calculate_freezing_index&#39;</span><span class="p">,</span>
-</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>    <span class="s1">&#39;calculate_dominant_frequency&#39;</span><span class="p">,</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>    <span class="s1">&#39;calculate_peak_frequency&#39;</span><span class="p">,</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>    <span class="s1">&#39;calculate_power_spectral_entropy&#39;</span><span class="p">,</span>
-</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>    <span class="s1">&#39;calculate_principal_harmonic_frequency&#39;</span><span class="p">,</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>    <span class="s1">&#39;calculate_entropy&#39;</span><span class="p">,</span>
-</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>    <span class="s1">&#39;calculate_interquartile_range&#39;</span><span class="p">,</span>
-</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>    <span class="s1">&#39;calculate_correlation&#39;</span><span class="p">,</span>
-</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>    <span class="s1">&#39;calculate_auto_regression_coefficients&#39;</span><span class="p">,</span>
-</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>    <span class="c1"># Legacy window functions</span>
-</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>    <span class="s1">&#39;get_mean_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>    <span class="s1">&#39;get_standard_deviation_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>    <span class="s1">&#39;get_variance_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>    <span class="s1">&#39;get_skewness_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>    <span class="s1">&#39;get_kurtosis_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>    <span class="s1">&#39;get_root_mean_square_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>    <span class="s1">&#39;get_range_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>    <span class="s1">&#39;get_median_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>    <span class="s1">&#39;get_mode_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>    <span class="s1">&#39;get_mean_absolute_value_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>    <span class="s1">&#39;get_median_absolute_deviation_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>    <span class="s1">&#39;get_peak_height_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>    <span class="s1">&#39;get_stride_times_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>    <span class="s1">&#39;get_step_times_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>    <span class="s1">&#39;get_cadence_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>    <span class="s1">&#39;get_freezing_index_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>    <span class="s1">&#39;get_dominant_frequency_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>    <span class="s1">&#39;get_peak_frequency_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>    <span class="s1">&#39;get_power_spectral_entropy_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>    <span class="s1">&#39;get_principal_harmonic_frequency_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>    <span class="s1">&#39;get_entropy_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>    <span class="s1">&#39;get_interquartile_range_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>    <span class="s1">&#39;get_correlation_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>    <span class="s1">&#39;get_auto_regression_coefficients_for_windows&#39;</span><span class="p">,</span>
-</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>    <span class="s1">&#39;extract_gait_features&#39;</span><span class="p">,</span>
-</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>    <span class="c1"># PhysioNet legacy functions</span>
-</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>    <span class="s1">&#39;extract_lbp_features&#39;</span><span class="p">,</span>
-</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>    <span class="s1">&#39;extract_fourier_features&#39;</span><span class="p">,</span>
-</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>    <span class="s1">&#39;extract_physionet_features&#39;</span><span class="p">,</span>
-</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>    <span class="c1"># HAR-UP legacy functions</span>
-</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>    <span class="s1">&#39;extract_harup_features&#39;</span><span class="p">,</span>
-</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>    <span class="c1"># Manager functions</span>
-</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>    <span class="s1">&#39;get_feature_manager&#39;</span><span class="p">,</span>
-</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>    <span class="s1">&#39;get_available_extractors&#39;</span><span class="p">,</span>
-</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a>    <span class="s1">&#39;extract_features&#39;</span>
-</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="p">]</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.urfall_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">UrFallMediaFeatureExtractor</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a><span class="c1"># Import legacy functions for backward compatibility</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.physionet_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_lbp_features</span><span class="p">,</span> <span class="n">extract_fourier_features</span><span class="p">,</span> <span class="n">extract_physionet_features</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.harup_features</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_harup_features</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>    <span class="n">calculate_mean</span><span class="p">,</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a>    <span class="n">calculate_standard_deviation</span><span class="p">,</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>    <span class="n">calculate_variance</span><span class="p">,</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="n">calculate_skewness</span><span class="p">,</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>    <span class="n">calculate_kurtosis</span><span class="p">,</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>    <span class="n">calculate_root_mean_square</span><span class="p">,</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>    <span class="n">calculate_range</span><span class="p">,</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>    <span class="n">calculate_median</span><span class="p">,</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>    <span class="n">calculate_mode</span><span class="p">,</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>    <span class="n">calculate_mean_absolute_value</span><span class="p">,</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>    <span class="n">calculate_median_absolute_deviation</span><span class="p">,</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>    <span class="n">calculate_peak_height</span><span class="p">,</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    <span class="n">calculate_stride_times</span><span class="p">,</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>    <span class="n">calculate_step_time</span><span class="p">,</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>    <span class="n">calculate_cadence</span><span class="p">,</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>    <span class="n">calculate_freezing_index</span><span class="p">,</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>    <span class="n">calculate_dominant_frequency</span><span class="p">,</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>    <span class="n">calculate_peak_frequency</span><span class="p">,</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>    <span class="n">calculate_power_spectral_entropy</span><span class="p">,</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="n">calculate_principal_harmonic_frequency</span><span class="p">,</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>    <span class="n">calculate_entropy</span><span class="p">,</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>    <span class="n">calculate_interquartile_range</span><span class="p">,</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>    <span class="n">calculate_correlation</span><span class="p">,</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>    <span class="n">calculate_auto_regression_coefficients</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="p">)</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.gait_features</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>    <span class="n">get_mean_for_windows</span><span class="p">,</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>    <span class="n">get_standard_deviation_for_windows</span><span class="p">,</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>    <span class="n">get_variance_for_windows</span><span class="p">,</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>    <span class="n">get_skewness_for_windows</span><span class="p">,</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>    <span class="n">get_kurtosis_for_windows</span><span class="p">,</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>    <span class="n">get_root_mean_square_for_windows</span><span class="p">,</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>    <span class="n">get_range_for_windows</span><span class="p">,</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>    <span class="n">get_median_for_windows</span><span class="p">,</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>    <span class="n">get_mode_for_windows</span><span class="p">,</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>    <span class="n">get_mean_absolute_value_for_windows</span><span class="p">,</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="n">get_median_absolute_deviation_for_windows</span><span class="p">,</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="n">get_peak_height_for_windows</span><span class="p">,</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>    <span class="n">get_stride_times_for_windows</span><span class="p">,</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a>    <span class="n">get_step_times_for_windows</span><span class="p">,</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>    <span class="n">get_cadence_for_windows</span><span class="p">,</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a>    <span class="n">get_freezing_index_for_windows</span><span class="p">,</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a>    <span class="n">get_dominant_frequency_for_windows</span><span class="p">,</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>    <span class="n">get_peak_frequency_for_windows</span><span class="p">,</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>    <span class="n">get_power_spectral_entropy_for_windows</span><span class="p">,</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>    <span class="n">get_principal_harmonic_frequency_for_windows</span><span class="p">,</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>    <span class="n">get_entropy_for_windows</span><span class="p">,</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>    <span class="n">get_interquartile_range_for_windows</span><span class="p">,</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    <span class="n">get_correlation_for_windows</span><span class="p">,</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="n">get_auto_regression_coefficients_for_windows</span><span class="p">,</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="n">extract_gait_features</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="p">)</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="c1"># Import managers</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">..core.managers</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeatureManager</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a><span class="c1"># Register all feature extractors with the manager</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="k">def</span><span class="w"> </span><span class="nf">_register_extractors</span><span class="p">():</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Register all available feature extractors with the FeatureManager.&quot;&quot;&quot;</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="n">manager</span> <span class="o">=</span> <span class="n">FeatureManager</span><span class="p">()</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;gait_features&quot;</span><span class="p">,</span> <span class="n">GaitFeatureExtractor</span><span class="p">)</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;lbp_features&quot;</span><span class="p">,</span> <span class="n">LBPFeatureExtractor</span><span class="p">)</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;fourier_features&quot;</span><span class="p">,</span> <span class="n">FourierSeriesFeatureExtractor</span><span class="p">)</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;physionet_features&quot;</span><span class="p">,</span> <span class="n">PhysioNetFeatureExtractor</span><span class="p">)</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;harup_features&quot;</span><span class="p">,</span> <span class="n">HARUPFeatureExtractor</span><span class="p">)</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>    <span class="n">manager</span><span class="o">.</span><span class="n">register_extractor</span><span class="p">(</span><span class="s2">&quot;urfall_media&quot;</span><span class="p">,</span> <span class="n">UrFallMediaFeatureExtractor</span><span class="p">)</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="c1"># Auto-register extractors when module is imported</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="n">_register_extractors</span><span class="p">()</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="c1"># Convenient access to the feature manager</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_feature_manager</span><span class="p">():</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton FeatureManager instance.&quot;&quot;&quot;</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="c1"># Helper function to get available extractors</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_extractors</span><span class="p">():</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available feature extractor names.&quot;&quot;&quot;</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="c1"># Helper function to extract features using manager</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_features</span><span class="p">(</span><span class="n">extractor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">    Extract features using the FeatureManager.</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">    </span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">    Args:</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">        extractor_name: Name of the feature extractor</span>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">        fs: Sampling frequency</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="sd">        **kwargs: Additional arguments for feature extraction</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">        </span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">    Returns:</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">        List of feature dictionaries</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">extractor_name</span><span class="p">,</span> <span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="c1"># New class-based feature extractors</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>    <span class="s1">&#39;GaitFeatureExtractor&#39;</span><span class="p">,</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>    <span class="s1">&#39;LBPFeatureExtractor&#39;</span><span class="p">,</span>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>    <span class="s1">&#39;FourierSeriesFeatureExtractor&#39;</span><span class="p">,</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>    <span class="s1">&#39;PhysioNetFeatureExtractor&#39;</span><span class="p">,</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="s1">&#39;HARUPFeatureExtractor&#39;</span><span class="p">,</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>    <span class="s1">&#39;UrFallMediaFeatureExtractor&#39;</span><span class="p">,</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>    <span class="c1"># Legacy functions</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>    <span class="s1">&#39;extract_lbp_features&#39;</span><span class="p">,</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>    <span class="s1">&#39;extract_fourier_features&#39;</span><span class="p">,</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>    <span class="s1">&#39;extract_physionet_features&#39;</span><span class="p">,</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>    <span class="s1">&#39;extract_harup_features&#39;</span><span class="p">,</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>    <span class="c1"># Utility exports</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>    <span class="s1">&#39;calculate_mean&#39;</span><span class="p">,</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>    <span class="s1">&#39;calculate_standard_deviation&#39;</span><span class="p">,</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>    <span class="s1">&#39;calculate_variance&#39;</span><span class="p">,</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>    <span class="s1">&#39;calculate_skewness&#39;</span><span class="p">,</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>    <span class="s1">&#39;calculate_kurtosis&#39;</span><span class="p">,</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>    <span class="s1">&#39;calculate_root_mean_square&#39;</span><span class="p">,</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>    <span class="s1">&#39;calculate_range&#39;</span><span class="p">,</span>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>    <span class="s1">&#39;calculate_median&#39;</span><span class="p">,</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>    <span class="s1">&#39;calculate_mode&#39;</span><span class="p">,</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a>    <span class="s1">&#39;calculate_mean_absolute_value&#39;</span><span class="p">,</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>    <span class="s1">&#39;calculate_median_absolute_deviation&#39;</span><span class="p">,</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>    <span class="s1">&#39;calculate_peak_height&#39;</span><span class="p">,</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>    <span class="s1">&#39;calculate_stride_times&#39;</span><span class="p">,</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>    <span class="s1">&#39;calculate_step_time&#39;</span><span class="p">,</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>    <span class="s1">&#39;calculate_cadence&#39;</span><span class="p">,</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>    <span class="s1">&#39;calculate_freezing_index&#39;</span><span class="p">,</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>    <span class="s1">&#39;calculate_dominant_frequency&#39;</span><span class="p">,</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>    <span class="s1">&#39;calculate_peak_frequency&#39;</span><span class="p">,</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>    <span class="s1">&#39;calculate_power_spectral_entropy&#39;</span><span class="p">,</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>    <span class="s1">&#39;calculate_principal_harmonic_frequency&#39;</span><span class="p">,</span>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>    <span class="s1">&#39;calculate_entropy&#39;</span><span class="p">,</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>    <span class="s1">&#39;calculate_interquartile_range&#39;</span><span class="p">,</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>    <span class="s1">&#39;calculate_correlation&#39;</span><span class="p">,</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>    <span class="s1">&#39;calculate_auto_regression_coefficients&#39;</span><span class="p">,</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>    <span class="c1"># Gait feature convenience</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>    <span class="s1">&#39;get_mean_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>    <span class="s1">&#39;get_standard_deviation_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>    <span class="s1">&#39;get_variance_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>    <span class="s1">&#39;get_skewness_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>    <span class="s1">&#39;get_kurtosis_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>    <span class="s1">&#39;get_root_mean_square_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>    <span class="s1">&#39;get_range_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>    <span class="s1">&#39;get_median_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>    <span class="s1">&#39;get_mode_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>    <span class="s1">&#39;get_mean_absolute_value_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>    <span class="s1">&#39;get_median_absolute_deviation_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>    <span class="s1">&#39;get_peak_height_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>    <span class="s1">&#39;get_stride_times_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>    <span class="s1">&#39;get_step_times_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>    <span class="s1">&#39;get_cadence_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>    <span class="s1">&#39;get_freezing_index_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>    <span class="s1">&#39;get_dominant_frequency_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>    <span class="s1">&#39;get_peak_frequency_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>    <span class="s1">&#39;get_power_spectral_entropy_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>    <span class="s1">&#39;get_principal_harmonic_frequency_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>    <span class="s1">&#39;get_entropy_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>    <span class="s1">&#39;get_interquartile_range_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>    <span class="s1">&#39;get_correlation_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>    <span class="s1">&#39;get_auto_regression_coefficients_for_windows&#39;</span><span class="p">,</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>    <span class="s1">&#39;extract_gait_features&#39;</span><span class="p">,</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a><span class="p">]</span>
 </span></pre></div>
 
 
@@ -3016,6 +3023,402 @@ It extracts both time-domain and frequency-domain features from sensor data.</p>
                                 </dl>
                             </div>
                 </section>
+                <section id="UrFallMediaFeatureExtractor">
+                            <input id="UrFallMediaFeatureExtractor-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr class">
+            
+    <span class="def">class</span>
+    <span class="name">UrFallMediaFeatureExtractor</span><wbr>(<span class="base"><a href="core/base_classes.html#BaseFeatureExtractor">gaitsetpy.core.base_classes.BaseFeatureExtractor</a></span>):
+
+                <label class="view-source-button" for="UrFallMediaFeatureExtractor-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#UrFallMediaFeatureExtractor"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="UrFallMediaFeatureExtractor-15"><a href="#UrFallMediaFeatureExtractor-15"><span class="linenos">15</span></a><span class="k">class</span><span class="w"> </span><span class="nc">UrFallMediaFeatureExtractor</span><span class="p">(</span><span class="n">BaseFeatureExtractor</span><span class="p">):</span>
+</span><span id="UrFallMediaFeatureExtractor-16"><a href="#UrFallMediaFeatureExtractor-16"><span class="linenos">16</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="UrFallMediaFeatureExtractor-17"><a href="#UrFallMediaFeatureExtractor-17"><span class="linenos">17</span></a><span class="sd">    UrFall image/video feature extractor.</span>
+</span><span id="UrFallMediaFeatureExtractor-18"><a href="#UrFallMediaFeatureExtractor-18"><span class="linenos">18</span></a>
+</span><span id="UrFallMediaFeatureExtractor-19"><a href="#UrFallMediaFeatureExtractor-19"><span class="linenos">19</span></a><span class="sd">    Extracts per-window features from sequences of images or decoded video frames:</span>
+</span><span id="UrFallMediaFeatureExtractor-20"><a href="#UrFallMediaFeatureExtractor-20"><span class="linenos">20</span></a><span class="sd">    - mean_intensity</span>
+</span><span id="UrFallMediaFeatureExtractor-21"><a href="#UrFallMediaFeatureExtractor-21"><span class="linenos">21</span></a><span class="sd">    - std_intensity</span>
+</span><span id="UrFallMediaFeatureExtractor-22"><a href="#UrFallMediaFeatureExtractor-22"><span class="linenos">22</span></a><span class="sd">    - motion_mean (if pairwise differences are available)</span>
+</span><span id="UrFallMediaFeatureExtractor-23"><a href="#UrFallMediaFeatureExtractor-23"><span class="linenos">23</span></a><span class="sd">    - motion_std</span>
+</span><span id="UrFallMediaFeatureExtractor-24"><a href="#UrFallMediaFeatureExtractor-24"><span class="linenos">24</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="UrFallMediaFeatureExtractor-25"><a href="#UrFallMediaFeatureExtractor-25"><span class="linenos">25</span></a>
+</span><span id="UrFallMediaFeatureExtractor-26"><a href="#UrFallMediaFeatureExtractor-26"><span class="linenos">26</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+</span><span id="UrFallMediaFeatureExtractor-27"><a href="#UrFallMediaFeatureExtractor-27"><span class="linenos">27</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="UrFallMediaFeatureExtractor-28"><a href="#UrFallMediaFeatureExtractor-28"><span class="linenos">28</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;urfall_media&quot;</span><span class="p">,</span>
+</span><span id="UrFallMediaFeatureExtractor-29"><a href="#UrFallMediaFeatureExtractor-29"><span class="linenos">29</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Lightweight feature extractor for UrFall depth/RGB/video modalities&quot;</span>
+</span><span id="UrFallMediaFeatureExtractor-30"><a href="#UrFallMediaFeatureExtractor-30"><span class="linenos">30</span></a>        <span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor-31"><a href="#UrFallMediaFeatureExtractor-31"><span class="linenos">31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="UrFallMediaFeatureExtractor-32"><a href="#UrFallMediaFeatureExtractor-32"><span class="linenos">32</span></a>            <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="n">verbose</span><span class="p">,</span>
+</span><span id="UrFallMediaFeatureExtractor-33"><a href="#UrFallMediaFeatureExtractor-33"><span class="linenos">33</span></a>            <span class="s1">&#39;use_motion&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="UrFallMediaFeatureExtractor-34"><a href="#UrFallMediaFeatureExtractor-34"><span class="linenos">34</span></a>            <span class="s1">&#39;grayscale&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># for RGB convert to gray before stats</span>
+</span><span id="UrFallMediaFeatureExtractor-35"><a href="#UrFallMediaFeatureExtractor-35"><span class="linenos">35</span></a>        <span class="p">}</span>
+</span><span id="UrFallMediaFeatureExtractor-36"><a href="#UrFallMediaFeatureExtractor-36"><span class="linenos">36</span></a>
+</span><span id="UrFallMediaFeatureExtractor-37"><a href="#UrFallMediaFeatureExtractor-37"><span class="linenos">37</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">extract_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+</span><span id="UrFallMediaFeatureExtractor-38"><a href="#UrFallMediaFeatureExtractor-38"><span class="linenos">38</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor-39"><a href="#UrFallMediaFeatureExtractor-39"><span class="linenos">39</span></a>        <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="UrFallMediaFeatureExtractor-40"><a href="#UrFallMediaFeatureExtractor-40"><span class="linenos">40</span></a>        <span class="k">for</span> <span class="n">window</span> <span class="ow">in</span> <span class="n">windows</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor-41"><a href="#UrFallMediaFeatureExtractor-41"><span class="linenos">41</span></a>            <span class="n">name</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor-42"><a href="#UrFallMediaFeatureExtractor-42"><span class="linenos">42</span></a>            <span class="n">frames</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="UrFallMediaFeatureExtractor-43"><a href="#UrFallMediaFeatureExtractor-43"><span class="linenos">43</span></a>            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor-44"><a href="#UrFallMediaFeatureExtractor-44"><span class="linenos">44</span></a>                <span class="k">continue</span>
+</span><span id="UrFallMediaFeatureExtractor-45"><a href="#UrFallMediaFeatureExtractor-45"><span class="linenos">45</span></a>            <span class="c1"># frames is a list of numpy arrays (HxW) or (HxWxC)</span>
+</span><span id="UrFallMediaFeatureExtractor-46"><a href="#UrFallMediaFeatureExtractor-46"><span class="linenos">46</span></a>            <span class="n">intensities</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="UrFallMediaFeatureExtractor-47"><a href="#UrFallMediaFeatureExtractor-47"><span class="linenos">47</span></a>            <span class="n">motions</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="UrFallMediaFeatureExtractor-48"><a href="#UrFallMediaFeatureExtractor-48"><span class="linenos">48</span></a>            <span class="n">prev_gray</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="UrFallMediaFeatureExtractor-49"><a href="#UrFallMediaFeatureExtractor-49"><span class="linenos">49</span></a>            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor-50"><a href="#UrFallMediaFeatureExtractor-50"><span class="linenos">50</span></a>                <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor-51"><a href="#UrFallMediaFeatureExtractor-51"><span class="linenos">51</span></a>                <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;grayscale&#39;</span><span class="p">]:</span>
+</span><span id="UrFallMediaFeatureExtractor-52"><a href="#UrFallMediaFeatureExtractor-52"><span class="linenos">52</span></a>                    <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor-53"><a href="#UrFallMediaFeatureExtractor-53"><span class="linenos">53</span></a>                <span class="n">intensities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
+</span><span id="UrFallMediaFeatureExtractor-54"><a href="#UrFallMediaFeatureExtractor-54"><span class="linenos">54</span></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;use_motion&#39;</span><span class="p">]:</span>
+</span><span id="UrFallMediaFeatureExtractor-55"><a href="#UrFallMediaFeatureExtractor-55"><span class="linenos">55</span></a>                    <span class="k">if</span> <span class="n">prev_gray</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor-56"><a href="#UrFallMediaFeatureExtractor-56"><span class="linenos">56</span></a>                        <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-</span> <span class="n">prev_gray</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor-57"><a href="#UrFallMediaFeatureExtractor-57"><span class="linenos">57</span></a>                        <span class="n">motions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">diff</span><span class="p">)))</span>
+</span><span id="UrFallMediaFeatureExtractor-58"><a href="#UrFallMediaFeatureExtractor-58"><span class="linenos">58</span></a>                    <span class="n">prev_gray</span> <span class="o">=</span> <span class="n">arr</span>
+</span><span id="UrFallMediaFeatureExtractor-59"><a href="#UrFallMediaFeatureExtractor-59"><span class="linenos">59</span></a>            <span class="n">fdict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+</span><span id="UrFallMediaFeatureExtractor-60"><a href="#UrFallMediaFeatureExtractor-60"><span class="linenos">60</span></a>            <span class="k">if</span> <span class="n">intensities</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor-61"><a href="#UrFallMediaFeatureExtractor-61"><span class="linenos">61</span></a>                <span class="n">fdict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="s1">&#39;mean_intensity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">intensities</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor-62"><a href="#UrFallMediaFeatureExtractor-62"><span class="linenos">62</span></a>                <span class="n">fdict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="s1">&#39;std_intensity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">intensities</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor-63"><a href="#UrFallMediaFeatureExtractor-63"><span class="linenos">63</span></a>            <span class="k">if</span> <span class="n">motions</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor-64"><a href="#UrFallMediaFeatureExtractor-64"><span class="linenos">64</span></a>                <span class="n">fdict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="s1">&#39;motion_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">motions</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor-65"><a href="#UrFallMediaFeatureExtractor-65"><span class="linenos">65</span></a>                <span class="n">fdict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="s1">&#39;motion_std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">motions</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor-66"><a href="#UrFallMediaFeatureExtractor-66"><span class="linenos">66</span></a>            <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fdict</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor-67"><a href="#UrFallMediaFeatureExtractor-67"><span class="linenos">67</span></a>        <span class="k">return</span> <span class="n">features</span>
+</span><span id="UrFallMediaFeatureExtractor-68"><a href="#UrFallMediaFeatureExtractor-68"><span class="linenos">68</span></a>
+</span><span id="UrFallMediaFeatureExtractor-69"><a href="#UrFallMediaFeatureExtractor-69"><span class="linenos">69</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_feature_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="UrFallMediaFeatureExtractor-70"><a href="#UrFallMediaFeatureExtractor-70"><span class="linenos">70</span></a>        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;mean_intensity&#39;</span><span class="p">,</span> <span class="s1">&#39;std_intensity&#39;</span><span class="p">,</span> <span class="s1">&#39;motion_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;motion_std&#39;</span><span class="p">]</span> 
+</span></pre></div>
+
+
+            <div class="docstring"><p>UrFall image/video feature extractor.</p>
+
+<p>Extracts per-window features from sequences of images or decoded video frames:</p>
+
+<ul>
+<li>mean_intensity</li>
+<li>std_intensity</li>
+<li>motion_mean (if pairwise differences are available)</li>
+<li>motion_std</li>
+</ul>
+</div>
+
+
+                            <div id="UrFallMediaFeatureExtractor.__init__" class="classattr">
+                                        <input id="UrFallMediaFeatureExtractor.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="name">UrFallMediaFeatureExtractor</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span>)</span>
+
+                <label class="view-source-button" for="UrFallMediaFeatureExtractor.__init__-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#UrFallMediaFeatureExtractor.__init__"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="UrFallMediaFeatureExtractor.__init__-26"><a href="#UrFallMediaFeatureExtractor.__init__-26"><span class="linenos">26</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+</span><span id="UrFallMediaFeatureExtractor.__init__-27"><a href="#UrFallMediaFeatureExtractor.__init__-27"><span class="linenos">27</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="UrFallMediaFeatureExtractor.__init__-28"><a href="#UrFallMediaFeatureExtractor.__init__-28"><span class="linenos">28</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;urfall_media&quot;</span><span class="p">,</span>
+</span><span id="UrFallMediaFeatureExtractor.__init__-29"><a href="#UrFallMediaFeatureExtractor.__init__-29"><span class="linenos">29</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Lightweight feature extractor for UrFall depth/RGB/video modalities&quot;</span>
+</span><span id="UrFallMediaFeatureExtractor.__init__-30"><a href="#UrFallMediaFeatureExtractor.__init__-30"><span class="linenos">30</span></a>        <span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor.__init__-31"><a href="#UrFallMediaFeatureExtractor.__init__-31"><span class="linenos">31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="UrFallMediaFeatureExtractor.__init__-32"><a href="#UrFallMediaFeatureExtractor.__init__-32"><span class="linenos">32</span></a>            <span class="s1">&#39;verbose&#39;</span><span class="p">:</span> <span class="n">verbose</span><span class="p">,</span>
+</span><span id="UrFallMediaFeatureExtractor.__init__-33"><a href="#UrFallMediaFeatureExtractor.__init__-33"><span class="linenos">33</span></a>            <span class="s1">&#39;use_motion&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="UrFallMediaFeatureExtractor.__init__-34"><a href="#UrFallMediaFeatureExtractor.__init__-34"><span class="linenos">34</span></a>            <span class="s1">&#39;grayscale&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># for RGB convert to gray before stats</span>
+</span><span id="UrFallMediaFeatureExtractor.__init__-35"><a href="#UrFallMediaFeatureExtractor.__init__-35"><span class="linenos">35</span></a>        <span class="p">}</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Initialize the feature extractor.</p>
+
+<p>Args:
+    name: Name of the feature extractor
+    description: Description of the feature extractor</p>
+</div>
+
+
+                            </div>
+                            <div id="UrFallMediaFeatureExtractor.config" class="classattr">
+                                <div class="attr variable">
+            <span class="name">config</span>
+
+        
+    </div>
+    <a class="headerlink" href="#UrFallMediaFeatureExtractor.config"></a>
+    
+    
+
+                            </div>
+                            <div id="UrFallMediaFeatureExtractor.extract_features" class="classattr">
+                                        <input id="UrFallMediaFeatureExtractor.extract_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">extract_features</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="UrFallMediaFeatureExtractor.extract_features-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#UrFallMediaFeatureExtractor.extract_features"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="UrFallMediaFeatureExtractor.extract_features-37"><a href="#UrFallMediaFeatureExtractor.extract_features-37"><span class="linenos">37</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">extract_features</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-38"><a href="#UrFallMediaFeatureExtractor.extract_features-38"><span class="linenos">38</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-39"><a href="#UrFallMediaFeatureExtractor.extract_features-39"><span class="linenos">39</span></a>        <span class="n">features</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-40"><a href="#UrFallMediaFeatureExtractor.extract_features-40"><span class="linenos">40</span></a>        <span class="k">for</span> <span class="n">window</span> <span class="ow">in</span> <span class="n">windows</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-41"><a href="#UrFallMediaFeatureExtractor.extract_features-41"><span class="linenos">41</span></a>            <span class="n">name</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;unknown&#39;</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-42"><a href="#UrFallMediaFeatureExtractor.extract_features-42"><span class="linenos">42</span></a>            <span class="n">frames</span> <span class="o">=</span> <span class="n">window</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-43"><a href="#UrFallMediaFeatureExtractor.extract_features-43"><span class="linenos">43</span></a>            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-44"><a href="#UrFallMediaFeatureExtractor.extract_features-44"><span class="linenos">44</span></a>                <span class="k">continue</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-45"><a href="#UrFallMediaFeatureExtractor.extract_features-45"><span class="linenos">45</span></a>            <span class="c1"># frames is a list of numpy arrays (HxW) or (HxWxC)</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-46"><a href="#UrFallMediaFeatureExtractor.extract_features-46"><span class="linenos">46</span></a>            <span class="n">intensities</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-47"><a href="#UrFallMediaFeatureExtractor.extract_features-47"><span class="linenos">47</span></a>            <span class="n">motions</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-48"><a href="#UrFallMediaFeatureExtractor.extract_features-48"><span class="linenos">48</span></a>            <span class="n">prev_gray</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-49"><a href="#UrFallMediaFeatureExtractor.extract_features-49"><span class="linenos">49</span></a>            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-50"><a href="#UrFallMediaFeatureExtractor.extract_features-50"><span class="linenos">50</span></a>                <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-51"><a href="#UrFallMediaFeatureExtractor.extract_features-51"><span class="linenos">51</span></a>                <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;grayscale&#39;</span><span class="p">]:</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-52"><a href="#UrFallMediaFeatureExtractor.extract_features-52"><span class="linenos">52</span></a>                    <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-53"><a href="#UrFallMediaFeatureExtractor.extract_features-53"><span class="linenos">53</span></a>                <span class="n">intensities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">arr</span><span class="p">)))</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-54"><a href="#UrFallMediaFeatureExtractor.extract_features-54"><span class="linenos">54</span></a>                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;use_motion&#39;</span><span class="p">]:</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-55"><a href="#UrFallMediaFeatureExtractor.extract_features-55"><span class="linenos">55</span></a>                    <span class="k">if</span> <span class="n">prev_gray</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-56"><a href="#UrFallMediaFeatureExtractor.extract_features-56"><span class="linenos">56</span></a>                        <span class="n">diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-</span> <span class="n">prev_gray</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-57"><a href="#UrFallMediaFeatureExtractor.extract_features-57"><span class="linenos">57</span></a>                        <span class="n">motions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">diff</span><span class="p">)))</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-58"><a href="#UrFallMediaFeatureExtractor.extract_features-58"><span class="linenos">58</span></a>                    <span class="n">prev_gray</span> <span class="o">=</span> <span class="n">arr</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-59"><a href="#UrFallMediaFeatureExtractor.extract_features-59"><span class="linenos">59</span></a>            <span class="n">fdict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s1">&#39;features&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-60"><a href="#UrFallMediaFeatureExtractor.extract_features-60"><span class="linenos">60</span></a>            <span class="k">if</span> <span class="n">intensities</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-61"><a href="#UrFallMediaFeatureExtractor.extract_features-61"><span class="linenos">61</span></a>                <span class="n">fdict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="s1">&#39;mean_intensity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">intensities</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-62"><a href="#UrFallMediaFeatureExtractor.extract_features-62"><span class="linenos">62</span></a>                <span class="n">fdict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="s1">&#39;std_intensity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">intensities</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-63"><a href="#UrFallMediaFeatureExtractor.extract_features-63"><span class="linenos">63</span></a>            <span class="k">if</span> <span class="n">motions</span><span class="p">:</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-64"><a href="#UrFallMediaFeatureExtractor.extract_features-64"><span class="linenos">64</span></a>                <span class="n">fdict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="s1">&#39;motion_mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">motions</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-65"><a href="#UrFallMediaFeatureExtractor.extract_features-65"><span class="linenos">65</span></a>                <span class="n">fdict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="s1">&#39;motion_std&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">motions</span><span class="p">))</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-66"><a href="#UrFallMediaFeatureExtractor.extract_features-66"><span class="linenos">66</span></a>            <span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fdict</span><span class="p">)</span>
+</span><span id="UrFallMediaFeatureExtractor.extract_features-67"><a href="#UrFallMediaFeatureExtractor.extract_features-67"><span class="linenos">67</span></a>        <span class="k">return</span> <span class="n">features</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Extract features from sliding windows.</p>
+
+<p>Args:
+    windows: List of sliding window dictionaries
+    fs: Sampling frequency
+    **kwargs: Additional arguments for feature extraction</p>
+
+<p>Returns:
+    List of feature dictionaries</p>
+</div>
+
+
+                            </div>
+                            <div id="UrFallMediaFeatureExtractor.get_feature_names" class="classattr">
+                                        <input id="UrFallMediaFeatureExtractor.get_feature_names-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">get_feature_names</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="UrFallMediaFeatureExtractor.get_feature_names-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#UrFallMediaFeatureExtractor.get_feature_names"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="UrFallMediaFeatureExtractor.get_feature_names-69"><a href="#UrFallMediaFeatureExtractor.get_feature_names-69"><span class="linenos">69</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_feature_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="UrFallMediaFeatureExtractor.get_feature_names-70"><a href="#UrFallMediaFeatureExtractor.get_feature_names-70"><span class="linenos">70</span></a>        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;mean_intensity&#39;</span><span class="p">,</span> <span class="s1">&#39;std_intensity&#39;</span><span class="p">,</span> <span class="s1">&#39;motion_mean&#39;</span><span class="p">,</span> <span class="s1">&#39;motion_std&#39;</span><span class="p">]</span> 
+</span></pre></div>
+
+
+            <div class="docstring"><p>Get names of features extracted by this extractor.</p>
+
+<p>Returns:
+    List of feature names</p>
+</div>
+
+
+                            </div>
+                            <div class="inherited">
+                                <h5>Inherited Members</h5>
+                                <dl>
+                                    <div><dt><a href="core/base_classes.html#BaseFeatureExtractor">gaitsetpy.core.base_classes.BaseFeatureExtractor</a></dt>
+                                <dd id="UrFallMediaFeatureExtractor.name" class="variable"><a href="core/base_classes.html#BaseFeatureExtractor.name">name</a></dd>
+                <dd id="UrFallMediaFeatureExtractor.description" class="variable"><a href="core/base_classes.html#BaseFeatureExtractor.description">description</a></dd>
+                <dd id="UrFallMediaFeatureExtractor.configure" class="function"><a href="core/base_classes.html#BaseFeatureExtractor.configure">configure</a></dd>
+                <dd id="UrFallMediaFeatureExtractor.get_info" class="function"><a href="core/base_classes.html#BaseFeatureExtractor.get_info">get_info</a></dd>
+
+            </div>
+                                </dl>
+                            </div>
+                </section>
+                <section id="extract_lbp_features">
+                            <input id="extract_lbp_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">extract_lbp_features</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="extract_lbp_features-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#extract_lbp_features"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_lbp_features-512"><a href="#extract_lbp_features-512"><span class="linenos">512</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_lbp_features</span><span class="p">(</span><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+</span><span id="extract_lbp_features-513"><a href="#extract_lbp_features-513"><span class="linenos">513</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="extract_lbp_features-514"><a href="#extract_lbp_features-514"><span class="linenos">514</span></a><span class="sd">    Legacy function to extract LBP features.</span>
+</span><span id="extract_lbp_features-515"><a href="#extract_lbp_features-515"><span class="linenos">515</span></a><span class="sd">    </span>
+</span><span id="extract_lbp_features-516"><a href="#extract_lbp_features-516"><span class="linenos">516</span></a><span class="sd">    Args:</span>
+</span><span id="extract_lbp_features-517"><a href="#extract_lbp_features-517"><span class="linenos">517</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
+</span><span id="extract_lbp_features-518"><a href="#extract_lbp_features-518"><span class="linenos">518</span></a><span class="sd">        fs: Sampling frequency</span>
+</span><span id="extract_lbp_features-519"><a href="#extract_lbp_features-519"><span class="linenos">519</span></a><span class="sd">        **kwargs: Additional arguments</span>
+</span><span id="extract_lbp_features-520"><a href="#extract_lbp_features-520"><span class="linenos">520</span></a><span class="sd">        </span>
+</span><span id="extract_lbp_features-521"><a href="#extract_lbp_features-521"><span class="linenos">521</span></a><span class="sd">    Returns:</span>
+</span><span id="extract_lbp_features-522"><a href="#extract_lbp_features-522"><span class="linenos">522</span></a><span class="sd">        List of feature dictionaries</span>
+</span><span id="extract_lbp_features-523"><a href="#extract_lbp_features-523"><span class="linenos">523</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="extract_lbp_features-524"><a href="#extract_lbp_features-524"><span class="linenos">524</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">LBPFeatureExtractor</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+</span><span id="extract_lbp_features-525"><a href="#extract_lbp_features-525"><span class="linenos">525</span></a>    <span class="k">return</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Legacy function to extract LBP features.</p>
+
+<p>Args:
+    windows: List of sliding window dictionaries
+    fs: Sampling frequency
+    **kwargs: Additional arguments</p>
+
+<p>Returns:
+    List of feature dictionaries</p>
+</div>
+
+
+                </section>
+                <section id="extract_fourier_features">
+                            <input id="extract_fourier_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">extract_fourier_features</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="extract_fourier_features-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#extract_fourier_features"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_fourier_features-528"><a href="#extract_fourier_features-528"><span class="linenos">528</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_fourier_features</span><span class="p">(</span><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+</span><span id="extract_fourier_features-529"><a href="#extract_fourier_features-529"><span class="linenos">529</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="extract_fourier_features-530"><a href="#extract_fourier_features-530"><span class="linenos">530</span></a><span class="sd">    Legacy function to extract Fourier series features.</span>
+</span><span id="extract_fourier_features-531"><a href="#extract_fourier_features-531"><span class="linenos">531</span></a><span class="sd">    </span>
+</span><span id="extract_fourier_features-532"><a href="#extract_fourier_features-532"><span class="linenos">532</span></a><span class="sd">    Args:</span>
+</span><span id="extract_fourier_features-533"><a href="#extract_fourier_features-533"><span class="linenos">533</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
+</span><span id="extract_fourier_features-534"><a href="#extract_fourier_features-534"><span class="linenos">534</span></a><span class="sd">        fs: Sampling frequency</span>
+</span><span id="extract_fourier_features-535"><a href="#extract_fourier_features-535"><span class="linenos">535</span></a><span class="sd">        **kwargs: Additional arguments</span>
+</span><span id="extract_fourier_features-536"><a href="#extract_fourier_features-536"><span class="linenos">536</span></a><span class="sd">        </span>
+</span><span id="extract_fourier_features-537"><a href="#extract_fourier_features-537"><span class="linenos">537</span></a><span class="sd">    Returns:</span>
+</span><span id="extract_fourier_features-538"><a href="#extract_fourier_features-538"><span class="linenos">538</span></a><span class="sd">        List of feature dictionaries</span>
+</span><span id="extract_fourier_features-539"><a href="#extract_fourier_features-539"><span class="linenos">539</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="extract_fourier_features-540"><a href="#extract_fourier_features-540"><span class="linenos">540</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">FourierSeriesFeatureExtractor</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+</span><span id="extract_fourier_features-541"><a href="#extract_fourier_features-541"><span class="linenos">541</span></a>    <span class="k">return</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Legacy function to extract Fourier series features.</p>
+
+<p>Args:
+    windows: List of sliding window dictionaries
+    fs: Sampling frequency
+    **kwargs: Additional arguments</p>
+
+<p>Returns:
+    List of feature dictionaries</p>
+</div>
+
+
+                </section>
+                <section id="extract_physionet_features">
+                            <input id="extract_physionet_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">extract_physionet_features</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="extract_physionet_features-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#extract_physionet_features"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_physionet_features-544"><a href="#extract_physionet_features-544"><span class="linenos">544</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_physionet_features</span><span class="p">(</span><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+</span><span id="extract_physionet_features-545"><a href="#extract_physionet_features-545"><span class="linenos">545</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="extract_physionet_features-546"><a href="#extract_physionet_features-546"><span class="linenos">546</span></a><span class="sd">    Legacy function to extract combined PhysioNet features.</span>
+</span><span id="extract_physionet_features-547"><a href="#extract_physionet_features-547"><span class="linenos">547</span></a><span class="sd">    </span>
+</span><span id="extract_physionet_features-548"><a href="#extract_physionet_features-548"><span class="linenos">548</span></a><span class="sd">    Args:</span>
+</span><span id="extract_physionet_features-549"><a href="#extract_physionet_features-549"><span class="linenos">549</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
+</span><span id="extract_physionet_features-550"><a href="#extract_physionet_features-550"><span class="linenos">550</span></a><span class="sd">        fs: Sampling frequency</span>
+</span><span id="extract_physionet_features-551"><a href="#extract_physionet_features-551"><span class="linenos">551</span></a><span class="sd">        **kwargs: Additional arguments</span>
+</span><span id="extract_physionet_features-552"><a href="#extract_physionet_features-552"><span class="linenos">552</span></a><span class="sd">        </span>
+</span><span id="extract_physionet_features-553"><a href="#extract_physionet_features-553"><span class="linenos">553</span></a><span class="sd">    Returns:</span>
+</span><span id="extract_physionet_features-554"><a href="#extract_physionet_features-554"><span class="linenos">554</span></a><span class="sd">        List of feature dictionaries</span>
+</span><span id="extract_physionet_features-555"><a href="#extract_physionet_features-555"><span class="linenos">555</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="extract_physionet_features-556"><a href="#extract_physionet_features-556"><span class="linenos">556</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">PhysioNetFeatureExtractor</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
+</span><span id="extract_physionet_features-557"><a href="#extract_physionet_features-557"><span class="linenos">557</span></a>    <span class="k">return</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> 
+</span></pre></div>
+
+
+            <div class="docstring"><p>Legacy function to extract combined PhysioNet features.</p>
+
+<p>Args:
+    windows: List of sliding window dictionaries
+    fs: Sampling frequency
+    **kwargs: Additional arguments</p>
+
+<p>Returns:
+    List of feature dictionaries</p>
+</div>
+
+
+                </section>
+                <section id="extract_harup_features">
+                            <input id="extract_harup_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">extract_harup_features</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>,</span><span class="param">	<span class="n">fs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>,</span><span class="param">	<span class="n">time_domain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>,</span><span class="param">	<span class="n">freq_domain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>,</span><span class="param">	<span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="extract_harup_features-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#extract_harup_features"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_harup_features-169"><a href="#extract_harup_features-169"><span class="linenos">169</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_harup_features</span><span class="p">(</span><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> 
+</span><span id="extract_harup_features-170"><a href="#extract_harup_features-170"><span class="linenos">170</span></a>                         <span class="n">time_domain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">freq_domain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+</span><span id="extract_harup_features-171"><a href="#extract_harup_features-171"><span class="linenos">171</span></a>                         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+</span><span id="extract_harup_features-172"><a href="#extract_harup_features-172"><span class="linenos">172</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="extract_harup_features-173"><a href="#extract_harup_features-173"><span class="linenos">173</span></a><span class="sd">    Legacy function for extracting HAR-UP features.</span>
+</span><span id="extract_harup_features-174"><a href="#extract_harup_features-174"><span class="linenos">174</span></a><span class="sd">    </span>
+</span><span id="extract_harup_features-175"><a href="#extract_harup_features-175"><span class="linenos">175</span></a><span class="sd">    Args:</span>
+</span><span id="extract_harup_features-176"><a href="#extract_harup_features-176"><span class="linenos">176</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
+</span><span id="extract_harup_features-177"><a href="#extract_harup_features-177"><span class="linenos">177</span></a><span class="sd">        fs: Sampling frequency (default: 100Hz)</span>
+</span><span id="extract_harup_features-178"><a href="#extract_harup_features-178"><span class="linenos">178</span></a><span class="sd">        time_domain: Whether to extract time domain features</span>
+</span><span id="extract_harup_features-179"><a href="#extract_harup_features-179"><span class="linenos">179</span></a><span class="sd">        freq_domain: Whether to extract frequency domain features</span>
+</span><span id="extract_harup_features-180"><a href="#extract_harup_features-180"><span class="linenos">180</span></a><span class="sd">        verbose: Whether to print progress information</span>
+</span><span id="extract_harup_features-181"><a href="#extract_harup_features-181"><span class="linenos">181</span></a><span class="sd">        </span>
+</span><span id="extract_harup_features-182"><a href="#extract_harup_features-182"><span class="linenos">182</span></a><span class="sd">    Returns:</span>
+</span><span id="extract_harup_features-183"><a href="#extract_harup_features-183"><span class="linenos">183</span></a><span class="sd">        List of feature dictionaries</span>
+</span><span id="extract_harup_features-184"><a href="#extract_harup_features-184"><span class="linenos">184</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="extract_harup_features-185"><a href="#extract_harup_features-185"><span class="linenos">185</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">HARUPFeatureExtractor</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+</span><span id="extract_harup_features-186"><a href="#extract_harup_features-186"><span class="linenos">186</span></a>    <span class="k">return</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span>
+</span><span id="extract_harup_features-187"><a href="#extract_harup_features-187"><span class="linenos">187</span></a>        <span class="n">windows</span><span class="p">,</span> 
+</span><span id="extract_harup_features-188"><a href="#extract_harup_features-188"><span class="linenos">188</span></a>        <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> 
+</span><span id="extract_harup_features-189"><a href="#extract_harup_features-189"><span class="linenos">189</span></a>        <span class="n">time_domain</span><span class="o">=</span><span class="n">time_domain</span><span class="p">,</span> 
+</span><span id="extract_harup_features-190"><a href="#extract_harup_features-190"><span class="linenos">190</span></a>        <span class="n">frequency_domain</span><span class="o">=</span><span class="n">freq_domain</span>
+</span><span id="extract_harup_features-191"><a href="#extract_harup_features-191"><span class="linenos">191</span></a>    <span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Legacy function for extracting HAR-UP features.</p>
+
+<p>Args:
+    windows: List of sliding window dictionaries
+    fs: Sampling frequency (default: 100Hz)
+    time_domain: Whether to extract time domain features
+    freq_domain: Whether to extract frequency domain features
+    verbose: Whether to print progress information</p>
+
+<p>Returns:
+    List of feature dictionaries</p>
+</div>
+
+
+                </section>
                 <section id="calculate_mean">
                             <input id="calculate_mean-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -4190,267 +4593,6 @@ Returns:
     frequency_domain: Whether to extract frequency domain features
     statistical: Whether to extract statistical features
     verbose: Whether to show verbose output and progress bars</p>
-
-<p>Returns:
-    List of feature dictionaries</p>
-</div>
-
-
-                </section>
-                <section id="extract_lbp_features">
-                            <input id="extract_lbp_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">extract_lbp_features</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="extract_lbp_features-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#extract_lbp_features"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_lbp_features-512"><a href="#extract_lbp_features-512"><span class="linenos">512</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_lbp_features</span><span class="p">(</span><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
-</span><span id="extract_lbp_features-513"><a href="#extract_lbp_features-513"><span class="linenos">513</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="extract_lbp_features-514"><a href="#extract_lbp_features-514"><span class="linenos">514</span></a><span class="sd">    Legacy function to extract LBP features.</span>
-</span><span id="extract_lbp_features-515"><a href="#extract_lbp_features-515"><span class="linenos">515</span></a><span class="sd">    </span>
-</span><span id="extract_lbp_features-516"><a href="#extract_lbp_features-516"><span class="linenos">516</span></a><span class="sd">    Args:</span>
-</span><span id="extract_lbp_features-517"><a href="#extract_lbp_features-517"><span class="linenos">517</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
-</span><span id="extract_lbp_features-518"><a href="#extract_lbp_features-518"><span class="linenos">518</span></a><span class="sd">        fs: Sampling frequency</span>
-</span><span id="extract_lbp_features-519"><a href="#extract_lbp_features-519"><span class="linenos">519</span></a><span class="sd">        **kwargs: Additional arguments</span>
-</span><span id="extract_lbp_features-520"><a href="#extract_lbp_features-520"><span class="linenos">520</span></a><span class="sd">        </span>
-</span><span id="extract_lbp_features-521"><a href="#extract_lbp_features-521"><span class="linenos">521</span></a><span class="sd">    Returns:</span>
-</span><span id="extract_lbp_features-522"><a href="#extract_lbp_features-522"><span class="linenos">522</span></a><span class="sd">        List of feature dictionaries</span>
-</span><span id="extract_lbp_features-523"><a href="#extract_lbp_features-523"><span class="linenos">523</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="extract_lbp_features-524"><a href="#extract_lbp_features-524"><span class="linenos">524</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">LBPFeatureExtractor</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
-</span><span id="extract_lbp_features-525"><a href="#extract_lbp_features-525"><span class="linenos">525</span></a>    <span class="k">return</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Legacy function to extract LBP features.</p>
-
-<p>Args:
-    windows: List of sliding window dictionaries
-    fs: Sampling frequency
-    **kwargs: Additional arguments</p>
-
-<p>Returns:
-    List of feature dictionaries</p>
-</div>
-
-
-                </section>
-                <section id="extract_fourier_features">
-                            <input id="extract_fourier_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">extract_fourier_features</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="extract_fourier_features-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#extract_fourier_features"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_fourier_features-528"><a href="#extract_fourier_features-528"><span class="linenos">528</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_fourier_features</span><span class="p">(</span><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
-</span><span id="extract_fourier_features-529"><a href="#extract_fourier_features-529"><span class="linenos">529</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="extract_fourier_features-530"><a href="#extract_fourier_features-530"><span class="linenos">530</span></a><span class="sd">    Legacy function to extract Fourier series features.</span>
-</span><span id="extract_fourier_features-531"><a href="#extract_fourier_features-531"><span class="linenos">531</span></a><span class="sd">    </span>
-</span><span id="extract_fourier_features-532"><a href="#extract_fourier_features-532"><span class="linenos">532</span></a><span class="sd">    Args:</span>
-</span><span id="extract_fourier_features-533"><a href="#extract_fourier_features-533"><span class="linenos">533</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
-</span><span id="extract_fourier_features-534"><a href="#extract_fourier_features-534"><span class="linenos">534</span></a><span class="sd">        fs: Sampling frequency</span>
-</span><span id="extract_fourier_features-535"><a href="#extract_fourier_features-535"><span class="linenos">535</span></a><span class="sd">        **kwargs: Additional arguments</span>
-</span><span id="extract_fourier_features-536"><a href="#extract_fourier_features-536"><span class="linenos">536</span></a><span class="sd">        </span>
-</span><span id="extract_fourier_features-537"><a href="#extract_fourier_features-537"><span class="linenos">537</span></a><span class="sd">    Returns:</span>
-</span><span id="extract_fourier_features-538"><a href="#extract_fourier_features-538"><span class="linenos">538</span></a><span class="sd">        List of feature dictionaries</span>
-</span><span id="extract_fourier_features-539"><a href="#extract_fourier_features-539"><span class="linenos">539</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="extract_fourier_features-540"><a href="#extract_fourier_features-540"><span class="linenos">540</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">FourierSeriesFeatureExtractor</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
-</span><span id="extract_fourier_features-541"><a href="#extract_fourier_features-541"><span class="linenos">541</span></a>    <span class="k">return</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Legacy function to extract Fourier series features.</p>
-
-<p>Args:
-    windows: List of sliding window dictionaries
-    fs: Sampling frequency
-    **kwargs: Additional arguments</p>
-
-<p>Returns:
-    List of feature dictionaries</p>
-</div>
-
-
-                </section>
-                <section id="extract_physionet_features">
-                            <input id="extract_physionet_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">extract_physionet_features</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>, </span><span class="param"><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="extract_physionet_features-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#extract_physionet_features"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_physionet_features-544"><a href="#extract_physionet_features-544"><span class="linenos">544</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_physionet_features</span><span class="p">(</span><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
-</span><span id="extract_physionet_features-545"><a href="#extract_physionet_features-545"><span class="linenos">545</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="extract_physionet_features-546"><a href="#extract_physionet_features-546"><span class="linenos">546</span></a><span class="sd">    Legacy function to extract combined PhysioNet features.</span>
-</span><span id="extract_physionet_features-547"><a href="#extract_physionet_features-547"><span class="linenos">547</span></a><span class="sd">    </span>
-</span><span id="extract_physionet_features-548"><a href="#extract_physionet_features-548"><span class="linenos">548</span></a><span class="sd">    Args:</span>
-</span><span id="extract_physionet_features-549"><a href="#extract_physionet_features-549"><span class="linenos">549</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
-</span><span id="extract_physionet_features-550"><a href="#extract_physionet_features-550"><span class="linenos">550</span></a><span class="sd">        fs: Sampling frequency</span>
-</span><span id="extract_physionet_features-551"><a href="#extract_physionet_features-551"><span class="linenos">551</span></a><span class="sd">        **kwargs: Additional arguments</span>
-</span><span id="extract_physionet_features-552"><a href="#extract_physionet_features-552"><span class="linenos">552</span></a><span class="sd">        </span>
-</span><span id="extract_physionet_features-553"><a href="#extract_physionet_features-553"><span class="linenos">553</span></a><span class="sd">    Returns:</span>
-</span><span id="extract_physionet_features-554"><a href="#extract_physionet_features-554"><span class="linenos">554</span></a><span class="sd">        List of feature dictionaries</span>
-</span><span id="extract_physionet_features-555"><a href="#extract_physionet_features-555"><span class="linenos">555</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="extract_physionet_features-556"><a href="#extract_physionet_features-556"><span class="linenos">556</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">PhysioNetFeatureExtractor</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;verbose&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">))</span>
-</span><span id="extract_physionet_features-557"><a href="#extract_physionet_features-557"><span class="linenos">557</span></a>    <span class="k">return</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> 
-</span></pre></div>
-
-
-            <div class="docstring"><p>Legacy function to extract combined PhysioNet features.</p>
-
-<p>Args:
-    windows: List of sliding window dictionaries
-    fs: Sampling frequency
-    **kwargs: Additional arguments</p>
-
-<p>Returns:
-    List of feature dictionaries</p>
-</div>
-
-
-                </section>
-                <section id="extract_harup_features">
-                            <input id="extract_harup_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">extract_harup_features</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>,</span><span class="param">	<span class="n">fs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>,</span><span class="param">	<span class="n">time_domain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>,</span><span class="param">	<span class="n">freq_domain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>,</span><span class="param">	<span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></span><span class="return-annotation">) -> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="extract_harup_features-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#extract_harup_features"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_harup_features-169"><a href="#extract_harup_features-169"><span class="linenos">169</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_harup_features</span><span class="p">(</span><span class="n">windows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">],</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> 
-</span><span id="extract_harup_features-170"><a href="#extract_harup_features-170"><span class="linenos">170</span></a>                         <span class="n">time_domain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">freq_domain</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
-</span><span id="extract_harup_features-171"><a href="#extract_harup_features-171"><span class="linenos">171</span></a>                         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
-</span><span id="extract_harup_features-172"><a href="#extract_harup_features-172"><span class="linenos">172</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="extract_harup_features-173"><a href="#extract_harup_features-173"><span class="linenos">173</span></a><span class="sd">    Legacy function for extracting HAR-UP features.</span>
-</span><span id="extract_harup_features-174"><a href="#extract_harup_features-174"><span class="linenos">174</span></a><span class="sd">    </span>
-</span><span id="extract_harup_features-175"><a href="#extract_harup_features-175"><span class="linenos">175</span></a><span class="sd">    Args:</span>
-</span><span id="extract_harup_features-176"><a href="#extract_harup_features-176"><span class="linenos">176</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
-</span><span id="extract_harup_features-177"><a href="#extract_harup_features-177"><span class="linenos">177</span></a><span class="sd">        fs: Sampling frequency (default: 100Hz)</span>
-</span><span id="extract_harup_features-178"><a href="#extract_harup_features-178"><span class="linenos">178</span></a><span class="sd">        time_domain: Whether to extract time domain features</span>
-</span><span id="extract_harup_features-179"><a href="#extract_harup_features-179"><span class="linenos">179</span></a><span class="sd">        freq_domain: Whether to extract frequency domain features</span>
-</span><span id="extract_harup_features-180"><a href="#extract_harup_features-180"><span class="linenos">180</span></a><span class="sd">        verbose: Whether to print progress information</span>
-</span><span id="extract_harup_features-181"><a href="#extract_harup_features-181"><span class="linenos">181</span></a><span class="sd">        </span>
-</span><span id="extract_harup_features-182"><a href="#extract_harup_features-182"><span class="linenos">182</span></a><span class="sd">    Returns:</span>
-</span><span id="extract_harup_features-183"><a href="#extract_harup_features-183"><span class="linenos">183</span></a><span class="sd">        List of feature dictionaries</span>
-</span><span id="extract_harup_features-184"><a href="#extract_harup_features-184"><span class="linenos">184</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="extract_harup_features-185"><a href="#extract_harup_features-185"><span class="linenos">185</span></a>    <span class="n">extractor</span> <span class="o">=</span> <span class="n">HARUPFeatureExtractor</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-</span><span id="extract_harup_features-186"><a href="#extract_harup_features-186"><span class="linenos">186</span></a>    <span class="k">return</span> <span class="n">extractor</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span>
-</span><span id="extract_harup_features-187"><a href="#extract_harup_features-187"><span class="linenos">187</span></a>        <span class="n">windows</span><span class="p">,</span> 
-</span><span id="extract_harup_features-188"><a href="#extract_harup_features-188"><span class="linenos">188</span></a>        <span class="n">fs</span><span class="o">=</span><span class="n">fs</span><span class="p">,</span> 
-</span><span id="extract_harup_features-189"><a href="#extract_harup_features-189"><span class="linenos">189</span></a>        <span class="n">time_domain</span><span class="o">=</span><span class="n">time_domain</span><span class="p">,</span> 
-</span><span id="extract_harup_features-190"><a href="#extract_harup_features-190"><span class="linenos">190</span></a>        <span class="n">frequency_domain</span><span class="o">=</span><span class="n">freq_domain</span>
-</span><span id="extract_harup_features-191"><a href="#extract_harup_features-191"><span class="linenos">191</span></a>    <span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Legacy function for extracting HAR-UP features.</p>
-
-<p>Args:
-    windows: List of sliding window dictionaries
-    fs: Sampling frequency (default: 100Hz)
-    time_domain: Whether to extract time domain features
-    freq_domain: Whether to extract frequency domain features
-    verbose: Whether to print progress information</p>
-
-<p>Returns:
-    List of feature dictionaries</p>
-</div>
-
-
-                </section>
-                <section id="get_feature_manager">
-                            <input id="get_feature_manager-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">get_feature_manager</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
-
-                <label class="view-source-button" for="get_feature_manager-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#get_feature_manager"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_feature_manager-91"><a href="#get_feature_manager-91"><span class="linenos">91</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_feature_manager</span><span class="p">():</span>
-</span><span id="get_feature_manager-92"><a href="#get_feature_manager-92"><span class="linenos">92</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the singleton FeatureManager instance.&quot;&quot;&quot;</span>
-</span><span id="get_feature_manager-93"><a href="#get_feature_manager-93"><span class="linenos">93</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Get the singleton FeatureManager instance.</p>
-</div>
-
-
-                </section>
-                <section id="get_available_extractors">
-                            <input id="get_available_extractors-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">get_available_extractors</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
-
-                <label class="view-source-button" for="get_available_extractors-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#get_available_extractors"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="get_available_extractors-96"><a href="#get_available_extractors-96"><span class="linenos">96</span></a><span class="k">def</span><span class="w"> </span><span class="nf">get_available_extractors</span><span class="p">():</span>
-</span><span id="get_available_extractors-97"><a href="#get_available_extractors-97"><span class="linenos">97</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get list of available feature extractor names.&quot;&quot;&quot;</span>
-</span><span id="get_available_extractors-98"><a href="#get_available_extractors-98"><span class="linenos">98</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">get_available_components</span><span class="p">()</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Get list of available feature extractor names.</p>
-</div>
-
-
-                </section>
-                <section id="extract_features">
-                            <input id="extract_features-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">extract_features</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">extractor_name</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">windows</span>, </span><span class="param"><span class="n">fs</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="o">**</span><span class="n">kwargs</span></span><span class="return-annotation">):</span></span>
-
-                <label class="view-source-button" for="extract_features-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#extract_features"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="extract_features-101"><a href="#extract_features-101"><span class="linenos">101</span></a><span class="k">def</span><span class="w"> </span><span class="nf">extract_features</span><span class="p">(</span><span class="n">extractor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-</span><span id="extract_features-102"><a href="#extract_features-102"><span class="linenos">102</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="extract_features-103"><a href="#extract_features-103"><span class="linenos">103</span></a><span class="sd">    Extract features using the FeatureManager.</span>
-</span><span id="extract_features-104"><a href="#extract_features-104"><span class="linenos">104</span></a><span class="sd">    </span>
-</span><span id="extract_features-105"><a href="#extract_features-105"><span class="linenos">105</span></a><span class="sd">    Args:</span>
-</span><span id="extract_features-106"><a href="#extract_features-106"><span class="linenos">106</span></a><span class="sd">        extractor_name: Name of the feature extractor</span>
-</span><span id="extract_features-107"><a href="#extract_features-107"><span class="linenos">107</span></a><span class="sd">        windows: List of sliding window dictionaries</span>
-</span><span id="extract_features-108"><a href="#extract_features-108"><span class="linenos">108</span></a><span class="sd">        fs: Sampling frequency</span>
-</span><span id="extract_features-109"><a href="#extract_features-109"><span class="linenos">109</span></a><span class="sd">        **kwargs: Additional arguments for feature extraction</span>
-</span><span id="extract_features-110"><a href="#extract_features-110"><span class="linenos">110</span></a><span class="sd">        </span>
-</span><span id="extract_features-111"><a href="#extract_features-111"><span class="linenos">111</span></a><span class="sd">    Returns:</span>
-</span><span id="extract_features-112"><a href="#extract_features-112"><span class="linenos">112</span></a><span class="sd">        List of feature dictionaries</span>
-</span><span id="extract_features-113"><a href="#extract_features-113"><span class="linenos">113</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="extract_features-114"><a href="#extract_features-114"><span class="linenos">114</span></a>    <span class="k">return</span> <span class="n">FeatureManager</span><span class="p">()</span><span class="o">.</span><span class="n">extract_features</span><span class="p">(</span><span class="n">extractor_name</span><span class="p">,</span> <span class="n">windows</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Extract features using the FeatureManager.</p>
-
-<p>Args:
-    extractor_name: Name of the feature extractor
-    windows: List of sliding window dictionaries
-    fs: Sampling frequency
-    **kwargs: Additional arguments for feature extraction</p>
 
 <p>Returns:
     List of feature dictionaries</p>
