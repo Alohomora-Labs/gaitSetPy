@@ -175,3 +175,4 @@ UP_Fall_Detection_Dataset/*
 gaitsetpy/STEERING_DOCS.md
 examples/data/*
 examples/urfall_data/*
+urfall_data/*
