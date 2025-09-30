@@ -228,7 +228,7 @@ class UrFallLoader(BaseDatasetLoader):
         
         # Load accelerometer data for each sequence
         for seq in seq_list:
-            accel_file = os.path.join(data_dir, f"{seq}-cam0-acc.csv")
+            accel_file = os.path.join(data_dir, f"{seq}-acc.csv")
             if os.path.exists(accel_file):
                 try:
                     df = pd.read_csv(accel_file)
@@ -271,7 +271,7 @@ class UrFallLoader(BaseDatasetLoader):
         
         # Load synchronization data for each sequence
         for seq in seq_list:
-            sync_file = os.path.join(data_dir, f"{seq}-cam0-sync.csv")
+            sync_file = os.path.join(data_dir, f"{seq}-data.csv")
             if os.path.exists(sync_file):
                 try:
                     df = pd.read_csv(sync_file)

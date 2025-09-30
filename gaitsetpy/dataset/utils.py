@@ -150,7 +150,7 @@ def download_urfall_data(data_dir, sequences=None, data_types=None, use_falls=Tr
     """
     from tqdm import tqdm
     
-    base_url = "https://fenix.ur.edu.pl/~mkepski/ds/data/"
+    base_url = "http://fenix.univ.rzeszow.pl/~mkepski/ds/data/"
     
     # Default to downloading pre-extracted features
     if data_types is None:
@@ -206,8 +206,8 @@ def download_urfall_data(data_dir, sequences=None, data_types=None, use_falls=Tr
     file_extension_map = {
         'depth': '-cam0-d.zip',
         'rgb': '-cam0-rgb.zip',
-        'accelerometer': '-cam0-acc.csv',
-        'synchronization': '-cam0-sync.csv',
+        'accelerometer': '-acc.csv',
+        'synchronization': '-data.csv',
         'video': '-cam0.mp4'
     }
     
