@@ -44,6 +44,7 @@ from .dataset import (
     MobiFallLoader,
     ArduousLoader,
     PhysioNetLoader,
+    HARUPLoader,
     get_dataset_manager,
     get_available_datasets,
     load_dataset
@@ -100,11 +101,89 @@ from .classification import (
 )
 
 # Legacy API for backward compatibility
-from .dataset import *
-from .features import *
-from .preprocessing import *
-from .eda import *
-from .classification import *
+# Explicitly import all public exports from submodules instead of using wildcard imports
+# This improves code clarity and makes it easier to track what's being exported
+
+# Dataset legacy functions
+from .dataset import (
+    load_daphnet_data,
+    create_sliding_windows,
+    load_mobifall_data,
+    load_arduous_data,
+    load_physionet_data,
+    create_physionet_windows,
+    load_harup_data,
+    create_harup_windows,
+    extract_harup_features,
+    download_dataset,
+    extract_dataset,
+    sliding_window
+)
+
+# Features legacy functions
+from .features import (
+    calculate_mean,
+    calculate_standard_deviation,
+    calculate_variance,
+    calculate_skewness,
+    calculate_kurtosis,
+    calculate_root_mean_square,
+    calculate_range,
+    calculate_median,
+    calculate_mode,
+    calculate_mean_absolute_value,
+    calculate_median_absolute_deviation,
+    calculate_peak_height,
+    calculate_stride_times,
+    calculate_step_time,
+    calculate_cadence,
+    calculate_freezing_index,
+    calculate_dominant_frequency,
+    calculate_peak_frequency,
+    calculate_power_spectral_entropy,
+    calculate_principal_harmonic_frequency,
+    calculate_entropy,
+    calculate_interquartile_range,
+    calculate_correlation,
+    calculate_auto_regression_coefficients,
+    get_mean_for_windows,
+    get_standard_deviation_for_windows,
+    get_variance_for_windows
+)
+
+# Preprocessing legacy functions
+from .preprocessing import (
+    clip_sliding_windows,
+    remove_noise,
+    remove_outliers,
+    remove_baseline,
+    remove_drift,
+    remove_artifacts,
+    remove_trend,
+    remove_dc_offset,
+    remove_high_frequency_noise,
+    remove_low_frequency_noise
+)
+
+# EDA legacy functions
+from .eda import (
+    plot_thigh_data,
+    plot_shank_data,
+    plot_trunk_data,
+    plot_all_data,
+    plot_all_thigh_data,
+    plot_all_shank_data,
+    plot_all_trunk_data,
+    plot_all_datasets,
+    plot_sensor_with_features
+)
+
+# Classification legacy functions
+from .classification import (
+    create_random_forest_model,
+    preprocess_features,
+    evaluate_model
+)
 
 __version__ = "0.2.0"  # Updated version to reflect new architecture
 __author__ = "Harshit Agarwal | Alohomora Labs"
@@ -301,6 +380,74 @@ __all__ = [
     'load_and_analyze_physionet',
     'train_gait_classifier',
     
-    # Legacy API (imported via *)
-    # All legacy functions are included through wildcard imports
+    # Legacy dataset functions
+    'load_daphnet_data',
+    'create_sliding_windows',
+    'load_mobifall_data',
+    'load_arduous_data',
+    'load_physionet_data',
+    'create_physionet_windows',
+    'load_harup_data',
+    'create_harup_windows',
+    'extract_harup_features',
+    'download_dataset',
+    'extract_dataset',
+    'sliding_window',
+    
+    # Legacy feature functions
+    'calculate_mean',
+    'calculate_standard_deviation',
+    'calculate_variance',
+    'calculate_skewness',
+    'calculate_kurtosis',
+    'calculate_root_mean_square',
+    'calculate_range',
+    'calculate_median',
+    'calculate_mode',
+    'calculate_mean_absolute_value',
+    'calculate_median_absolute_deviation',
+    'calculate_peak_height',
+    'calculate_stride_times',
+    'calculate_step_time',
+    'calculate_cadence',
+    'calculate_freezing_index',
+    'calculate_dominant_frequency',
+    'calculate_peak_frequency',
+    'calculate_power_spectral_entropy',
+    'calculate_principal_harmonic_frequency',
+    'calculate_entropy',
+    'calculate_interquartile_range',
+    'calculate_correlation',
+    'calculate_auto_regression_coefficients',
+    'get_mean_for_windows',
+    'get_standard_deviation_for_windows',
+    'get_variance_for_windows',
+    
+    # Legacy preprocessing functions
+    'clip_sliding_windows',
+    'remove_noise',
+    'remove_outliers',
+    'remove_baseline',
+    'remove_drift',
+    'remove_artifacts',
+    'remove_trend',
+    'remove_dc_offset',
+    'remove_high_frequency_noise',
+    'remove_low_frequency_noise',
+    
+    # Legacy EDA functions
+    'plot_thigh_data',
+    'plot_shank_data',
+    'plot_trunk_data',
+    'plot_all_data',
+    'plot_all_thigh_data',
+    'plot_all_shank_data',
+    'plot_all_trunk_data',
+    'plot_all_datasets',
+    'plot_sensor_with_features',
+    
+    # Legacy classification functions
+    'create_random_forest_model',
+    'preprocess_features',
+    'evaluate_model',
 ]

@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name='gaitsetpy',
-    version='0.1.5',
+    version='0.2.0',
     packages=find_packages(include=["gaitsetpy", "gaitsetpy.*"]),
     description="A Python package for gait analysis using sensor data.",
     long_description=long_description,
@@ -21,6 +21,15 @@ setup(
         'matplotlib',
         'scikit-learn',
         'joblib',
+        'tqdm',
     ],
-
+    extras_require={
+        'deep-learning': [
+            'torch>=1.9.0',
+        ],
+        'all': [
+            'torch>=1.9.0',
+        ],
+    },
+    python_requires='>=3.8',
 )

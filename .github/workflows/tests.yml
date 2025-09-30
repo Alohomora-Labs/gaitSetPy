@@ -27,3 +27,12 @@ jobs:
       - name: Run tests
         run: |
           pytest tests/
+      
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-gaitsetpy
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
