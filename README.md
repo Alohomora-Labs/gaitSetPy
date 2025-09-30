@@ -28,8 +28,12 @@ GaitSetPy is a Python package for gait analysis and recognition. This package pr
 
 ## Installation
 
-You can install GaitSetPy using pip:
+From PyPI:
+```bash
+pip install gaitsetpy
+```
 
+From source:
 ```bash
 git clone https://github.com/Alohomora-Labs/gaitSetPy.git
 python setup.py install
@@ -42,59 +46,61 @@ pip install -r requirements.txt
 
 ## Usage
 
-Here is a simple example to get you started with GaitSetPy:
-
-### Daphnet Dataset Example
+### Daphnet Dataset (class-based API)
 
 ```python
 import gaitsetpy as gsp
 
-# Load gait data
-data_dir = "data/daphnet"
-daphnet, names = gsp.load_daphnet_data(data_dir)
+# Load dataset via class-based loader
+loader = gsp.DaphnetLoader()
+data, names = loader.load_data("data/daphnet")
 
-# Preprocess data
-sliding_windows = gsp.create_sliding_windows(daphnet, names)
-freq = 64
-# Extract features
-features = gsp.extract_gait_features(sliding_windows[0]['windows'], freq, True, True, True)
+# Create sliding windows and extract features
+windows = loader.create_sliding_windows(data, names, window_size=192, step_size=32)
+extractor = gsp.GaitFeatureExtractor()
+features = extractor.extract_features(windows[0]['windows'], fs=64)
 
-# Visualize gait features
-gsp.plot_sensor_with_features(sliding_windows[0]['windows'], features, sensor_name="shank", num_windows=15)
+# Optional: visualize using analyzer
+from gaitsetpy.eda import SensorStatisticsAnalyzer
+analyzer = SensorStatisticsAnalyzer()
+analyzer.visualize(
+    windows[0]['windows'],
+    features,
+    sensor_name="shank",
+    start_idx=0,
+    end_idx=1000,
+    num_windows=15
+)
 ```
 
-### HAR-UP Dataset Example
+### HAR-UP Dataset (class-based API)
 
 ```python
 import gaitsetpy as gsp
 
-# Load HAR-UP data
-data_dir = "data/harup"
-harup_data, harup_names = gsp.load_harup_data(data_dir)
+# Load HAR-UP data via class-based loader
+loader = gsp.HARUPLoader()
+harup_data, harup_names = loader.load_data("data/harup")
 
 # Create sliding windows
 window_size = 100  # 1 second at 100Hz
 step_size = 50     # 0.5 second overlap
-windows = gsp.create_harup_windows(harup_data, harup_names, window_size, step_size)
+windows = loader.create_sliding_windows(harup_data, harup_names, window_size, step_size)
 
-# Extract features
-features_data = gsp.extract_harup_features(windows)
-
-# For more advanced usage, see examples/harup_example.py
+# Extract features using dataset-specific method or feature extractor
+features_data = loader.extract_features(windows)
 ```
 ![alt text](image.png)
 
 ``` python
-
-# Train a Random Forest
+# Train and evaluate a Random Forest (class-based)
 rf_model = gsp.RandomForestModel(n_estimators=50, random_state=42, max_depth=10)
-rf_model.train(features)
+rf_model.train(features_data if isinstance(features_data, list) else features)
+metrics = rf_model.evaluate(features_data if isinstance(features_data, list) else features)
+print(metrics.get('accuracy'))
 
-# Load a pretrained model
-rf_model.load_pretrained_weights("random_forest_model_40_10.pkl")
-
-# Evaluate Model
-gsp.evaluate_model(rf_model.model, features) # Assuming 'rf_model' is your trained RandomForestModel instance
+# Load a saved model (optional)
+rf_model.load_model("gaitsetpy/classification/weights/random_forest_model_40_10.pkl")
 ```
 
 ## Documentation
