@@ -26,6 +26,9 @@ Ensure that your changes do not break existing tests and add new tests for any n
 ### Documentation
 Update the documentation to reflect your changes, including any new features or modifications to existing ones.
 
+### Adding a New Dataset
+If you want to add support for a new dataset, please follow the step-by-step guide in [CONTRIBUTING_DATASET.md](CONTRIBUTING_DATASET.md).
+
 ## Code of Conduct
 Please adhere to our [Code of Conduct](CODE_OF_CONDUCT.md) in all interactions.
 
