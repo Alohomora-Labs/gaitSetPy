@@ -11,3 +11,10 @@ pdoc
 torch  # PyTorch for LSTM, BiLSTM, CNN, GNN models
 # Optional: torch-geometric for advanced GNNs (install separately as per https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html)
 pytest
+pytest-cov  # For code coverage reporting
+pre-commit  # For pre-commit hooks
+black  # Code formatting
+isort  # Import sorting
+flake8  # Linting
+mypy  # Type checking
+bandit  # Security checks

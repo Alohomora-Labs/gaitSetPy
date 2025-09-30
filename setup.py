@@ -21,6 +21,15 @@ setup(
         'matplotlib',
         'scikit-learn',
         'joblib',
+        'tqdm',
     ],
-
+    extras_require={
+        'deep-learning': [
+            'torch>=1.9.0',
+        ],
+        'all': [
+            'torch>=1.9.0',
+        ],
+    },
+    python_requires='>=3.8',
 )
