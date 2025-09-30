@@ -329,17 +329,93 @@ def main():
         y_pred = clf.predict(X_test)
         acc = accuracy_score(y_test, y_pred) if len(y_test) else float('nan')
         print(f"   RandomForest accuracy: {acc:.3f}")
+        # Confusion matrix visualization
+        try:
+            from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix
+            if len(y_test):
+                cm = confusion_matrix(y_test, y_pred)
+                disp = ConfusionMatrixDisplay(confusion_matrix=cm)
+                disp.plot(values_format='d')
+                plt.title("Confusion Matrix - RandomForest")
+                plt.tight_layout()
+                plt.show()
+        except Exception as e:
+            print(f"   Warning: could not plot confusion matrix: {e}")
     
     # 17. EDA: compute and print statistics on accelerometer DataFrames
     print("\n17. EDA on accelerometer data (basic statistics)...")
     try:
         analyzer = SensorStatisticsAnalyzer()
-        stats = analyzer.analyze(acc_data)
-        # Print a compact summary
-        for k, v in list(stats.items())[:2]:
-            print(f"   {k}: keys={list(v.keys())[:5]}")
+        # Use only numeric columns for EDA to avoid string conversion errors
+        acc_data_numeric = []
+        for df in acc_data:
+            num_df = df.select_dtypes(include=[np.number]).copy()
+            if not num_df.empty:
+                acc_data_numeric.append(num_df)
+        if not acc_data_numeric:
+            print("   No numeric columns available for EDA. Skipping.")
+        else:
+            stats = analyzer.analyze(acc_data_numeric)
+            # Print a compact summary
+            for k, v in list(stats.items())[:2]:
+                print(f"   {k}: keys={list(v.keys())[:5]}")
     except Exception as e:
         print(f"   Warning: EDA analysis failed: {e}")
+    
+    # 17a. Visualization: plot accelerometer time-series for a subset
+    try:
+        print("\n17a. Plotting accelerometer time-series (first 500 samples)...")
+        if acc_data_numeric:
+            plt.figure(figsize=(10, 4))
+            df0 = acc_data_numeric[0]
+            # Pick up to 3 numeric columns to plot
+            cols = df0.columns[:3]
+            for c in cols:
+                plt.plot(df0[c].values[:500], label=str(c))
+            plt.title("Accelerometer signals (first 500 samples)")
+            plt.xlabel("Sample")
+            plt.ylabel("Value")
+            plt.legend()
+            plt.tight_layout()
+            plt.show()
+    except Exception as e:
+        print(f"   Warning: accelerometer visualization failed: {e}")
+    
+    # 17b. Visualization: show sample depth/RGB frames
+    try:
+        print("\n17b. Showing sample depth and RGB frames...")
+        import io
+        # Depth
+        for seq, path in list(depth_paths.items())[:1]:
+            with zipfile.ZipFile(path, 'r') as zf:
+                png_members = [n for n in zf.namelist() if n.lower().endswith('.png')]
+                if png_members:
+                    with zf.open(png_members[0]) as f:
+                        arr = plt.imread(io.BytesIO(f.read()))
+                        plt.figure(figsize=(5, 4))
+                        plt.imshow(arr, cmap='gray')
+                        plt.title(f"Depth sample: {seq}")
+                        plt.axis('off')
+                        plt.tight_layout()
+                        plt.show()
+        # RGB
+        for seq, path in list(rgb_paths.items())[:1]:
+            with zipfile.ZipFile(path, 'r') as zf:
+                png_members = [n for n in zf.namelist() if n.lower().endswith('.png')]
+                if png_members:
+                    with zf.open(png_members[0]) as f:
+                        arr = plt.imread(io.BytesIO(f.read()))
+                        plt.figure(figsize=(5, 4))
+                        if arr.ndim == 2:
+                            plt.imshow(arr, cmap='gray')
+                        else:
+                            plt.imshow(arr)
+                        plt.title(f"RGB sample: {seq}")
+                        plt.axis('off')
+                        plt.tight_layout()
+                        plt.show()
+    except Exception as e:
+        print(f"   Warning: image visualization failed: {e}")
     
     # Method 2: Using the DatasetManager (real usage)
     print("\n18. Using the DatasetManager:")
