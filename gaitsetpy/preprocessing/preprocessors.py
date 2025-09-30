@@ -97,9 +97,9 @@ class NoiseRemovalPreprocessor(BasePreprocessor):
         window_size = kwargs.get('window_size', self.config['window_size'])
         
         if isinstance(data, pd.DataFrame):
-            return data.rolling(window=window_size, center=True).mean().fillna(method="bfill").fillna(method="ffill")
+            return data.rolling(window=window_size, center=True).mean().bfill().ffill()
         elif isinstance(data, pd.Series):
-            return data.rolling(window=window_size, center=True).mean().fillna(method="bfill").fillna(method="ffill")
+            return data.rolling(window=window_size, center=True).mean().bfill().ffill()
         else:
             # For numpy arrays, use uniform filter
             from scipy.ndimage import uniform_filter1d
@@ -386,7 +386,7 @@ class ArtifactRemovalPreprocessor(BasePreprocessor):
         method = kwargs.get('method', self.config['method'])
         
         if isinstance(data, (pd.DataFrame, pd.Series)):
-            return data.interpolate(method=method).fillna(method="bfill").fillna(method="ffill")
+            return data.interpolate(method=method).bfill().ffill()
         else:
             # For numpy arrays, use linear interpolation
             from scipy.interpolate import interp1d
