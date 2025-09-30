@@ -90,7 +90,7 @@ def main():
     raw_sequences = ['fall-01', 'adl-01']
     download_urfall_data(
         data_dir,
-        sequences=raw_sequences,
+        sequences=None,
         data_types=['accelerometer', 'synchronization'],
         use_falls=True,
         use_adls=True,
@@ -100,7 +100,7 @@ def main():
     acc_data, acc_names = loader.load_data(
         data_dir,
         data_types=['accelerometer'],
-        sequences=raw_sequences,
+        sequences=None,
         use_falls=True,
         use_adls=True,
     )

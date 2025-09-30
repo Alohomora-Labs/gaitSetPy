@@ -15,6 +15,7 @@ import json
 import pandas as pd
 import numpy as np
 from glob import glob
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 #################################################################################
 ############################## DATASET DOWNLOAD #################################
@@ -132,7 +133,7 @@ def download_arduous_data(data_dir):
     """Download the Arduous dataset."""
     pass
 
-def download_urfall_data(data_dir, sequences=None, data_types=None, use_falls=True, use_adls=True):
+def download_urfall_data(data_dir, sequences=None, data_types=None, use_falls=True, use_adls=True, max_workers: int = 8):
     """
     Download the UrFall dataset files.
     
@@ -144,6 +145,7 @@ def download_urfall_data(data_dir, sequences=None, data_types=None, use_falls=Tr
                    'synchronization', 'video', 'features' (default: ['features'])
         use_falls: Whether to download fall sequences (default: True)
         use_adls: Whether to download ADL sequences (default: True)
+        max_workers: Max concurrent download workers (default: 8)
         
     Returns:
         str: Path to the data directory
@@ -169,40 +171,15 @@ def download_urfall_data(data_dir, sequences=None, data_types=None, use_falls=Tr
         if use_adls:
             seq_list.extend([f"adl-{i:02d}" for i in range(1, 21)])
     
-    # Download pre-extracted features CSV files
+    # Prepare feature files
+    feature_tasks = []
     if 'features' in data_types:
-        feature_files = []
         if use_falls:
-            feature_files.append("urfall-cam0-falls.csv")
+            feature_tasks.append("urfall-cam0-falls.csv")
         if use_adls:
-            feature_files.append("urfall-cam0-adls.csv")
-        
-        for filename in feature_files:
-            file_path = os.path.join(data_dir, filename)
-            if os.path.exists(file_path):
-                print(f"Feature file already exists: {file_path}")
-                continue
-            
-            url = base_url + filename
-            try:
-                print(f"Downloading {filename}...")
-                response = requests.get(url, stream=True)
-                response.raise_for_status()
-                
-                total_size = int(response.headers.get('content-length', 0))
-                progress_bar = tqdm(total=total_size, unit='iB', unit_scale=True, desc=filename)
-                
-                with open(file_path, 'wb') as f:
-                    for chunk in response.iter_content(chunk_size=8192):
-                        if chunk:
-                            size = f.write(chunk)
-                            progress_bar.update(size)
-                progress_bar.close()
-                print(f"Downloaded: {file_path}")
-            except Exception as e:
-                print(f"Failed to download {filename}: {e}")
+            feature_tasks.append("urfall-cam0-adls.csv")
     
-    # Download raw data files for each sequence
+    # Prepare raw file tasks
     file_extension_map = {
         'depth': '-cam0-d.zip',
         'rgb': '-cam0-rgb.zip',
@@ -210,42 +187,50 @@ def download_urfall_data(data_dir, sequences=None, data_types=None, use_falls=Tr
         'synchronization': '-data.csv',
         'video': '-cam0.mp4'
     }
-    
+    raw_tasks = []
     for seq in seq_list:
         for dtype in data_types:
             if dtype == 'features':
-                continue  # Already handled above
-            
+                continue
             if dtype not in file_extension_map:
-                print(f"Unknown data type: {dtype}")
                 continue
-            
-            filename = seq + file_extension_map[dtype]
-            file_path = os.path.join(data_dir, filename)
-            
-            if os.path.exists(file_path):
-                print(f"File already exists: {file_path}")
-                continue
-            
-            url = base_url + filename
-            try:
-                print(f"Downloading {filename}...")
-                response = requests.get(url, stream=True)
-                response.raise_for_status()
-                
-                total_size = int(response.headers.get('content-length', 0))
-                progress_bar = tqdm(total=total_size, unit='iB', unit_scale=True, desc=filename)
-                
-                with open(file_path, 'wb') as f:
-                    for chunk in response.iter_content(chunk_size=8192):
-                        if chunk:
-                            size = f.write(chunk)
-                            progress_bar.update(size)
-                progress_bar.close()
-                print(f"Downloaded: {file_path}")
-            except Exception as e:
-                print(f"Warning: Failed to download {filename}: {e}")
-                # Don't raise, continue with other files
+            raw_tasks.append(seq + file_extension_map[dtype])
+    
+    # Build list of (url, dest_path, desc)
+    download_jobs = []
+    for filename in feature_tasks:
+        dest = os.path.join(data_dir, filename)
+        if not os.path.exists(dest):
+            download_jobs.append((base_url + filename, dest, filename))
+    for filename in raw_tasks:
+        dest = os.path.join(data_dir, filename)
+        if not os.path.exists(dest):
+            download_jobs.append((base_url + filename, dest, filename))
+    
+    if not download_jobs:
+        print("All requested UrFall files already present.")
+        return data_dir
+    
+    print(f"Starting concurrent downloads: {len(download_jobs)} file(s) with up to {max_workers} workers...")
+    successes = 0
+    failures = []
+    
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_job = {executor.submit(_download_file, url, dest, desc): (url, dest) for url, dest, desc in download_jobs}
+        for future in as_completed(future_to_job):
+            (url, dest) = future_to_job[future]
+            ok, info = future.result()
+            if ok:
+                successes += 1
+            else:
+                failures.append((url, info))
+    
+    print(f"Completed downloads: {successes} succeeded, {len(failures)} failed.")
+    if failures:
+        for url, err in failures[:10]:
+            print(f" - Failed: {url} -> {err}")
+        if len(failures) > 10:
+            print(f" ... and {len(failures) - 10} more failures")
     
     return data_dir
 
@@ -339,6 +324,31 @@ def sliding_window(data, window_size, step_size):
         end = start + window_size
         windows.append(data[start:end])
     return windows
+
+def _download_file(url: str, dest_path: str, desc: str = None):
+    """Download a single file to dest_path with a simple progress indicator."""
+    from tqdm import tqdm
+    try:
+        response = requests.get(url, stream=True, timeout=60)
+        response.raise_for_status()
+        total_size = int(response.headers.get('content-length', 0))
+        progress_bar = tqdm(total=total_size, unit='iB', unit_scale=True, desc=desc or os.path.basename(dest_path))
+        with open(dest_path, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    written = f.write(chunk)
+                    progress_bar.update(written)
+        progress_bar.close()
+        if total_size != 0 and os.path.getsize(dest_path) < total_size:
+            raise IOError(f"Incomplete download for {dest_path}")
+        return True, dest_path
+    except Exception as e:
+        try:
+            if os.path.exists(dest_path):
+                os.remove(dest_path)
+        except Exception:
+            pass
+        return False, f"{dest_path}: {e}"
 
 def download_harup_data(data_dir):
     """
