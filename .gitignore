@@ -176,3 +176,5 @@ gaitsetpy/STEERING_DOCS.md
 examples/data/*
 examples/urfall_data/*
 urfall_data/*
+examples/notebooks/data/*
+examples/notebooks/urfall_data/*
