@@ -1,32 +1,44 @@
 ---
 name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
+about: Report a problem or regression in GaitSetPy
+title: '[Bug]: '
+labels: bug
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Description
+A clear and concise description of the bug.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+## Environment
+- OS: [e.g., Windows 11, Ubuntu 22.04, macOS 14]
+- Python: [e.g., 3.8, 3.11]
+- Package version: [e.g., 0.2.2]
+- Install source: [PyPI | source]
+- CUDA/GPU (if applicable): [version / None]
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Reproduction Steps
+1. Command(s) or code used (minimal example):
+```python
+# minimal reproducible snippet
+```
+2. Dataset and subset used (if relevant):
+3. Exact steps to reproduce:
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+## Expected vs Actual
+- Expected: 
+- Actual:
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Version [e.g. 22]
+## Logs/Traceback
+```
+# paste error logs or stack trace here
+```
 
+## Additional Context
+- Screenshots (optional):
+- Related issues/PRs:
 
-**Additional context**
-Add any other context about the problem here.
+## Checklist
+- [ ] I searched existing issues
+- [ ] I can reproduce on the latest `main`
+- [ ] I included environment details and a minimal repro

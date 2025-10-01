@@ -1,20 +1,35 @@
 ---
 name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
+about: Suggest an enhancement for GaitSetPy
+title: '[Feature]: '
+labels: enhancement
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Motivation / Problem Statement
+What problem does this solve? Who benefits?
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Proposal
+Describe the solution you’d like. Include API sketches or CLI flags if relevant.
+```python
+# example API sketch
+```
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Alternatives Considered
+List viable alternatives and trade-offs.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Scope
+- In scope: 
+- Out of scope:
+
+## Risks / Open Questions
+Any uncertainties, data needs, or compatibility concerns.
+
+## Additional Context
+Links, references, screenshots.
+
+## Checklist
+- [ ] Clear user impact and success criteria
+- [ ] Backwards compatibility considered
+- [ ] Tests/Docs plan outlined
