@@ -6,7 +6,23 @@ All other files should import the version from here.
 """
 
 __version__ = "0.2.4"
-__version_info__ = tuple(int(x) for x in __version__.split('.'))
+
+def _parse_version(version_string):
+    """Parse version string into tuple of integers, ignoring non-numeric suffixes."""
+    parts = []
+    for part in version_string.split('.'):
+        # Extract leading digits only, stop at first non-digit
+        numeric = ''
+        for c in part:
+            if c.isdigit():
+                numeric += c
+            else:
+                break
+        if numeric:
+            parts.append(int(numeric))
+    return tuple(parts)
+
+__version_info__ = _parse_version(__version__)
 
 # Version metadata
 VERSION = __version__
