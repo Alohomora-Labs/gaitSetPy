@@ -134,7 +134,7 @@ class CNNModel(BaseClassificationModel):
         print(f"CNN model saved to {filepath}")
 
     def load_model(self, filepath: str):
-        checkpoint = torch.load(filepath, map_location=self.device)
+        checkpoint = torch.load(filepath, map_location=self.device, weights_only=False)
         self.model = SimpleCNN(
             self.config['input_channels'],
             self.config['num_classes']

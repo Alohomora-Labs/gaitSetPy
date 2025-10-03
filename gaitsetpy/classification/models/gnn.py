@@ -123,7 +123,7 @@ class GNNModel(BaseClassificationModel):
         print(f"GNN model saved to {filepath}")
 
     def load_model(self, filepath: str):
-        checkpoint = torch.load(filepath, map_location=self.device)
+        checkpoint = torch.load(filepath, map_location=self.device, weights_only=False)
         self.model = SimpleGCN(
             self.config['input_dim'],
             self.config['hidden_dim'],

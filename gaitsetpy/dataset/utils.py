@@ -317,6 +317,10 @@ def extract_urfall_data(data_dir, sequences=None, use_falls=True, use_adls=True)
 
 
 def sliding_window(data, window_size, step_size):
+    if window_size <= 0 or step_size <= 0:
+        return []
+    if len(data) < window_size:
+        return []
     num_windows = (len(data) - window_size) // step_size + 1
     windows = []
     for i in range(num_windows):
