@@ -28,12 +28,21 @@ class PhysioNetLoader(BaseDatasetLoader):
     This class handles loading and processing of the PhysioNet Gait in Parkinson's Disease dataset.
     The dataset contains vertical ground reaction force (VGRF) data from subjects with Parkinson's 
     disease and healthy controls.
+    
+    Features concurrent downloading for efficient data retrieval.
     """
     
-    def __init__(self):
+    def __init__(self, max_workers: int = 8):
+        """
+        Initialize PhysioNet loader with concurrent download support.
+        
+        Args:
+            max_workers: Maximum number of concurrent download threads (default: 8)
+        """
         super().__init__(
             name="physionet",
-            description="PhysioNet Gait in Parkinson's Disease Dataset - Contains VGRF data from subjects with Parkinson's disease and healthy controls"
+            description="PhysioNet Gait in Parkinson's Disease Dataset - Contains VGRF data from subjects with Parkinson's disease and healthy controls",
+            max_workers=max_workers
         )
         self.metadata = {
             'sensors': ['VGRF_L1', 'VGRF_L2', 'VGRF_L3', 'VGRF_L4', 'VGRF_L5', 'VGRF_L6', 'VGRF_L7', 'VGRF_L8',
@@ -51,7 +60,10 @@ class PhysioNetLoader(BaseDatasetLoader):
     
     def _download_physionet_data(self, data_dir: str) -> str:
         """
-        Download PhysioNet dataset if not already present.
+        Download PhysioNet dataset if not already present using concurrent downloads.
+        
+        This method uses multi-threaded downloading to significantly speed up the
+        download process for the 100+ files in the PhysioNet dataset.
         
         Args:
             data_dir: Directory to store the dataset
@@ -94,24 +106,37 @@ class PhysioNetLoader(BaseDatasetLoader):
             *[f"SiPt{i:02d}_01.txt" for i in range(2, 41)]
         ]
         
-        print(f"Downloading PhysioNet dataset to {dataset_path}")
-        for filename in tqdm(file_patterns, desc="Downloading files"):
-            file_url = base_url + filename
-            file_path = os.path.join(dataset_path, filename)
-            
-            if os.path.exists(file_path):
-                continue
-                
-            try:
-                response = requests.get(file_url, stream=True)
-                if response.status_code == 200:
-                    with open(file_path, 'wb') as f:
-                        for chunk in response.iter_content(chunk_size=8192):
-                            f.write(chunk)
-                else:
-                    print(f"Could not download {filename} (status: {response.status_code})")
-            except Exception as e:
-                print(f"Error downloading {filename}: {e}")
+        # Prepare download tasks for concurrent execution
+        download_tasks = [
+            {
+                'url': base_url + filename,
+                'dest_path': os.path.join(dataset_path, filename)
+            }
+            for filename in file_patterns
+        ]
+        
+        print(f"Downloading PhysioNet dataset to {dataset_path} using {self.max_workers} threads")
+        
+        # Use concurrent downloading from base class
+        results = self.download_files_concurrent(
+            download_tasks, 
+            show_progress=True, 
+            desc="Downloading PhysioNet files"
+        )
+        
+        # Print summary
+        print(f"\nDownload Summary:")
+        print(f"  Total files: {results['total']}")
+        print(f"  Successfully downloaded: {results['success']}")
+        print(f"  Already existed (skipped): {results['skipped']}")
+        print(f"  Failed: {results['failed']}")
+        
+        if results['failed'] > 0 and len(results['failed_downloads']) > 0:
+            print(f"\nFailed downloads (showing first 10):")
+            for failed in results['failed_downloads'][:10]:
+                print(f"  - {os.path.basename(failed['dest_path'])}: {failed['error']}")
+            if len(results['failed_downloads']) > 10:
+                print(f"  ... and {len(results['failed_downloads']) - 10} more failures")
         
         return dataset_path
     

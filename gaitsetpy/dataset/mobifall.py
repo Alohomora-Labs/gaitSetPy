@@ -20,10 +20,17 @@ class MobiFallLoader(BaseDatasetLoader):
     This class handles loading and processing of the MobiFall dataset for gait analysis.
     """
     
-    def __init__(self):
+    def __init__(self, max_workers: int = 8):
+        """
+        Initialize MobiFall loader with concurrent download support.
+        
+        Args:
+            max_workers: Maximum number of concurrent download threads (default: 8)
+        """
         super().__init__(
             name="mobifall",
-            description="MobiFall Dataset - Contains accelerometer and gyroscope data for fall detection"
+            description="MobiFall Dataset - Contains accelerometer and gyroscope data for fall detection",
+            max_workers=max_workers
         )
         self.metadata = {
             'sensors': ['accelerometer', 'gyroscope'],

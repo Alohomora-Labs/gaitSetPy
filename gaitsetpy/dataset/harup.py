@@ -30,10 +30,17 @@ class HARUPLoader(BaseDatasetLoader):
     and fall detection analysis.
     """
     
-    def __init__(self):
+    def __init__(self, max_workers: int = 8):
+        """
+        Initialize HAR-UP loader with concurrent download support.
+        
+        Args:
+            max_workers: Maximum number of concurrent download threads (default: 8)
+        """
         super().__init__(
             name="harup",
-            description="HAR-UP Dataset - Multimodal System for Fall Detection and Human Activity Recognition"
+            description="HAR-UP Dataset - Multimodal System for Fall Detection and Human Activity Recognition",
+            max_workers=max_workers
         )
         self.metadata = {
             'sensors': [

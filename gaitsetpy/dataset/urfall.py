@@ -29,10 +29,17 @@ class UrFallLoader(BaseDatasetLoader):
     and pre-extracted features from depth maps.
     """
     
-    def __init__(self):
+    def __init__(self, max_workers: int = 8):
+        """
+        Initialize UrFall loader with concurrent download support.
+        
+        Args:
+            max_workers: Maximum number of concurrent download threads (default: 8)
+        """
         super().__init__(
             name="urfall",
-            description="UrFall Dataset - University of Rzeszow Fall Detection Dataset with multimodal data"
+            description="UrFall Dataset - University of Rzeszow Fall Detection Dataset with multimodal data",
+            max_workers=max_workers
         )
         self.metadata = {
             'data_types': ['depth', 'rgb', 'accelerometer', 'synchronization', 'video', 'features'],

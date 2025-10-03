@@ -20,10 +20,17 @@ class ArduousLoader(BaseDatasetLoader):
     This class handles loading and processing of the Arduous dataset for gait analysis.
     """
     
-    def __init__(self):
+    def __init__(self, max_workers: int = 8):
+        """
+        Initialize Arduous loader with concurrent download support.
+        
+        Args:
+            max_workers: Maximum number of concurrent download threads (default: 8)
+        """
         super().__init__(
             name="arduous",
-            description="Arduous Dataset - Contains multi-sensor wearable data for daily activity recognition"
+            description="Arduous Dataset - Contains multi-sensor wearable data for daily activity recognition",
+            max_workers=max_workers
         )
         self.metadata = {
             'sensors': ['accelerometer', 'gyroscope', 'magnetometer'],
