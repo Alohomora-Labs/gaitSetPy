@@ -5,7 +5,7 @@ This file serves as the single source of truth for the package version.
 All other files should import the version from here.
 """
 
-__version__ = "0.2.5"
+__version__ = "0.2.3"
 
 def _parse_version(version_string):
     """Parse version string into tuple of integers, ignoring non-numeric suffixes."""
