@@ -108,95 +108,102 @@ Maintainer: @aharshit123456</p>
 </span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">    This class handles loading and processing of the Arduous dataset for gait analysis.</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>    
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;arduous&quot;</span><span class="p">,</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Arduous Dataset - Contains multi-sensor wearable data for daily activity recognition&quot;</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>        <span class="p">)</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accelerometer&#39;</span><span class="p">,</span> <span class="s1">&#39;gyroscope&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetometer&#39;</span><span class="p">],</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">],</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Typical for Arduous</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>            <span class="s1">&#39;activities&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;walking&#39;</span><span class="p">,</span> <span class="s1">&#39;running&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">,</span> <span class="s1">&#39;standing&#39;</span><span class="p">,</span> <span class="s1">&#39;lying&#39;</span><span class="p">]</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>        <span class="p">}</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>    
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a><span class="sd">        Load Arduous dataset from the specified directory.</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a><span class="sd">        </span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="sd">        Args:</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">            data_dir: Directory to store/find the dataset</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">            **kwargs: Additional arguments (unused for Arduous)</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">            </span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">        Returns:</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">            Tuple of (data_list, names_list)</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a>        <span class="c1"># TODO: Implement Arduous data loading</span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a>        <span class="c1"># This is a placeholder implementation</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous data loading is not yet implemented&quot;</span><span class="p">)</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a>        <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>    
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">create_sliding_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> 
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>                             <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">        Create sliding windows from the Arduous dataset.</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">        </span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="sd">        Args:</span>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">            data: List of DataFrames containing Arduous data</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">            names: List of names corresponding to the data</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">            window_size: Size of the sliding window (default: 192)</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">            step_size: Step size for the sliding window (default: 32)</span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">            </span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">        Returns:</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">            List of dictionaries containing sliding windows for each DataFrame</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a>        <span class="c1"># TODO: Implement Arduous sliding window creation</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a>        <span class="c1"># This is a placeholder implementation</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous sliding window creation is not yet implemented&quot;</span><span class="p">)</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>        <span class="k">return</span> <span class="p">[]</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>    
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_supported_formats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">        Get list of supported file formats for Arduous dataset.</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">        </span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a><span class="sd">        Returns:</span>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a><span class="sd">            List of supported file extensions</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;.txt&#39;</span><span class="p">]</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>    
-</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">        Get information about sensors in the dataset.</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        </span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        Returns:</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">            Dictionary containing sensor information</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>        <span class="k">return</span> <span class="p">{</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">],</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">],</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sampling_frequency&#39;</span><span class="p">]</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>        <span class="p">}</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>    
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_activity_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">        Get information about activities in the dataset.</span>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        </span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">        Returns:</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">            List of activity types</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="c1"># Legacy function wrapper for backward compatibility</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="k">def</span><span class="w"> </span><span class="nf">load_arduous_data</span><span class="p">():</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">    Legacy function for loading Arduous data.</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">    </span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">    Returns:</span>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        Tuple of (data_list, names_list)</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>    <span class="n">loader</span> <span class="o">=</span> <span class="n">ArduousLoader</span><span class="p">()</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>    <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">):</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a><span class="sd">        Initialize Arduous loader with concurrent download support.</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">        </span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a><span class="sd">        Args:</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="sd">            max_workers: Maximum number of concurrent download threads (default: 8)</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;arduous&quot;</span><span class="p">,</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Arduous Dataset - Contains multi-sensor wearable data for daily activity recognition&quot;</span><span class="p">,</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>            <span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a>        <span class="p">)</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accelerometer&#39;</span><span class="p">,</span> <span class="s1">&#39;gyroscope&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetometer&#39;</span><span class="p">],</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">],</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Typical for Arduous</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>            <span class="s1">&#39;activities&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;walking&#39;</span><span class="p">,</span> <span class="s1">&#39;running&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">,</span> <span class="s1">&#39;standing&#39;</span><span class="p">,</span> <span class="s1">&#39;lying&#39;</span><span class="p">]</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>        <span class="p">}</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a>    
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        Load Arduous dataset from the specified directory.</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">        </span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">        Args:</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">            data_dir: Directory to store/find the dataset</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">            **kwargs: Additional arguments (unused for Arduous)</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="sd">            </span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="sd">        Returns:</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="sd">            Tuple of (data_list, names_list)</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>        <span class="c1"># TODO: Implement Arduous data loading</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>        <span class="c1"># This is a placeholder implementation</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous data loading is not yet implemented&quot;</span><span class="p">)</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>        <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">create_sliding_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> 
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>                             <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">        Create sliding windows from the Arduous dataset.</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">        </span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">        Args:</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">            data: List of DataFrames containing Arduous data</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">            names: List of names corresponding to the data</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">            window_size: Size of the sliding window (default: 192)</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">            step_size: Step size for the sliding window (default: 32)</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">            </span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        Returns:</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">            List of dictionaries containing sliding windows for each DataFrame</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        <span class="c1"># TODO: Implement Arduous sliding window creation</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>        <span class="c1"># This is a placeholder implementation</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous sliding window creation is not yet implemented&quot;</span><span class="p">)</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>        <span class="k">return</span> <span class="p">[]</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_supported_formats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a><span class="sd">        Get list of supported file formats for Arduous dataset.</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">        </span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">        Returns:</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">            List of supported file extensions</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;.txt&#39;</span><span class="p">]</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        Get information about sensors in the dataset.</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a><span class="sd">        </span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        Returns:</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">            Dictionary containing sensor information</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">],</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">],</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sampling_frequency&#39;</span><span class="p">]</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>        <span class="p">}</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>    
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_activity_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a><span class="sd">        Get information about activities in the dataset.</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a><span class="sd">        </span>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">        Returns:</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">            List of activity types</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="c1"># Legacy function wrapper for backward compatibility</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a><span class="k">def</span><span class="w"> </span><span class="nf">load_arduous_data</span><span class="p">():</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">    Legacy function for loading Arduous data.</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a><span class="sd">    </span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">    Returns:</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">        Tuple of (data_list, names_list)</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>    <span class="n">loader</span> <span class="o">=</span> <span class="n">ArduousLoader</span><span class="p">()</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -219,83 +226,90 @@ Maintainer: @aharshit123456</p>
 </span><span id="ArduousLoader-21"><a href="#ArduousLoader-21"><span class="linenos"> 21</span></a><span class="sd">    This class handles loading and processing of the Arduous dataset for gait analysis.</span>
 </span><span id="ArduousLoader-22"><a href="#ArduousLoader-22"><span class="linenos"> 22</span></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="ArduousLoader-23"><a href="#ArduousLoader-23"><span class="linenos"> 23</span></a>    
-</span><span id="ArduousLoader-24"><a href="#ArduousLoader-24"><span class="linenos"> 24</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="ArduousLoader-25"><a href="#ArduousLoader-25"><span class="linenos"> 25</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="ArduousLoader-26"><a href="#ArduousLoader-26"><span class="linenos"> 26</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;arduous&quot;</span><span class="p">,</span>
-</span><span id="ArduousLoader-27"><a href="#ArduousLoader-27"><span class="linenos"> 27</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Arduous Dataset - Contains multi-sensor wearable data for daily activity recognition&quot;</span>
-</span><span id="ArduousLoader-28"><a href="#ArduousLoader-28"><span class="linenos"> 28</span></a>        <span class="p">)</span>
-</span><span id="ArduousLoader-29"><a href="#ArduousLoader-29"><span class="linenos"> 29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ArduousLoader-30"><a href="#ArduousLoader-30"><span class="linenos"> 30</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accelerometer&#39;</span><span class="p">,</span> <span class="s1">&#39;gyroscope&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetometer&#39;</span><span class="p">],</span>
-</span><span id="ArduousLoader-31"><a href="#ArduousLoader-31"><span class="linenos"> 31</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">],</span>
-</span><span id="ArduousLoader-32"><a href="#ArduousLoader-32"><span class="linenos"> 32</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Typical for Arduous</span>
-</span><span id="ArduousLoader-33"><a href="#ArduousLoader-33"><span class="linenos"> 33</span></a>            <span class="s1">&#39;activities&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;walking&#39;</span><span class="p">,</span> <span class="s1">&#39;running&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">,</span> <span class="s1">&#39;standing&#39;</span><span class="p">,</span> <span class="s1">&#39;lying&#39;</span><span class="p">]</span>
-</span><span id="ArduousLoader-34"><a href="#ArduousLoader-34"><span class="linenos"> 34</span></a>        <span class="p">}</span>
-</span><span id="ArduousLoader-35"><a href="#ArduousLoader-35"><span class="linenos"> 35</span></a>    
-</span><span id="ArduousLoader-36"><a href="#ArduousLoader-36"><span class="linenos"> 36</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-</span><span id="ArduousLoader-37"><a href="#ArduousLoader-37"><span class="linenos"> 37</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-38"><a href="#ArduousLoader-38"><span class="linenos"> 38</span></a><span class="sd">        Load Arduous dataset from the specified directory.</span>
-</span><span id="ArduousLoader-39"><a href="#ArduousLoader-39"><span class="linenos"> 39</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader-40"><a href="#ArduousLoader-40"><span class="linenos"> 40</span></a><span class="sd">        Args:</span>
-</span><span id="ArduousLoader-41"><a href="#ArduousLoader-41"><span class="linenos"> 41</span></a><span class="sd">            data_dir: Directory to store/find the dataset</span>
-</span><span id="ArduousLoader-42"><a href="#ArduousLoader-42"><span class="linenos"> 42</span></a><span class="sd">            **kwargs: Additional arguments (unused for Arduous)</span>
-</span><span id="ArduousLoader-43"><a href="#ArduousLoader-43"><span class="linenos"> 43</span></a><span class="sd">            </span>
-</span><span id="ArduousLoader-44"><a href="#ArduousLoader-44"><span class="linenos"> 44</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader-45"><a href="#ArduousLoader-45"><span class="linenos"> 45</span></a><span class="sd">            Tuple of (data_list, names_list)</span>
-</span><span id="ArduousLoader-46"><a href="#ArduousLoader-46"><span class="linenos"> 46</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-47"><a href="#ArduousLoader-47"><span class="linenos"> 47</span></a>        <span class="c1"># TODO: Implement Arduous data loading</span>
-</span><span id="ArduousLoader-48"><a href="#ArduousLoader-48"><span class="linenos"> 48</span></a>        <span class="c1"># This is a placeholder implementation</span>
-</span><span id="ArduousLoader-49"><a href="#ArduousLoader-49"><span class="linenos"> 49</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous data loading is not yet implemented&quot;</span><span class="p">)</span>
-</span><span id="ArduousLoader-50"><a href="#ArduousLoader-50"><span class="linenos"> 50</span></a>        <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
-</span><span id="ArduousLoader-51"><a href="#ArduousLoader-51"><span class="linenos"> 51</span></a>    
-</span><span id="ArduousLoader-52"><a href="#ArduousLoader-52"><span class="linenos"> 52</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">create_sliding_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> 
-</span><span id="ArduousLoader-53"><a href="#ArduousLoader-53"><span class="linenos"> 53</span></a>                             <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
-</span><span id="ArduousLoader-54"><a href="#ArduousLoader-54"><span class="linenos"> 54</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-55"><a href="#ArduousLoader-55"><span class="linenos"> 55</span></a><span class="sd">        Create sliding windows from the Arduous dataset.</span>
-</span><span id="ArduousLoader-56"><a href="#ArduousLoader-56"><span class="linenos"> 56</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader-57"><a href="#ArduousLoader-57"><span class="linenos"> 57</span></a><span class="sd">        Args:</span>
-</span><span id="ArduousLoader-58"><a href="#ArduousLoader-58"><span class="linenos"> 58</span></a><span class="sd">            data: List of DataFrames containing Arduous data</span>
-</span><span id="ArduousLoader-59"><a href="#ArduousLoader-59"><span class="linenos"> 59</span></a><span class="sd">            names: List of names corresponding to the data</span>
-</span><span id="ArduousLoader-60"><a href="#ArduousLoader-60"><span class="linenos"> 60</span></a><span class="sd">            window_size: Size of the sliding window (default: 192)</span>
-</span><span id="ArduousLoader-61"><a href="#ArduousLoader-61"><span class="linenos"> 61</span></a><span class="sd">            step_size: Step size for the sliding window (default: 32)</span>
-</span><span id="ArduousLoader-62"><a href="#ArduousLoader-62"><span class="linenos"> 62</span></a><span class="sd">            </span>
-</span><span id="ArduousLoader-63"><a href="#ArduousLoader-63"><span class="linenos"> 63</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader-64"><a href="#ArduousLoader-64"><span class="linenos"> 64</span></a><span class="sd">            List of dictionaries containing sliding windows for each DataFrame</span>
-</span><span id="ArduousLoader-65"><a href="#ArduousLoader-65"><span class="linenos"> 65</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-66"><a href="#ArduousLoader-66"><span class="linenos"> 66</span></a>        <span class="c1"># TODO: Implement Arduous sliding window creation</span>
-</span><span id="ArduousLoader-67"><a href="#ArduousLoader-67"><span class="linenos"> 67</span></a>        <span class="c1"># This is a placeholder implementation</span>
-</span><span id="ArduousLoader-68"><a href="#ArduousLoader-68"><span class="linenos"> 68</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous sliding window creation is not yet implemented&quot;</span><span class="p">)</span>
-</span><span id="ArduousLoader-69"><a href="#ArduousLoader-69"><span class="linenos"> 69</span></a>        <span class="k">return</span> <span class="p">[]</span>
-</span><span id="ArduousLoader-70"><a href="#ArduousLoader-70"><span class="linenos"> 70</span></a>    
-</span><span id="ArduousLoader-71"><a href="#ArduousLoader-71"><span class="linenos"> 71</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_supported_formats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="ArduousLoader-72"><a href="#ArduousLoader-72"><span class="linenos"> 72</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-73"><a href="#ArduousLoader-73"><span class="linenos"> 73</span></a><span class="sd">        Get list of supported file formats for Arduous dataset.</span>
-</span><span id="ArduousLoader-74"><a href="#ArduousLoader-74"><span class="linenos"> 74</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader-75"><a href="#ArduousLoader-75"><span class="linenos"> 75</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader-76"><a href="#ArduousLoader-76"><span class="linenos"> 76</span></a><span class="sd">            List of supported file extensions</span>
-</span><span id="ArduousLoader-77"><a href="#ArduousLoader-77"><span class="linenos"> 77</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-78"><a href="#ArduousLoader-78"><span class="linenos"> 78</span></a>        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;.txt&#39;</span><span class="p">]</span>
-</span><span id="ArduousLoader-79"><a href="#ArduousLoader-79"><span class="linenos"> 79</span></a>    
-</span><span id="ArduousLoader-80"><a href="#ArduousLoader-80"><span class="linenos"> 80</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-</span><span id="ArduousLoader-81"><a href="#ArduousLoader-81"><span class="linenos"> 81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-82"><a href="#ArduousLoader-82"><span class="linenos"> 82</span></a><span class="sd">        Get information about sensors in the dataset.</span>
-</span><span id="ArduousLoader-83"><a href="#ArduousLoader-83"><span class="linenos"> 83</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader-84"><a href="#ArduousLoader-84"><span class="linenos"> 84</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader-85"><a href="#ArduousLoader-85"><span class="linenos"> 85</span></a><span class="sd">            Dictionary containing sensor information</span>
-</span><span id="ArduousLoader-86"><a href="#ArduousLoader-86"><span class="linenos"> 86</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-87"><a href="#ArduousLoader-87"><span class="linenos"> 87</span></a>        <span class="k">return</span> <span class="p">{</span>
-</span><span id="ArduousLoader-88"><a href="#ArduousLoader-88"><span class="linenos"> 88</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">],</span>
-</span><span id="ArduousLoader-89"><a href="#ArduousLoader-89"><span class="linenos"> 89</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">],</span>
-</span><span id="ArduousLoader-90"><a href="#ArduousLoader-90"><span class="linenos"> 90</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sampling_frequency&#39;</span><span class="p">]</span>
-</span><span id="ArduousLoader-91"><a href="#ArduousLoader-91"><span class="linenos"> 91</span></a>        <span class="p">}</span>
-</span><span id="ArduousLoader-92"><a href="#ArduousLoader-92"><span class="linenos"> 92</span></a>    
-</span><span id="ArduousLoader-93"><a href="#ArduousLoader-93"><span class="linenos"> 93</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_activity_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="ArduousLoader-94"><a href="#ArduousLoader-94"><span class="linenos"> 94</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-95"><a href="#ArduousLoader-95"><span class="linenos"> 95</span></a><span class="sd">        Get information about activities in the dataset.</span>
-</span><span id="ArduousLoader-96"><a href="#ArduousLoader-96"><span class="linenos"> 96</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader-97"><a href="#ArduousLoader-97"><span class="linenos"> 97</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader-98"><a href="#ArduousLoader-98"><span class="linenos"> 98</span></a><span class="sd">            List of activity types</span>
-</span><span id="ArduousLoader-99"><a href="#ArduousLoader-99"><span class="linenos"> 99</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader-100"><a href="#ArduousLoader-100"><span class="linenos">100</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]</span>
+</span><span id="ArduousLoader-24"><a href="#ArduousLoader-24"><span class="linenos"> 24</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">):</span>
+</span><span id="ArduousLoader-25"><a href="#ArduousLoader-25"><span class="linenos"> 25</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-26"><a href="#ArduousLoader-26"><span class="linenos"> 26</span></a><span class="sd">        Initialize Arduous loader with concurrent download support.</span>
+</span><span id="ArduousLoader-27"><a href="#ArduousLoader-27"><span class="linenos"> 27</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader-28"><a href="#ArduousLoader-28"><span class="linenos"> 28</span></a><span class="sd">        Args:</span>
+</span><span id="ArduousLoader-29"><a href="#ArduousLoader-29"><span class="linenos"> 29</span></a><span class="sd">            max_workers: Maximum number of concurrent download threads (default: 8)</span>
+</span><span id="ArduousLoader-30"><a href="#ArduousLoader-30"><span class="linenos"> 30</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-31"><a href="#ArduousLoader-31"><span class="linenos"> 31</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="ArduousLoader-32"><a href="#ArduousLoader-32"><span class="linenos"> 32</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;arduous&quot;</span><span class="p">,</span>
+</span><span id="ArduousLoader-33"><a href="#ArduousLoader-33"><span class="linenos"> 33</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Arduous Dataset - Contains multi-sensor wearable data for daily activity recognition&quot;</span><span class="p">,</span>
+</span><span id="ArduousLoader-34"><a href="#ArduousLoader-34"><span class="linenos"> 34</span></a>            <span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span>
+</span><span id="ArduousLoader-35"><a href="#ArduousLoader-35"><span class="linenos"> 35</span></a>        <span class="p">)</span>
+</span><span id="ArduousLoader-36"><a href="#ArduousLoader-36"><span class="linenos"> 36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="ArduousLoader-37"><a href="#ArduousLoader-37"><span class="linenos"> 37</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accelerometer&#39;</span><span class="p">,</span> <span class="s1">&#39;gyroscope&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetometer&#39;</span><span class="p">],</span>
+</span><span id="ArduousLoader-38"><a href="#ArduousLoader-38"><span class="linenos"> 38</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">],</span>
+</span><span id="ArduousLoader-39"><a href="#ArduousLoader-39"><span class="linenos"> 39</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Typical for Arduous</span>
+</span><span id="ArduousLoader-40"><a href="#ArduousLoader-40"><span class="linenos"> 40</span></a>            <span class="s1">&#39;activities&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;walking&#39;</span><span class="p">,</span> <span class="s1">&#39;running&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">,</span> <span class="s1">&#39;standing&#39;</span><span class="p">,</span> <span class="s1">&#39;lying&#39;</span><span class="p">]</span>
+</span><span id="ArduousLoader-41"><a href="#ArduousLoader-41"><span class="linenos"> 41</span></a>        <span class="p">}</span>
+</span><span id="ArduousLoader-42"><a href="#ArduousLoader-42"><span class="linenos"> 42</span></a>    
+</span><span id="ArduousLoader-43"><a href="#ArduousLoader-43"><span class="linenos"> 43</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+</span><span id="ArduousLoader-44"><a href="#ArduousLoader-44"><span class="linenos"> 44</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-45"><a href="#ArduousLoader-45"><span class="linenos"> 45</span></a><span class="sd">        Load Arduous dataset from the specified directory.</span>
+</span><span id="ArduousLoader-46"><a href="#ArduousLoader-46"><span class="linenos"> 46</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader-47"><a href="#ArduousLoader-47"><span class="linenos"> 47</span></a><span class="sd">        Args:</span>
+</span><span id="ArduousLoader-48"><a href="#ArduousLoader-48"><span class="linenos"> 48</span></a><span class="sd">            data_dir: Directory to store/find the dataset</span>
+</span><span id="ArduousLoader-49"><a href="#ArduousLoader-49"><span class="linenos"> 49</span></a><span class="sd">            **kwargs: Additional arguments (unused for Arduous)</span>
+</span><span id="ArduousLoader-50"><a href="#ArduousLoader-50"><span class="linenos"> 50</span></a><span class="sd">            </span>
+</span><span id="ArduousLoader-51"><a href="#ArduousLoader-51"><span class="linenos"> 51</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader-52"><a href="#ArduousLoader-52"><span class="linenos"> 52</span></a><span class="sd">            Tuple of (data_list, names_list)</span>
+</span><span id="ArduousLoader-53"><a href="#ArduousLoader-53"><span class="linenos"> 53</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-54"><a href="#ArduousLoader-54"><span class="linenos"> 54</span></a>        <span class="c1"># TODO: Implement Arduous data loading</span>
+</span><span id="ArduousLoader-55"><a href="#ArduousLoader-55"><span class="linenos"> 55</span></a>        <span class="c1"># This is a placeholder implementation</span>
+</span><span id="ArduousLoader-56"><a href="#ArduousLoader-56"><span class="linenos"> 56</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous data loading is not yet implemented&quot;</span><span class="p">)</span>
+</span><span id="ArduousLoader-57"><a href="#ArduousLoader-57"><span class="linenos"> 57</span></a>        <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
+</span><span id="ArduousLoader-58"><a href="#ArduousLoader-58"><span class="linenos"> 58</span></a>    
+</span><span id="ArduousLoader-59"><a href="#ArduousLoader-59"><span class="linenos"> 59</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">create_sliding_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> 
+</span><span id="ArduousLoader-60"><a href="#ArduousLoader-60"><span class="linenos"> 60</span></a>                             <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+</span><span id="ArduousLoader-61"><a href="#ArduousLoader-61"><span class="linenos"> 61</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-62"><a href="#ArduousLoader-62"><span class="linenos"> 62</span></a><span class="sd">        Create sliding windows from the Arduous dataset.</span>
+</span><span id="ArduousLoader-63"><a href="#ArduousLoader-63"><span class="linenos"> 63</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader-64"><a href="#ArduousLoader-64"><span class="linenos"> 64</span></a><span class="sd">        Args:</span>
+</span><span id="ArduousLoader-65"><a href="#ArduousLoader-65"><span class="linenos"> 65</span></a><span class="sd">            data: List of DataFrames containing Arduous data</span>
+</span><span id="ArduousLoader-66"><a href="#ArduousLoader-66"><span class="linenos"> 66</span></a><span class="sd">            names: List of names corresponding to the data</span>
+</span><span id="ArduousLoader-67"><a href="#ArduousLoader-67"><span class="linenos"> 67</span></a><span class="sd">            window_size: Size of the sliding window (default: 192)</span>
+</span><span id="ArduousLoader-68"><a href="#ArduousLoader-68"><span class="linenos"> 68</span></a><span class="sd">            step_size: Step size for the sliding window (default: 32)</span>
+</span><span id="ArduousLoader-69"><a href="#ArduousLoader-69"><span class="linenos"> 69</span></a><span class="sd">            </span>
+</span><span id="ArduousLoader-70"><a href="#ArduousLoader-70"><span class="linenos"> 70</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader-71"><a href="#ArduousLoader-71"><span class="linenos"> 71</span></a><span class="sd">            List of dictionaries containing sliding windows for each DataFrame</span>
+</span><span id="ArduousLoader-72"><a href="#ArduousLoader-72"><span class="linenos"> 72</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-73"><a href="#ArduousLoader-73"><span class="linenos"> 73</span></a>        <span class="c1"># TODO: Implement Arduous sliding window creation</span>
+</span><span id="ArduousLoader-74"><a href="#ArduousLoader-74"><span class="linenos"> 74</span></a>        <span class="c1"># This is a placeholder implementation</span>
+</span><span id="ArduousLoader-75"><a href="#ArduousLoader-75"><span class="linenos"> 75</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous sliding window creation is not yet implemented&quot;</span><span class="p">)</span>
+</span><span id="ArduousLoader-76"><a href="#ArduousLoader-76"><span class="linenos"> 76</span></a>        <span class="k">return</span> <span class="p">[]</span>
+</span><span id="ArduousLoader-77"><a href="#ArduousLoader-77"><span class="linenos"> 77</span></a>    
+</span><span id="ArduousLoader-78"><a href="#ArduousLoader-78"><span class="linenos"> 78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_supported_formats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="ArduousLoader-79"><a href="#ArduousLoader-79"><span class="linenos"> 79</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-80"><a href="#ArduousLoader-80"><span class="linenos"> 80</span></a><span class="sd">        Get list of supported file formats for Arduous dataset.</span>
+</span><span id="ArduousLoader-81"><a href="#ArduousLoader-81"><span class="linenos"> 81</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader-82"><a href="#ArduousLoader-82"><span class="linenos"> 82</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader-83"><a href="#ArduousLoader-83"><span class="linenos"> 83</span></a><span class="sd">            List of supported file extensions</span>
+</span><span id="ArduousLoader-84"><a href="#ArduousLoader-84"><span class="linenos"> 84</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-85"><a href="#ArduousLoader-85"><span class="linenos"> 85</span></a>        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;.txt&#39;</span><span class="p">]</span>
+</span><span id="ArduousLoader-86"><a href="#ArduousLoader-86"><span class="linenos"> 86</span></a>    
+</span><span id="ArduousLoader-87"><a href="#ArduousLoader-87"><span class="linenos"> 87</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+</span><span id="ArduousLoader-88"><a href="#ArduousLoader-88"><span class="linenos"> 88</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-89"><a href="#ArduousLoader-89"><span class="linenos"> 89</span></a><span class="sd">        Get information about sensors in the dataset.</span>
+</span><span id="ArduousLoader-90"><a href="#ArduousLoader-90"><span class="linenos"> 90</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader-91"><a href="#ArduousLoader-91"><span class="linenos"> 91</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader-92"><a href="#ArduousLoader-92"><span class="linenos"> 92</span></a><span class="sd">            Dictionary containing sensor information</span>
+</span><span id="ArduousLoader-93"><a href="#ArduousLoader-93"><span class="linenos"> 93</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-94"><a href="#ArduousLoader-94"><span class="linenos"> 94</span></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="ArduousLoader-95"><a href="#ArduousLoader-95"><span class="linenos"> 95</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">],</span>
+</span><span id="ArduousLoader-96"><a href="#ArduousLoader-96"><span class="linenos"> 96</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">],</span>
+</span><span id="ArduousLoader-97"><a href="#ArduousLoader-97"><span class="linenos"> 97</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sampling_frequency&#39;</span><span class="p">]</span>
+</span><span id="ArduousLoader-98"><a href="#ArduousLoader-98"><span class="linenos"> 98</span></a>        <span class="p">}</span>
+</span><span id="ArduousLoader-99"><a href="#ArduousLoader-99"><span class="linenos"> 99</span></a>    
+</span><span id="ArduousLoader-100"><a href="#ArduousLoader-100"><span class="linenos">100</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_activity_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="ArduousLoader-101"><a href="#ArduousLoader-101"><span class="linenos">101</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-102"><a href="#ArduousLoader-102"><span class="linenos">102</span></a><span class="sd">        Get information about activities in the dataset.</span>
+</span><span id="ArduousLoader-103"><a href="#ArduousLoader-103"><span class="linenos">103</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader-104"><a href="#ArduousLoader-104"><span class="linenos">104</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader-105"><a href="#ArduousLoader-105"><span class="linenos">105</span></a><span class="sd">            List of activity types</span>
+</span><span id="ArduousLoader-106"><a href="#ArduousLoader-106"><span class="linenos">106</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader-107"><a href="#ArduousLoader-107"><span class="linenos">107</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -309,31 +323,37 @@ Maintainer: @aharshit123456</p>
                                         <input id="ArduousLoader.__init__-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
             
-        <span class="name">ArduousLoader</span><span class="signature pdoc-code condensed">()</span>
+        <span class="name">ArduousLoader</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span></span>)</span>
 
                 <label class="view-source-button" for="ArduousLoader.__init__-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#ArduousLoader.__init__"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.__init__-24"><a href="#ArduousLoader.__init__-24"><span class="linenos">24</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="ArduousLoader.__init__-25"><a href="#ArduousLoader.__init__-25"><span class="linenos">25</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-</span><span id="ArduousLoader.__init__-26"><a href="#ArduousLoader.__init__-26"><span class="linenos">26</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;arduous&quot;</span><span class="p">,</span>
-</span><span id="ArduousLoader.__init__-27"><a href="#ArduousLoader.__init__-27"><span class="linenos">27</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Arduous Dataset - Contains multi-sensor wearable data for daily activity recognition&quot;</span>
-</span><span id="ArduousLoader.__init__-28"><a href="#ArduousLoader.__init__-28"><span class="linenos">28</span></a>        <span class="p">)</span>
-</span><span id="ArduousLoader.__init__-29"><a href="#ArduousLoader.__init__-29"><span class="linenos">29</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
-</span><span id="ArduousLoader.__init__-30"><a href="#ArduousLoader.__init__-30"><span class="linenos">30</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accelerometer&#39;</span><span class="p">,</span> <span class="s1">&#39;gyroscope&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetometer&#39;</span><span class="p">],</span>
-</span><span id="ArduousLoader.__init__-31"><a href="#ArduousLoader.__init__-31"><span class="linenos">31</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">],</span>
-</span><span id="ArduousLoader.__init__-32"><a href="#ArduousLoader.__init__-32"><span class="linenos">32</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Typical for Arduous</span>
-</span><span id="ArduousLoader.__init__-33"><a href="#ArduousLoader.__init__-33"><span class="linenos">33</span></a>            <span class="s1">&#39;activities&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;walking&#39;</span><span class="p">,</span> <span class="s1">&#39;running&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">,</span> <span class="s1">&#39;standing&#39;</span><span class="p">,</span> <span class="s1">&#39;lying&#39;</span><span class="p">]</span>
-</span><span id="ArduousLoader.__init__-34"><a href="#ArduousLoader.__init__-34"><span class="linenos">34</span></a>        <span class="p">}</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.__init__-24"><a href="#ArduousLoader.__init__-24"><span class="linenos">24</span></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">):</span>
+</span><span id="ArduousLoader.__init__-25"><a href="#ArduousLoader.__init__-25"><span class="linenos">25</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.__init__-26"><a href="#ArduousLoader.__init__-26"><span class="linenos">26</span></a><span class="sd">        Initialize Arduous loader with concurrent download support.</span>
+</span><span id="ArduousLoader.__init__-27"><a href="#ArduousLoader.__init__-27"><span class="linenos">27</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader.__init__-28"><a href="#ArduousLoader.__init__-28"><span class="linenos">28</span></a><span class="sd">        Args:</span>
+</span><span id="ArduousLoader.__init__-29"><a href="#ArduousLoader.__init__-29"><span class="linenos">29</span></a><span class="sd">            max_workers: Maximum number of concurrent download threads (default: 8)</span>
+</span><span id="ArduousLoader.__init__-30"><a href="#ArduousLoader.__init__-30"><span class="linenos">30</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.__init__-31"><a href="#ArduousLoader.__init__-31"><span class="linenos">31</span></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+</span><span id="ArduousLoader.__init__-32"><a href="#ArduousLoader.__init__-32"><span class="linenos">32</span></a>            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;arduous&quot;</span><span class="p">,</span>
+</span><span id="ArduousLoader.__init__-33"><a href="#ArduousLoader.__init__-33"><span class="linenos">33</span></a>            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Arduous Dataset - Contains multi-sensor wearable data for daily activity recognition&quot;</span><span class="p">,</span>
+</span><span id="ArduousLoader.__init__-34"><a href="#ArduousLoader.__init__-34"><span class="linenos">34</span></a>            <span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span>
+</span><span id="ArduousLoader.__init__-35"><a href="#ArduousLoader.__init__-35"><span class="linenos">35</span></a>        <span class="p">)</span>
+</span><span id="ArduousLoader.__init__-36"><a href="#ArduousLoader.__init__-36"><span class="linenos">36</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="ArduousLoader.__init__-37"><a href="#ArduousLoader.__init__-37"><span class="linenos">37</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;accelerometer&#39;</span><span class="p">,</span> <span class="s1">&#39;gyroscope&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetometer&#39;</span><span class="p">],</span>
+</span><span id="ArduousLoader.__init__-38"><a href="#ArduousLoader.__init__-38"><span class="linenos">38</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">],</span>
+</span><span id="ArduousLoader.__init__-39"><a href="#ArduousLoader.__init__-39"><span class="linenos">39</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># Typical for Arduous</span>
+</span><span id="ArduousLoader.__init__-40"><a href="#ArduousLoader.__init__-40"><span class="linenos">40</span></a>            <span class="s1">&#39;activities&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;walking&#39;</span><span class="p">,</span> <span class="s1">&#39;running&#39;</span><span class="p">,</span> <span class="s1">&#39;sitting&#39;</span><span class="p">,</span> <span class="s1">&#39;standing&#39;</span><span class="p">,</span> <span class="s1">&#39;lying&#39;</span><span class="p">]</span>
+</span><span id="ArduousLoader.__init__-41"><a href="#ArduousLoader.__init__-41"><span class="linenos">41</span></a>        <span class="p">}</span>
 </span></pre></div>
 
 
-            <div class="docstring"><p>Initialize the dataset loader.</p>
+            <div class="docstring"><p>Initialize Arduous loader with concurrent download support.</p>
 
 <p>Args:
-    name: Name of the dataset
-    description: Description of the dataset</p>
+    max_workers: Maximum number of concurrent download threads (default: 8)</p>
 </div>
 
 
@@ -360,21 +380,21 @@ Maintainer: @aharshit123456</p>
 
     </div>
     <a class="headerlink" href="#ArduousLoader.load_data"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.load_data-36"><a href="#ArduousLoader.load_data-36"><span class="linenos">36</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-</span><span id="ArduousLoader.load_data-37"><a href="#ArduousLoader.load_data-37"><span class="linenos">37</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.load_data-38"><a href="#ArduousLoader.load_data-38"><span class="linenos">38</span></a><span class="sd">        Load Arduous dataset from the specified directory.</span>
-</span><span id="ArduousLoader.load_data-39"><a href="#ArduousLoader.load_data-39"><span class="linenos">39</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader.load_data-40"><a href="#ArduousLoader.load_data-40"><span class="linenos">40</span></a><span class="sd">        Args:</span>
-</span><span id="ArduousLoader.load_data-41"><a href="#ArduousLoader.load_data-41"><span class="linenos">41</span></a><span class="sd">            data_dir: Directory to store/find the dataset</span>
-</span><span id="ArduousLoader.load_data-42"><a href="#ArduousLoader.load_data-42"><span class="linenos">42</span></a><span class="sd">            **kwargs: Additional arguments (unused for Arduous)</span>
-</span><span id="ArduousLoader.load_data-43"><a href="#ArduousLoader.load_data-43"><span class="linenos">43</span></a><span class="sd">            </span>
-</span><span id="ArduousLoader.load_data-44"><a href="#ArduousLoader.load_data-44"><span class="linenos">44</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader.load_data-45"><a href="#ArduousLoader.load_data-45"><span class="linenos">45</span></a><span class="sd">            Tuple of (data_list, names_list)</span>
-</span><span id="ArduousLoader.load_data-46"><a href="#ArduousLoader.load_data-46"><span class="linenos">46</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.load_data-47"><a href="#ArduousLoader.load_data-47"><span class="linenos">47</span></a>        <span class="c1"># TODO: Implement Arduous data loading</span>
-</span><span id="ArduousLoader.load_data-48"><a href="#ArduousLoader.load_data-48"><span class="linenos">48</span></a>        <span class="c1"># This is a placeholder implementation</span>
-</span><span id="ArduousLoader.load_data-49"><a href="#ArduousLoader.load_data-49"><span class="linenos">49</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous data loading is not yet implemented&quot;</span><span class="p">)</span>
-</span><span id="ArduousLoader.load_data-50"><a href="#ArduousLoader.load_data-50"><span class="linenos">50</span></a>        <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.load_data-43"><a href="#ArduousLoader.load_data-43"><span class="linenos">43</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+</span><span id="ArduousLoader.load_data-44"><a href="#ArduousLoader.load_data-44"><span class="linenos">44</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.load_data-45"><a href="#ArduousLoader.load_data-45"><span class="linenos">45</span></a><span class="sd">        Load Arduous dataset from the specified directory.</span>
+</span><span id="ArduousLoader.load_data-46"><a href="#ArduousLoader.load_data-46"><span class="linenos">46</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader.load_data-47"><a href="#ArduousLoader.load_data-47"><span class="linenos">47</span></a><span class="sd">        Args:</span>
+</span><span id="ArduousLoader.load_data-48"><a href="#ArduousLoader.load_data-48"><span class="linenos">48</span></a><span class="sd">            data_dir: Directory to store/find the dataset</span>
+</span><span id="ArduousLoader.load_data-49"><a href="#ArduousLoader.load_data-49"><span class="linenos">49</span></a><span class="sd">            **kwargs: Additional arguments (unused for Arduous)</span>
+</span><span id="ArduousLoader.load_data-50"><a href="#ArduousLoader.load_data-50"><span class="linenos">50</span></a><span class="sd">            </span>
+</span><span id="ArduousLoader.load_data-51"><a href="#ArduousLoader.load_data-51"><span class="linenos">51</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader.load_data-52"><a href="#ArduousLoader.load_data-52"><span class="linenos">52</span></a><span class="sd">            Tuple of (data_list, names_list)</span>
+</span><span id="ArduousLoader.load_data-53"><a href="#ArduousLoader.load_data-53"><span class="linenos">53</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.load_data-54"><a href="#ArduousLoader.load_data-54"><span class="linenos">54</span></a>        <span class="c1"># TODO: Implement Arduous data loading</span>
+</span><span id="ArduousLoader.load_data-55"><a href="#ArduousLoader.load_data-55"><span class="linenos">55</span></a>        <span class="c1"># This is a placeholder implementation</span>
+</span><span id="ArduousLoader.load_data-56"><a href="#ArduousLoader.load_data-56"><span class="linenos">56</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous data loading is not yet implemented&quot;</span><span class="p">)</span>
+</span><span id="ArduousLoader.load_data-57"><a href="#ArduousLoader.load_data-57"><span class="linenos">57</span></a>        <span class="k">return</span> <span class="p">[],</span> <span class="p">[]</span>
 </span></pre></div>
 
 
@@ -401,24 +421,24 @@ Maintainer: @aharshit123456</p>
 
     </div>
     <a class="headerlink" href="#ArduousLoader.create_sliding_windows"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.create_sliding_windows-52"><a href="#ArduousLoader.create_sliding_windows-52"><span class="linenos">52</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">create_sliding_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> 
-</span><span id="ArduousLoader.create_sliding_windows-53"><a href="#ArduousLoader.create_sliding_windows-53"><span class="linenos">53</span></a>                             <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
-</span><span id="ArduousLoader.create_sliding_windows-54"><a href="#ArduousLoader.create_sliding_windows-54"><span class="linenos">54</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.create_sliding_windows-55"><a href="#ArduousLoader.create_sliding_windows-55"><span class="linenos">55</span></a><span class="sd">        Create sliding windows from the Arduous dataset.</span>
-</span><span id="ArduousLoader.create_sliding_windows-56"><a href="#ArduousLoader.create_sliding_windows-56"><span class="linenos">56</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader.create_sliding_windows-57"><a href="#ArduousLoader.create_sliding_windows-57"><span class="linenos">57</span></a><span class="sd">        Args:</span>
-</span><span id="ArduousLoader.create_sliding_windows-58"><a href="#ArduousLoader.create_sliding_windows-58"><span class="linenos">58</span></a><span class="sd">            data: List of DataFrames containing Arduous data</span>
-</span><span id="ArduousLoader.create_sliding_windows-59"><a href="#ArduousLoader.create_sliding_windows-59"><span class="linenos">59</span></a><span class="sd">            names: List of names corresponding to the data</span>
-</span><span id="ArduousLoader.create_sliding_windows-60"><a href="#ArduousLoader.create_sliding_windows-60"><span class="linenos">60</span></a><span class="sd">            window_size: Size of the sliding window (default: 192)</span>
-</span><span id="ArduousLoader.create_sliding_windows-61"><a href="#ArduousLoader.create_sliding_windows-61"><span class="linenos">61</span></a><span class="sd">            step_size: Step size for the sliding window (default: 32)</span>
-</span><span id="ArduousLoader.create_sliding_windows-62"><a href="#ArduousLoader.create_sliding_windows-62"><span class="linenos">62</span></a><span class="sd">            </span>
-</span><span id="ArduousLoader.create_sliding_windows-63"><a href="#ArduousLoader.create_sliding_windows-63"><span class="linenos">63</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader.create_sliding_windows-64"><a href="#ArduousLoader.create_sliding_windows-64"><span class="linenos">64</span></a><span class="sd">            List of dictionaries containing sliding windows for each DataFrame</span>
-</span><span id="ArduousLoader.create_sliding_windows-65"><a href="#ArduousLoader.create_sliding_windows-65"><span class="linenos">65</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.create_sliding_windows-66"><a href="#ArduousLoader.create_sliding_windows-66"><span class="linenos">66</span></a>        <span class="c1"># TODO: Implement Arduous sliding window creation</span>
-</span><span id="ArduousLoader.create_sliding_windows-67"><a href="#ArduousLoader.create_sliding_windows-67"><span class="linenos">67</span></a>        <span class="c1"># This is a placeholder implementation</span>
-</span><span id="ArduousLoader.create_sliding_windows-68"><a href="#ArduousLoader.create_sliding_windows-68"><span class="linenos">68</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous sliding window creation is not yet implemented&quot;</span><span class="p">)</span>
-</span><span id="ArduousLoader.create_sliding_windows-69"><a href="#ArduousLoader.create_sliding_windows-69"><span class="linenos">69</span></a>        <span class="k">return</span> <span class="p">[]</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.create_sliding_windows-59"><a href="#ArduousLoader.create_sliding_windows-59"><span class="linenos">59</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">create_sliding_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">],</span> <span class="n">names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> 
+</span><span id="ArduousLoader.create_sliding_windows-60"><a href="#ArduousLoader.create_sliding_windows-60"><span class="linenos">60</span></a>                             <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">192</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]:</span>
+</span><span id="ArduousLoader.create_sliding_windows-61"><a href="#ArduousLoader.create_sliding_windows-61"><span class="linenos">61</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.create_sliding_windows-62"><a href="#ArduousLoader.create_sliding_windows-62"><span class="linenos">62</span></a><span class="sd">        Create sliding windows from the Arduous dataset.</span>
+</span><span id="ArduousLoader.create_sliding_windows-63"><a href="#ArduousLoader.create_sliding_windows-63"><span class="linenos">63</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader.create_sliding_windows-64"><a href="#ArduousLoader.create_sliding_windows-64"><span class="linenos">64</span></a><span class="sd">        Args:</span>
+</span><span id="ArduousLoader.create_sliding_windows-65"><a href="#ArduousLoader.create_sliding_windows-65"><span class="linenos">65</span></a><span class="sd">            data: List of DataFrames containing Arduous data</span>
+</span><span id="ArduousLoader.create_sliding_windows-66"><a href="#ArduousLoader.create_sliding_windows-66"><span class="linenos">66</span></a><span class="sd">            names: List of names corresponding to the data</span>
+</span><span id="ArduousLoader.create_sliding_windows-67"><a href="#ArduousLoader.create_sliding_windows-67"><span class="linenos">67</span></a><span class="sd">            window_size: Size of the sliding window (default: 192)</span>
+</span><span id="ArduousLoader.create_sliding_windows-68"><a href="#ArduousLoader.create_sliding_windows-68"><span class="linenos">68</span></a><span class="sd">            step_size: Step size for the sliding window (default: 32)</span>
+</span><span id="ArduousLoader.create_sliding_windows-69"><a href="#ArduousLoader.create_sliding_windows-69"><span class="linenos">69</span></a><span class="sd">            </span>
+</span><span id="ArduousLoader.create_sliding_windows-70"><a href="#ArduousLoader.create_sliding_windows-70"><span class="linenos">70</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader.create_sliding_windows-71"><a href="#ArduousLoader.create_sliding_windows-71"><span class="linenos">71</span></a><span class="sd">            List of dictionaries containing sliding windows for each DataFrame</span>
+</span><span id="ArduousLoader.create_sliding_windows-72"><a href="#ArduousLoader.create_sliding_windows-72"><span class="linenos">72</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.create_sliding_windows-73"><a href="#ArduousLoader.create_sliding_windows-73"><span class="linenos">73</span></a>        <span class="c1"># TODO: Implement Arduous sliding window creation</span>
+</span><span id="ArduousLoader.create_sliding_windows-74"><a href="#ArduousLoader.create_sliding_windows-74"><span class="linenos">74</span></a>        <span class="c1"># This is a placeholder implementation</span>
+</span><span id="ArduousLoader.create_sliding_windows-75"><a href="#ArduousLoader.create_sliding_windows-75"><span class="linenos">75</span></a>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Arduous sliding window creation is not yet implemented&quot;</span><span class="p">)</span>
+</span><span id="ArduousLoader.create_sliding_windows-76"><a href="#ArduousLoader.create_sliding_windows-76"><span class="linenos">76</span></a>        <span class="k">return</span> <span class="p">[]</span>
 </span></pre></div>
 
 
@@ -447,14 +467,14 @@ Maintainer: @aharshit123456</p>
 
     </div>
     <a class="headerlink" href="#ArduousLoader.get_supported_formats"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.get_supported_formats-71"><a href="#ArduousLoader.get_supported_formats-71"><span class="linenos">71</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_supported_formats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="ArduousLoader.get_supported_formats-72"><a href="#ArduousLoader.get_supported_formats-72"><span class="linenos">72</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.get_supported_formats-73"><a href="#ArduousLoader.get_supported_formats-73"><span class="linenos">73</span></a><span class="sd">        Get list of supported file formats for Arduous dataset.</span>
-</span><span id="ArduousLoader.get_supported_formats-74"><a href="#ArduousLoader.get_supported_formats-74"><span class="linenos">74</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader.get_supported_formats-75"><a href="#ArduousLoader.get_supported_formats-75"><span class="linenos">75</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader.get_supported_formats-76"><a href="#ArduousLoader.get_supported_formats-76"><span class="linenos">76</span></a><span class="sd">            List of supported file extensions</span>
-</span><span id="ArduousLoader.get_supported_formats-77"><a href="#ArduousLoader.get_supported_formats-77"><span class="linenos">77</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.get_supported_formats-78"><a href="#ArduousLoader.get_supported_formats-78"><span class="linenos">78</span></a>        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;.txt&#39;</span><span class="p">]</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.get_supported_formats-78"><a href="#ArduousLoader.get_supported_formats-78"><span class="linenos">78</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_supported_formats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="ArduousLoader.get_supported_formats-79"><a href="#ArduousLoader.get_supported_formats-79"><span class="linenos">79</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.get_supported_formats-80"><a href="#ArduousLoader.get_supported_formats-80"><span class="linenos">80</span></a><span class="sd">        Get list of supported file formats for Arduous dataset.</span>
+</span><span id="ArduousLoader.get_supported_formats-81"><a href="#ArduousLoader.get_supported_formats-81"><span class="linenos">81</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader.get_supported_formats-82"><a href="#ArduousLoader.get_supported_formats-82"><span class="linenos">82</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader.get_supported_formats-83"><a href="#ArduousLoader.get_supported_formats-83"><span class="linenos">83</span></a><span class="sd">            List of supported file extensions</span>
+</span><span id="ArduousLoader.get_supported_formats-84"><a href="#ArduousLoader.get_supported_formats-84"><span class="linenos">84</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.get_supported_formats-85"><a href="#ArduousLoader.get_supported_formats-85"><span class="linenos">85</span></a>        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;.txt&#39;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -477,18 +497,18 @@ Maintainer: @aharshit123456</p>
 
     </div>
     <a class="headerlink" href="#ArduousLoader.get_sensor_info"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.get_sensor_info-80"><a href="#ArduousLoader.get_sensor_info-80"><span class="linenos">80</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
-</span><span id="ArduousLoader.get_sensor_info-81"><a href="#ArduousLoader.get_sensor_info-81"><span class="linenos">81</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.get_sensor_info-82"><a href="#ArduousLoader.get_sensor_info-82"><span class="linenos">82</span></a><span class="sd">        Get information about sensors in the dataset.</span>
-</span><span id="ArduousLoader.get_sensor_info-83"><a href="#ArduousLoader.get_sensor_info-83"><span class="linenos">83</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader.get_sensor_info-84"><a href="#ArduousLoader.get_sensor_info-84"><span class="linenos">84</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader.get_sensor_info-85"><a href="#ArduousLoader.get_sensor_info-85"><span class="linenos">85</span></a><span class="sd">            Dictionary containing sensor information</span>
-</span><span id="ArduousLoader.get_sensor_info-86"><a href="#ArduousLoader.get_sensor_info-86"><span class="linenos">86</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.get_sensor_info-87"><a href="#ArduousLoader.get_sensor_info-87"><span class="linenos">87</span></a>        <span class="k">return</span> <span class="p">{</span>
-</span><span id="ArduousLoader.get_sensor_info-88"><a href="#ArduousLoader.get_sensor_info-88"><span class="linenos">88</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">],</span>
-</span><span id="ArduousLoader.get_sensor_info-89"><a href="#ArduousLoader.get_sensor_info-89"><span class="linenos">89</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">],</span>
-</span><span id="ArduousLoader.get_sensor_info-90"><a href="#ArduousLoader.get_sensor_info-90"><span class="linenos">90</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sampling_frequency&#39;</span><span class="p">]</span>
-</span><span id="ArduousLoader.get_sensor_info-91"><a href="#ArduousLoader.get_sensor_info-91"><span class="linenos">91</span></a>        <span class="p">}</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.get_sensor_info-87"><a href="#ArduousLoader.get_sensor_info-87"><span class="linenos">87</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_sensor_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+</span><span id="ArduousLoader.get_sensor_info-88"><a href="#ArduousLoader.get_sensor_info-88"><span class="linenos">88</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.get_sensor_info-89"><a href="#ArduousLoader.get_sensor_info-89"><span class="linenos">89</span></a><span class="sd">        Get information about sensors in the dataset.</span>
+</span><span id="ArduousLoader.get_sensor_info-90"><a href="#ArduousLoader.get_sensor_info-90"><span class="linenos">90</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader.get_sensor_info-91"><a href="#ArduousLoader.get_sensor_info-91"><span class="linenos">91</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader.get_sensor_info-92"><a href="#ArduousLoader.get_sensor_info-92"><span class="linenos">92</span></a><span class="sd">            Dictionary containing sensor information</span>
+</span><span id="ArduousLoader.get_sensor_info-93"><a href="#ArduousLoader.get_sensor_info-93"><span class="linenos">93</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.get_sensor_info-94"><a href="#ArduousLoader.get_sensor_info-94"><span class="linenos">94</span></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="ArduousLoader.get_sensor_info-95"><a href="#ArduousLoader.get_sensor_info-95"><span class="linenos">95</span></a>            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">],</span>
+</span><span id="ArduousLoader.get_sensor_info-96"><a href="#ArduousLoader.get_sensor_info-96"><span class="linenos">96</span></a>            <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">],</span>
+</span><span id="ArduousLoader.get_sensor_info-97"><a href="#ArduousLoader.get_sensor_info-97"><span class="linenos">97</span></a>            <span class="s1">&#39;sampling_frequency&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;sampling_frequency&#39;</span><span class="p">]</span>
+</span><span id="ArduousLoader.get_sensor_info-98"><a href="#ArduousLoader.get_sensor_info-98"><span class="linenos">98</span></a>        <span class="p">}</span>
 </span></pre></div>
 
 
@@ -511,14 +531,14 @@ Maintainer: @aharshit123456</p>
 
     </div>
     <a class="headerlink" href="#ArduousLoader.get_activity_info"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.get_activity_info-93"><a href="#ArduousLoader.get_activity_info-93"><span class="linenos"> 93</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_activity_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-</span><span id="ArduousLoader.get_activity_info-94"><a href="#ArduousLoader.get_activity_info-94"><span class="linenos"> 94</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.get_activity_info-95"><a href="#ArduousLoader.get_activity_info-95"><span class="linenos"> 95</span></a><span class="sd">        Get information about activities in the dataset.</span>
-</span><span id="ArduousLoader.get_activity_info-96"><a href="#ArduousLoader.get_activity_info-96"><span class="linenos"> 96</span></a><span class="sd">        </span>
-</span><span id="ArduousLoader.get_activity_info-97"><a href="#ArduousLoader.get_activity_info-97"><span class="linenos"> 97</span></a><span class="sd">        Returns:</span>
-</span><span id="ArduousLoader.get_activity_info-98"><a href="#ArduousLoader.get_activity_info-98"><span class="linenos"> 98</span></a><span class="sd">            List of activity types</span>
-</span><span id="ArduousLoader.get_activity_info-99"><a href="#ArduousLoader.get_activity_info-99"><span class="linenos"> 99</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="ArduousLoader.get_activity_info-100"><a href="#ArduousLoader.get_activity_info-100"><span class="linenos">100</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="ArduousLoader.get_activity_info-100"><a href="#ArduousLoader.get_activity_info-100"><span class="linenos">100</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_activity_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span><span id="ArduousLoader.get_activity_info-101"><a href="#ArduousLoader.get_activity_info-101"><span class="linenos">101</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.get_activity_info-102"><a href="#ArduousLoader.get_activity_info-102"><span class="linenos">102</span></a><span class="sd">        Get information about activities in the dataset.</span>
+</span><span id="ArduousLoader.get_activity_info-103"><a href="#ArduousLoader.get_activity_info-103"><span class="linenos">103</span></a><span class="sd">        </span>
+</span><span id="ArduousLoader.get_activity_info-104"><a href="#ArduousLoader.get_activity_info-104"><span class="linenos">104</span></a><span class="sd">        Returns:</span>
+</span><span id="ArduousLoader.get_activity_info-105"><a href="#ArduousLoader.get_activity_info-105"><span class="linenos">105</span></a><span class="sd">            List of activity types</span>
+</span><span id="ArduousLoader.get_activity_info-106"><a href="#ArduousLoader.get_activity_info-106"><span class="linenos">106</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="ArduousLoader.get_activity_info-107"><a href="#ArduousLoader.get_activity_info-107"><span class="linenos">107</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;activities&#39;</span><span class="p">]</span>
 </span></pre></div>
 
 
@@ -537,6 +557,10 @@ Maintainer: @aharshit123456</p>
                                 <dd id="ArduousLoader.name" class="variable"><a href="../core/base_classes.html#BaseDatasetLoader.name">name</a></dd>
                 <dd id="ArduousLoader.description" class="variable"><a href="../core/base_classes.html#BaseDatasetLoader.description">description</a></dd>
                 <dd id="ArduousLoader.data" class="variable"><a href="../core/base_classes.html#BaseDatasetLoader.data">data</a></dd>
+                <dd id="ArduousLoader.max_workers" class="variable"><a href="../core/base_classes.html#BaseDatasetLoader.max_workers">max_workers</a></dd>
+                <dd id="ArduousLoader.download_files_concurrent" class="function"><a href="../core/base_classes.html#BaseDatasetLoader.download_files_concurrent">download_files_concurrent</a></dd>
+                <dd id="ArduousLoader.set_max_workers" class="function"><a href="../core/base_classes.html#BaseDatasetLoader.set_max_workers">set_max_workers</a></dd>
+                <dd id="ArduousLoader.get_download_stats" class="function"><a href="../core/base_classes.html#BaseDatasetLoader.get_download_stats">get_download_stats</a></dd>
                 <dd id="ArduousLoader.get_info" class="function"><a href="../core/base_classes.html#BaseDatasetLoader.get_info">get_info</a></dd>
 
             </div>
@@ -554,15 +578,15 @@ Maintainer: @aharshit123456</p>
 
     </div>
     <a class="headerlink" href="#load_arduous_data"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="load_arduous_data-104"><a href="#load_arduous_data-104"><span class="linenos">104</span></a><span class="k">def</span><span class="w"> </span><span class="nf">load_arduous_data</span><span class="p">():</span>
-</span><span id="load_arduous_data-105"><a href="#load_arduous_data-105"><span class="linenos">105</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="load_arduous_data-106"><a href="#load_arduous_data-106"><span class="linenos">106</span></a><span class="sd">    Legacy function for loading Arduous data.</span>
-</span><span id="load_arduous_data-107"><a href="#load_arduous_data-107"><span class="linenos">107</span></a><span class="sd">    </span>
-</span><span id="load_arduous_data-108"><a href="#load_arduous_data-108"><span class="linenos">108</span></a><span class="sd">    Returns:</span>
-</span><span id="load_arduous_data-109"><a href="#load_arduous_data-109"><span class="linenos">109</span></a><span class="sd">        Tuple of (data_list, names_list)</span>
-</span><span id="load_arduous_data-110"><a href="#load_arduous_data-110"><span class="linenos">110</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="load_arduous_data-111"><a href="#load_arduous_data-111"><span class="linenos">111</span></a>    <span class="n">loader</span> <span class="o">=</span> <span class="n">ArduousLoader</span><span class="p">()</span>
-</span><span id="load_arduous_data-112"><a href="#load_arduous_data-112"><span class="linenos">112</span></a>    <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="load_arduous_data-111"><a href="#load_arduous_data-111"><span class="linenos">111</span></a><span class="k">def</span><span class="w"> </span><span class="nf">load_arduous_data</span><span class="p">():</span>
+</span><span id="load_arduous_data-112"><a href="#load_arduous_data-112"><span class="linenos">112</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="load_arduous_data-113"><a href="#load_arduous_data-113"><span class="linenos">113</span></a><span class="sd">    Legacy function for loading Arduous data.</span>
+</span><span id="load_arduous_data-114"><a href="#load_arduous_data-114"><span class="linenos">114</span></a><span class="sd">    </span>
+</span><span id="load_arduous_data-115"><a href="#load_arduous_data-115"><span class="linenos">115</span></a><span class="sd">    Returns:</span>
+</span><span id="load_arduous_data-116"><a href="#load_arduous_data-116"><span class="linenos">116</span></a><span class="sd">        Tuple of (data_list, names_list)</span>
+</span><span id="load_arduous_data-117"><a href="#load_arduous_data-117"><span class="linenos">117</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="load_arduous_data-118"><a href="#load_arduous_data-118"><span class="linenos">118</span></a>    <span class="n">loader</span> <span class="o">=</span> <span class="n">ArduousLoader</span><span class="p">()</span>
+</span><span id="load_arduous_data-119"><a href="#load_arduous_data-119"><span class="linenos">119</span></a>    <span class="k">return</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
