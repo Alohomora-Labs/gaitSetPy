@@ -130,7 +130,7 @@ class BiLSTMModel(BaseClassificationModel):
         print(f"BiLSTM model saved to {filepath}")
 
     def load_model(self, filepath: str):
-        checkpoint = torch.load(filepath, map_location=self.device)
+        checkpoint = torch.load(filepath, map_location=self.device, weights_only=False)
         self.model = BiLSTMNet(
             self.config['input_size'],
             self.config['hidden_size'],

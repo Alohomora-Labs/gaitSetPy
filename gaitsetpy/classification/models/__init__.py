@@ -32,7 +32,7 @@ def get_classification_model(name: str, **kwargs):
     Example:
         model = get_classification_model('cnn', input_channels=20, num_classes=4)
     """
-    name = name.lower()
+    name = name.lower().strip()
     if name == 'random_forest':
         return RandomForestModel(**kwargs)
     elif name == 'mlp':
