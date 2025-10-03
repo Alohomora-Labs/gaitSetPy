@@ -4,9 +4,12 @@ from setuptools import setup, find_packages
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+# Import version from single source of truth
+from gaitsetpy._version import __version__
+
 setup(
     name='gaitsetpy',
-    version='0.2.2',
+    version=__version__,
     packages=find_packages(include=["gaitsetpy", "gaitsetpy.*"]),
     description="A Python package for gait analysis using sensor data.",
     long_description=long_description,
