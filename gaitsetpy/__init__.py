@@ -185,7 +185,8 @@ from .classification import (
     evaluate_model
 )
 
-__version__ = "0.2.2"  # Updated version to reflect new architecture
+# Import version from single source of truth
+from ._version import __version__, get_version, get_version_info, get_release_info
 __author__ = "Harshit Agarwal | Alohomora Labs"
 
 # Convenient access to all managers

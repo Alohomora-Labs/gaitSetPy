@@ -21,10 +21,17 @@ class DaphnetLoader(BaseDatasetLoader):
     This class handles loading and processing of the Daphnet dataset for gait analysis.
     """
     
-    def __init__(self):
+    def __init__(self, max_workers: int = 8):
+        """
+        Initialize Daphnet loader with concurrent download support.
+        
+        Args:
+            max_workers: Maximum number of concurrent download threads (default: 8)
+        """
         super().__init__(
             name="daphnet",
-            description="Daphnet Freezing of Gait Dataset - Contains accelerometer data from subjects with Parkinson's disease"
+            description="Daphnet Freezing of Gait Dataset - Contains accelerometer data from subjects with Parkinson's disease",
+            max_workers=max_workers
         )
         self.metadata = {
             'sensors': ['shank', 'thigh', 'trunk'],

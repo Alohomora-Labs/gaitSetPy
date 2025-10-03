@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gaitsetpy"
-version = "0.2.2"
+dynamic = ["version"]
 description = "A Python package for gait analysis using sensor data."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -57,6 +57,12 @@ Homepage = "https://github.com/Alohomora-Labs/gaitSetPy"
 Documentation = "https://alohomora-labs.github.io/gaitSetPy/gaitsetpy.html"
 Repository = "https://github.com/Alohomora-Labs/gaitSetPy"
 Issues = "https://github.com/Alohomora-Labs/gaitSetPy/issues"
+
+[tool.setuptools.packages.find]
+include = ["gaitsetpy*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "gaitsetpy._version.__version__"}
 
 # Black configuration
 [tool.black]
