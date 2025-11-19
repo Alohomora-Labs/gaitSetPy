@@ -1,4 +1,4 @@
-# GaitSetPy ✨
+# GaitSetPy
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15881527.svg)](https://doi.org/10.5281/zenodo.15881527) [![PyPI version](https://badge.fury.io/py/gaitsetpy.svg)](https://pypi.org/project/gaitsetpy/) [![Docs](https://img.shields.io/badge/docs-gaitsetpy-lightgrey.svg)](https://alohomora-labs.github.io/gaitSetPy/gaitsetpy.html) ![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/Alohomora-Labs/gaitSetPy?utm_source=oss&utm_medium=github&utm_campaign=Alohomora-Labs%2FgaitSetPy&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews) ![Conda-forge-downloads](https://anaconda.org/conda-forge/gaitsetpy/badges/downloads.svg) ![PyPI - Downloads](https://img.shields.io/pypi/dm/gaitsetpy?label=pypi-downloads)
 
 
